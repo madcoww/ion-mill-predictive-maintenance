@@ -1,0 +1,18 @@
+{
+  "v": 5,
+  "createdOnFiles": {"v": 1, "at": "2026-11-19T09:00:00Z"},
+  "lists": "css",
+  "format": {"v": 1, "shared": ["project/deck.css"]},
+  "title": "이온 밀 고장 예측 EDA",
+  "order": ["cover", "process", "equipment", "faults", "data", "questions", "quality", "recipe", "shutter", "sensor", "window", "records", "summary"],
+  "sections": {
+    "s1": {"description": "문제와 데이터 소개", "start": "cover"},
+    "s2": {"description": "데이터 품질 점검", "start": "quality"},
+    "s3": {"description": "분석 질문별 발견", "start": "recipe"},
+    "s4": {"description": "정리와 다음 단계", "start": "summary"}
+  },
+  "faces": {
+    "noto-sans-kr": {"family": "Noto Sans KR", "href": "https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap"}
+  },
+  "designSystems": []
+}
