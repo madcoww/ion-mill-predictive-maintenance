@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>경보 분석 화면</title>
+<style>
+  :root {
+    --bg: #eef2f7;
+    --panel: #ffffff;
+    --panel-border: #dde3ec;
+    --text: #1b2433;
+    --muted: #6b778a;
+    --grid: #e6ebf2;
+    --navy: #0f1d3a;
+    --accent: #2563eb;
+    --normal: #16a34a;
+    --watch: #d99a06;
+    --urgent: #dc2626;
+    --hold: #8a9199;
+    --band: rgba(22, 163, 74, 0.12);
+    --line: #2563eb;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: "Pretendard", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 14px; }
+  .top-nav { background: var(--navy); color: #fff; display: flex; align-items: center; gap: 22px; padding: 0 20px; height: 48px; overflow-x: auto; white-space: nowrap; }
+  .brand { font-weight: 800; letter-spacing: -0.3px; }
+  .top-nav a { color: #b8c4da; text-decoration: none; font-size: 13px; padding: 14px 0; border-bottom: 2px solid transparent; }
+  .top-nav a.active { color: #fff; border-bottom-color: #fff; }
+  .top-nav .spacer { flex: 1; }
+  .top-nav .clock { color: #b8c4da; font-size: 12px; }
+  .page { max-width: 1320px; margin: 16px auto; padding: 0 16px; }
+  .page-head { background: var(--navy); color: #fff; border-radius: 12px 12px 0 0; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .page-head h1 { margin: 0; font-size: 22px; }
+  .head-links { display: flex; gap: 8px; }
+  .ghost-button { background: #fff; color: var(--navy); border: 0; border-radius: 8px; padding: 7px 12px; font-weight: 700; font-size: 12px; text-decoration: none; }
+  .page-body { background: var(--panel); border: 1px solid var(--panel-border); border-top: 0; border-radius: 0 0 12px 12px; padding: 16px 20px 20px; }
+  .tabs { display: flex; gap: 6px; margin-bottom: 8px; }
+  .tab { border: 1px solid var(--panel-border); background: #f5f7fb; border-radius: 999px; padding: 6px 14px; font-size: 13px; cursor: pointer; color: var(--text); }
+  .tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .hint { color: var(--muted); font-size: 12px; margin: 4px 0 14px; }
+  .filters { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)) auto; gap: 12px; align-items: end; padding-bottom: 14px; border-bottom: 1px solid var(--grid); margin-bottom: 14px; }
+  .filters label { display: grid; gap: 4px; font-size: 12px; color: var(--muted); }
+  select { border: 1px solid var(--panel-border); border-radius: 6px; padding: 7px 8px; font: inherit; color: var(--text); background: #fff; min-width: 0; }
+  .search-button { background: var(--navy); color: #fff; border: 0; border-radius: 8px; padding: 9px 18px; font-weight: 700; cursor: pointer; }
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 14px; }
+  .stack { display: grid; gap: 14px; min-width: 0; }
+  .card { border: 1px solid var(--panel-border); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+  .card h2 { margin: 0 0 12px; font-size: 15px; display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .card h2 small { color: var(--muted); font-weight: 400; font-size: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { color: var(--muted); font-weight: 500; text-align: left; padding: 7px 6px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+  td { padding: 9px 6px; border-bottom: 1px solid var(--grid); }
+  .table-wrap { overflow-x: auto; }
+  .tool-link { color: var(--accent); font-weight: 800; font-size: 18px; }
+  .pill { display: inline-block; border-radius: 6px; padding: 2px 8px; font-size: 12px; font-weight: 700; }
+  .pill.ok { background: #dcfce7; color: #166534; }
+  .pill.p3 { background: #fef3c7; color: #92400e; }
+  .pill.p2 { background: #fee2e2; color: #991b1b; }
+  .pill.hold { background: #eceff3; color: #4b5563; }
+  .num-urgent { color: var(--urgent); font-weight: 700; }
+  .num-accent { color: var(--accent); font-weight: 700; }
+  .flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .flow-card { border: 1px solid var(--panel-border); border-radius: 10px; padding: 10px 12px; position: relative; background: #fbfcfe; }
+  .flow-card:not(:last-child)::after { content: "»"; position: absolute; right: -10px; top: 18px; color: var(--muted); font-weight: 700; }
+  .flow-title { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 13px; margin-bottom: 8px; }
+  .flow-icon { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: 13px; flex: none; }
+  .flow-card dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 8px; font-size: 12px; }
+  .flow-card dt { color: var(--muted); }
+  .flow-card dd { margin: 0; }
+  .chart { width: 100%; height: 220px; display: block; }
+  .heatmap { display: grid; grid-template-columns: 44px repeat(14, 1fr); gap: 2px; font-size: 10px; }
+  .heatmap .cell { aspect-ratio: 1; border-radius: 2px; cursor: pointer; }
+  .heatmap .row-label { color: var(--muted); align-self: center; font-size: 11px; }
+  .heatmap .col-label { color: var(--muted); text-align: center; }
+  .heat-legend { display: flex; gap: 10px; color: var(--muted); font-size: 11px; margin-top: 8px; flex-wrap: wrap; }
+  .heat-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
+  .share-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--grid); font-size: 13px; }
+  .share-row b { color: var(--normal); }
+  .reason { color: var(--muted); font-size: 13px; line-height: 1.55; margin-top: 8px; }
+  .reason b { color: var(--text); }
+  .note { color: var(--muted); font-size: 11px; margin-top: 8px; }
+  @media (max-width: 1100px) {
+    .grid { grid-template-columns: 1fr; }
+    .filters { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .flow-card::after { display: none; }
+  }
+  @media (max-width: 600px) {
+    .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .flow { grid-template-columns: 1fr; }
+    .page-body { padding: 14px; }
+  }
+</style>
+</head>
+<body>
+<nav class="top-nav">
+  <span class="brand">ION MILL · 냉각계통</span>
+  <a href="#">현황</a>
+  <a href="#" class="active">경보 분석</a>
+  <a href="#">장비 상세</a>
+  <a href="#">점검 기록</a>
+  <a href="#">모델·기준</a>
+  <span class="spacer"></span>
+  <span class="clock">데모 데이터 · 업데이트 14:32</span>
+</nav>
+
+<div class="page">
+  <div class="page-head">
+    <h1>경보 분석</h1>
+    <div class="head-links">
+      <a class="ghost-button" href="index.html">버전 선택</a>
+      <a class="ghost-button" href="#">판단 가이드</a>
+    </div>
+  </div>
+  <div class="page-body">
+    <div class="tabs">
+      <button class="tab active">장비별</button>
+      <button class="tab">고장 유형별</button>
+    </div>
+    <div class="hint">장비·레시피·스텝을 고르면 같은 조건의 정상 범위와 비교한 경보 근거를 보여 줍니다.</div>
+
+    <div class="filters">
+      <label>장비<select id="tool-select"></select></label>
+      <label>레시피<select><option>전체</option><option>R-03</option><option>R-07</option></select></label>
+      <label>스텝<select><option>전체</option><option>1</option><option>2</option><option>3</option></select></label>
+      <label>유형 후보<select><option>전체</option><option>냉각 압력 저하</option><option>냉각 압력 과다</option><option>냉각 헬륨 누설</option></select></label>
+      <label>기간<select><option>최근 24시간</option><option>최근 7일</option><option>최근 14일</option></select></label>
+      <button class="search-button">조회</button>
+    </div>
+
+    <div class="grid">
+      <div class="stack">
+        <section class="card">
+          <h2>경보 요약 <small>선택 장비 기준</small></h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>장비</th><th>등급</th><th>유형 후보</th><th>위험 점수</th><th>압력 편차</th><th>식각 운전 비율</th><th>24h 경보</th><th>반복 알림</th></tr></thead>
+              <tbody id="summary-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>판단 흐름 <small>경보 → 근거 → 점검 → 기록</small></h2>
+          <div class="flow" id="flow"></div>
+        </section>
+
+        <section class="card">
+          <h2>냉각 압력 편차 추세 <small>정상 범위 = 같은 레시피·스텝 사분위 · 점선 = 관찰/점검 임계값</small></h2>
+          <svg class="chart" id="detail-chart" viewBox="0 0 600 210" preserveAspectRatio="none"></svg>
+          <div class="reason" id="detail-reason"></div>
+        </section>
+
+        <section class="card">
+          <h2>경보 이력 <small>행을 누르면 장비 선택</small></h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>순서</th><th>시각</th><th>장비</th><th>등급</th><th>유형 후보</th><th>첫 점검 대상</th></tr></thead>
+              <tbody id="history-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <div class="stack">
+        <section class="card">
+          <h2>장비 × 일별 위험 <small>최근 14일 최고 점수</small></h2>
+          <div class="heatmap" id="heatmap"></div>
+          <div class="heat-legend">
+            <span><i style="background:#dbeafe"></i>낮음</span>
+            <span><i style="background:#fcd34d"></i>관찰</span>
+            <span><i style="background:#ef4444"></i>점검</span>
+            <span><i style="background:#e5e7eb"></i>판단 보류</span>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>고장 기록 구성 <small>학습 데이터 실제 값</small></h2>
+          <div id="fault-share"></div>
+          <div class="note">반복 기록 묶기 전 1,236건. 독립 사건 수는 정리 후 다시 셉니다.</div>
+        </section>
+
+        <section class="card">
+          <h2>평가 방식 <small>모델 평가 전</small></h2>
+          <table>
+            <thead><tr><th>모델</th><th>학습</th><th>유효 경보</th></tr></thead>
+            <tbody id="model-body"></tbody>
+          </table>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="common.js"></script>
+<script>
+let selectedToolName = '04M02';
+
+function renderToolSelect() {
+  const toolSelect = document.getElementById('tool-select');
+  toolSelect.innerHTML = tools.map(tool => `<option ${tool.name === selectedToolName ? 'selected' : ''}>${tool.name}</option>`).join('');
+  toolSelect.onchange = () => selectTool(toolSelect.value);
+}
+
+function renderSummary() {
+  const tool = findTool(selectedToolName);
+  const levelInfo = LEVEL_INFO[tool.level];
+  const toolEvents = events.filter(event => event.tool === tool.name);
+  const latestDeviation = tool.deviation[POINT_COUNT - 1];
+  const isHold = tool.level === -1;
+  document.getElementById('summary-body').innerHTML = `<tr>
+    <td><span class="tool-link">${tool.name}</span></td>
+    <td><span class="pill ${levelInfo.badge}">${levelInfo.name}</span></td>
+    <td>${tool.fault}</td>
+    <td class="${tool.level === 2 ? 'num-urgent' : 'num-accent'}">${isHold ? '-' : tool.riskScore[POINT_COUNT - 1].toFixed(2)}</td>
+    <td class="${latestDeviation < URGENT_THRESHOLD ? 'num-urgent' : ''}">${isHold ? '-' : latestDeviation.toFixed(2) + 'σ'}</td>
+    <td>${Math.round(tool.etchRatio * 100)}%</td>
+    <td>${toolEvents.length}</td>
+    <td>${toolEvents.length > 1 ? toolEvents.length - 1 : 0}</td></tr>`;
+}
+
+function renderFlow() {
+  const tool = findTool(selectedToolName);
+  const levelInfo = LEVEL_INFO[tool.level];
+  const firstEvent = events.filter(event => event.tool === tool.name).slice(-1)[0];
+  const flowSteps = [
+    { title: '경보', color: '#2563eb', icon: '!', rows: [['시각', firstEvent ? firstEvent.time : '-'], ['등급', levelInfo.name], ['유형', tool.fault]] },
+    { title: '근거 신호', color: '#7c3aed', icon: '∿', rows: [['신호', '냉각 압력'], ['비교', '같은 레시피·스텝'], ['보조', '유량·챔버 압력']] },
+    { title: '첫 점검', color: '#16a34a', icon: '✓', rows: [['대상', tool.check === '-' ? '없음' : tool.check.split(' → ')[0]], ['다음', tool.check.split(' → ')[1] || '-']] },
+    { title: '기록', color: '#ea580c', icon: '✎', rows: [['결과', '미입력'], ['반영', '기준 갱신 후보']] },
+  ];
+  document.getElementById('flow').innerHTML = flowSteps.map(step => `
+    <div class="flow-card">
+      <div class="flow-title"><span class="flow-icon" style="background:${step.color}">${step.icon}</span>${step.title}</div>
+      <dl>${step.rows.map(([term, value]) => `<dt>${term}</dt><dd>${value}</dd>`).join('')}</dl>
+    </div>`).join('');
+}
+
+function renderDetail() {
+  const tool = findTool(selectedToolName);
+  drawDeviationChart(document.getElementById('detail-chart'), tool, { area: true });
+  document.getElementById('detail-reason').innerHTML = tool.reason + (tool.check !== '-' ? `<br>첫 점검: <b>${tool.check}</b>` : '');
+}
+
+function renderHistory() {
+  document.getElementById('history-body').innerHTML = events.map((event, eventIndex) => {
+    const tool = findTool(event.tool);
+    const levelInfo = LEVEL_INFO[event.level];
+    return `<tr style="cursor:pointer" data-tool="${event.tool}">
+      <td>${eventIndex + 1}</td><td>${event.time}</td><td>${event.tool}</td>
+      <td><span class="pill ${levelInfo.badge}">${levelInfo.short}</span></td>
+      <td>${event.fault || tool.fault}</td><td>${event.check || tool.check}</td></tr>`;
+  }).join('');
+  document.querySelectorAll('#history-body tr').forEach(row => row.addEventListener('click', () => selectTool(row.dataset.tool)));
+}
+
+function heatColor(riskValue) {
+  if (riskValue === null) return '#e5e7eb';
+  if (riskValue >= 0.66) return '#ef4444';
+  if (riskValue >= 0.4) return '#fcd34d';
+  const lightness = 92 - riskValue * 40;
+  return `hsl(214, 90%, ${lightness}%)`;
+}
+
+function renderHeatmap() {
+  const heatmap = document.getElementById('heatmap');
+  let cells = '<span></span>';
+  for (let dayIndex = 0; dayIndex < 14; dayIndex++) cells += `<span class="col-label">${dayIndex === 13 ? '오늘' : (dayIndex % 3 === 1 ? 'D−' + (13 - dayIndex) : '')}</span>`;
+  for (const tool of tools) {
+    cells += `<span class="row-label" style="${tool.name === selectedToolName ? 'color:var(--accent);font-weight:700' : ''}">${tool.name}</span>`;
+    tool.dailyRisk.forEach((riskValue, dayIndex) => {
+      cells += `<span class="cell" data-tool="${tool.name}" title="${tool.name} D−${13 - dayIndex}: ${riskValue === null ? '판단 보류' : riskValue.toFixed(2)}" style="background:${heatColor(riskValue)}"></span>`;
+    });
+  }
+  heatmap.innerHTML = cells;
+  heatmap.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', () => selectTool(cell.dataset.tool)));
+}
+
+function renderFaultShare() {
+  const totalCount = FAULT_RECORD_COUNTS.reduce((sum, fault) => sum + fault.count, 0);
+  document.getElementById('fault-share').innerHTML = FAULT_RECORD_COUNTS.map(fault =>
+    `<div class="share-row"><span>${fault.label}</span><span>${fault.count.toLocaleString()}건 · <b style="color:${fault.color}">${(fault.count / totalCount * 100).toFixed(1)}%</b></span></div>`).join('');
+}
+
+function renderModels() {
+  document.getElementById('model-body').innerHTML = MODEL_ROWS.map(row =>
+    `<tr><td>${row.model}<div class="note" style="margin:2px 0 0">${row.label}</div></td><td>${row.learning}</td><td>미측정</td></tr>`).join('');
+}
+
+function selectTool(toolName) {
+  selectedToolName = toolName;
+  renderToolSelect();
+  renderSummary();
+  renderFlow();
+  renderDetail();
+  renderHeatmap();
+}
+
+renderHistory();
+renderFaultShare();
+renderModels();
+selectTool(selectedToolName);
+</script>
+</body>
+</html>

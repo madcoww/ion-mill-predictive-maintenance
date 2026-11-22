@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>이온 밀 냉각계통 모니터링</title>
+<style>
+  :root {
+    --bg: #0b1424;
+    --panel: #111d33;
+    --panel-border: #1e2c47;
+    --text: #e6edf7;
+    --muted: #8a9bb5;
+    --grid: #1f2d48;
+    --normal: #3ddc97;
+    --watch: #f5c04a;
+    --urgent: #ff5d5d;
+    --hold: #8a9199;
+    --accent: #2f7cf6;
+    --band: rgba(61, 220, 151, 0.14);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Pretendard", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  }
+  .layout { display: grid; grid-template-columns: 64px 1fr; min-height: 100vh; }
+  .sidebar {
+    background: #091120; border-right: 1px solid var(--panel-border);
+    display: flex; flex-direction: column; align-items: center; gap: 10px; padding-top: 16px;
+  }
+  .nav-button {
+    width: 44px; height: 44px; border-radius: 10px; border: 0; background: transparent;
+    color: var(--muted); font-size: 11px; cursor: pointer; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 2px;
+  }
+  .nav-button svg { width: 20px; height: 20px; }
+  .nav-button.active { background: var(--accent); color: #fff; }
+  main { padding: 18px 20px 24px; min-width: 0; }
+  header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+  h1 { margin: 0; font-size: 24px; letter-spacing: -0.5px; }
+  .header-meta { display: flex; gap: 14px; color: var(--muted); font-size: 13px; align-items: center; }
+  .version-link { color: var(--muted); }
+  .header-meta .demo { border: 1px solid var(--watch); color: var(--watch); padding: 2px 8px; border-radius: 6px; }
+  .panel { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 12px; padding: 14px 16px; min-width: 0; }
+  .panel h2 { margin: 0 0 10px; font-size: 15px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .panel h2 small { color: var(--muted); font-weight: 400; font-size: 12px; }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 12px; }
+  .kpi { display: flex; align-items: center; gap: 12px; }
+  .kpi-icon { width: 38px; height: 38px; flex: none; }
+  .kpi-label { color: var(--muted); font-size: 13px; }
+  .kpi-value { font-size: 30px; font-weight: 800; line-height: 1.1; }
+  .kpi-value span { font-size: 15px; font-weight: 600; margin-left: 2px; }
+
+  .middle-row { display: grid; grid-template-columns: 1.05fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .tool-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .tool-tile {
+    background: #0d1830; border: 1px solid var(--panel-border); border-radius: 8px; padding: 6px 8px 2px;
+    cursor: pointer; text-align: left; color: var(--text); font: inherit;
+  }
+  .tool-tile:hover { border-color: #3a5180; }
+  .tool-tile.selected { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .tool-tile.level-1 { border-color: var(--watch); }
+  .tool-tile.level-2 { border-color: var(--urgent); }
+  .tile-head { display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-weight: 700; }
+  .tile-score { color: var(--muted); font-weight: 400; font-size: 11px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+  .tool-tile svg { width: 100%; height: 30px; display: block; }
+  .legend { display: flex; gap: 12px; color: var(--muted); font-size: 12px; margin-top: 10px; flex-wrap: wrap; }
+
+  .detail-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; flex-wrap: wrap; }
+  .detail-value { font-size: 40px; font-weight: 800; line-height: 1; }
+  .detail-value small { font-size: 14px; color: var(--muted); font-weight: 400; margin-left: 6px; }
+  .detail-legend { font-size: 12px; color: var(--muted); display: grid; gap: 4px; }
+  .detail-legend i { display: inline-block; width: 18px; height: 8px; margin-right: 6px; vertical-align: middle; }
+  .chart { width: 100%; height: 210px; display: block; margin-top: 6px; }
+  .reason { margin-top: 8px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .reason b { color: var(--text); }
+
+  .bottom-row { display: grid; grid-template-columns: 1fr 1.15fr; gap: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { color: var(--muted); font-weight: 400; text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--grid); }
+  td { padding: 8px 4px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+  tr.clickable { cursor: pointer; }
+  tr.clickable:hover td { background: #15233d; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+  .badge.p2 { background: var(--urgent); color: #fff; }
+  .badge.p3 { background: var(--watch); color: #1b1300; }
+  .badge.ok { background: var(--normal); color: #052015; }
+  .badge.hold { background: var(--hold); color: #fff; }
+  .note { color: var(--muted); font-size: 12px; margin-top: 10px; }
+
+  @media (max-width: 1100px) {
+    .kpi-row { grid-template-columns: repeat(3, 1fr); }
+    .middle-row, .bottom-row { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { flex-direction: row; justify-content: center; padding: 8px; position: sticky; top: 0; z-index: 2; }
+    main { padding: 14px 16px 20px; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .tool-grid { grid-template-columns: repeat(4, 1fr); }
+    .kpi-value { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+  <nav class="sidebar" aria-label="화면 선택">
+    <button class="nav-button active" title="전체 장비 현황">
+      <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>현황
+    </button>
+    <button class="nav-button" title="장비 상세">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 17 9 11 13 15 21 7"/></svg>상세
+    </button>
+    <button class="nav-button" title="점검 기록">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>기록
+    </button>
+    <button class="nav-button" title="모델·기준 비교">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="20" x2="6" y2="12"/><line x1="12" y1="20" x2="12" y2="6"/><line x1="18" y1="20" x2="18" y2="14"/></svg>기준
+    </button>
+  </nav>
+
+  <main>
+    <header>
+      <h1>이온 밀 냉각계통 모니터링</h1>
+      <div class="header-meta">
+        <a class="version-link" href="index.html">버전 선택</a>
+        <span class="demo">데모 데이터</span>
+        <span>최근 24시간</span>
+        <span id="updated-at">업데이트 14:32</span>
+      </div>
+    </header>
+
+    <section class="kpi-row" id="kpi-row"></section>
+
+    <section class="middle-row">
+      <div class="panel">
+        <h2>장비 현황 <small>타일 선 = 최근 24시간 위험 점수 · 클릭하면 오른쪽에 상세</small></h2>
+        <div class="tool-grid" id="tool-grid"></div>
+        <div class="legend">
+          <span><i class="dot" style="background:var(--normal)"></i>정상</span>
+          <span><i class="dot" style="background:var(--watch)"></i>P3 관찰 강화</span>
+          <span><i class="dot" style="background:var(--urgent)"></i>P2 우선 점검</span>
+          <span><i class="dot" style="background:var(--hold)"></i>판단 보류</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 id="detail-title">장비 상세</h2>
+        <div class="detail-top">
+          <div>
+            <div class="kpi-label">냉각 압력 편차 (같은 레시피·스텝 정상 중앙값 대비, 표준화 값)</div>
+            <div class="detail-value" id="detail-value">-</div>
+          </div>
+          <div class="detail-legend">
+            <span><i style="background:var(--band)"></i>정상 범위 (사분위)</span>
+            <span><i style="border-top:2px dashed var(--urgent);height:0"></i>점검 임계값</span>
+            <span><i style="border-top:2px dashed var(--watch);height:0"></i>관찰 임계값</span>
+          </div>
+        </div>
+        <svg class="chart" id="detail-chart" viewBox="0 0 600 210" preserveAspectRatio="none"></svg>
+        <div class="reason" id="detail-reason"></div>
+      </div>
+    </section>
+
+    <section class="bottom-row">
+      <div class="panel">
+        <h2>시간대별 경보 <small>P2·P3 건수 (같은 사건의 반복 알림은 1건)</small></h2>
+        <svg class="chart" id="alarm-chart" viewBox="0 0 600 210" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="panel">
+        <h2>최근 경보 <small>행을 누르면 해당 장비 상세</small></h2>
+        <table>
+          <thead><tr><th>시각</th><th>장비</th><th>등급</th><th>유형 후보</th><th>첫 점검 대상</th></tr></thead>
+          <tbody id="event-body"></tbody>
+        </table>
+        <div class="note">P1(현장 보호 알람)은 장비 연동이 필요해 이 시연에서는 표시하지 않습니다.</div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="common.js"></script>
+<script>
+// ---------- KPI ----------
+function renderKpis() {
+  const countByLevel = level => tools.filter(tool => tool.level === level).length;
+  const kpiItems = [
+    { label: '전체 장비', value: tools.length, color: '#6aa8ff', icon: '<path d="M4 7l8-4 8 4-8 4-8-4zm0 5l8 4 8-4M4 17l8 4 8-4" fill="none" stroke="currentColor" stroke-width="2"/>' },
+    { label: '정상', value: countByLevel(0), color: 'var(--normal)', icon: '<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="2"/>' },
+    { label: 'P2 우선 점검', value: countByLevel(2), color: 'var(--urgent)', icon: '<path d="M12 3l10 18H2L12 3z" fill="none" stroke="currentColor" stroke-width="2"/><line x1="12" y1="10" x2="12" y2="14" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="17" r="1.2" fill="currentColor"/>' },
+    { label: 'P3 관찰 강화', value: countByLevel(1), color: 'var(--watch)', icon: '<circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="2"/>' },
+    { label: '판단 보류', value: countByLevel(-1), color: 'var(--hold)', icon: '<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2"/>' },
+  ];
+  document.getElementById('kpi-row').innerHTML = kpiItems.map(item => `
+    <div class="panel kpi">
+      <svg class="kpi-icon" viewBox="0 0 24 24" style="color:${item.color}">${item.icon}</svg>
+      <div><div class="kpi-label">${item.label}</div>
+      <div class="kpi-value" style="color:${item.color}">${item.value}<span>대</span></div></div>
+    </div>`).join('');
+}
+
+// ---------- 장비 타일 ----------
+let selectedToolName = '04M02';
+function renderToolGrid() {
+  const toolGrid = document.getElementById('tool-grid');
+  toolGrid.innerHTML = '';
+  for (const tool of tools) {
+    const levelInfo = LEVEL_INFO[tool.level];
+    const tile = document.createElement('button');
+    tile.className = `tool-tile level-${tool.level}` + (tool.name === selectedToolName ? ' selected' : '');
+    const latestScore = tool.level === -1 ? '보류' : tool.riskScore[POINT_COUNT - 1].toFixed(2);
+    tile.innerHTML = `<div class="tile-head"><span><i class="dot" style="background:${levelInfo.color}"></i>${tool.name}</span><span class="tile-score">${latestScore}</span></div>`;
+    const sparkline = svgElement('svg', { viewBox: '0 0 100 30', preserveAspectRatio: 'none' });
+    if (tool.level !== -1) {
+      const pathData = linePath(tool.riskScore, 100, 28, 0, 1);
+      sparkline.appendChild(svgElement('path', { d: pathData + ' L100 30 L0 30 Z', fill: levelInfo.color, opacity: 0.15 }));
+      sparkline.appendChild(svgElement('path', { d: pathData, fill: 'none', stroke: levelInfo.color, 'stroke-width': 1.4, 'vector-effect': 'non-scaling-stroke' }));
+    } else {
+      sparkline.appendChild(svgElement('line', { x1: 0, y1: 15, x2: 100, y2: 15, stroke: 'var(--hold)', 'stroke-dasharray': '3 3', 'vector-effect': 'non-scaling-stroke' }));
+    }
+    tile.appendChild(sparkline);
+    tile.addEventListener('click', () => selectTool(tool.name));
+    toolGrid.appendChild(tile);
+  }
+}
+
+// ---------- 상세 차트 ----------
+function renderDetail() {
+  const tool = tools.find(candidate => candidate.name === selectedToolName);
+  const levelInfo = LEVEL_INFO[tool.level];
+  document.getElementById('detail-title').innerHTML =
+    `${tool.name} · 냉각 압력 <span class="badge ${levelInfo.badge}">${levelInfo.name}</span>`;
+  const latestDeviation = tool.deviation[POINT_COUNT - 1];
+  const valueElement = document.getElementById('detail-value');
+  valueElement.innerHTML = tool.level === -1 ? '판단 보류' : `${latestDeviation.toFixed(2)}<small>σ</small>`;
+  valueElement.style.color = levelInfo.color;
+  document.getElementById('detail-reason').innerHTML =
+    `${tool.reason}` + (tool.check !== '-' ? `<br>첫 점검: <b>${tool.check}</b>` : '');
+
+  const chart = document.getElementById('detail-chart');
+  chart.innerHTML = '';
+  const chartWidth = 600, chartHeight = 190, leftPadding = 30, minValue = -3.5, maxValue = 1.5;
+  const toY = value => chartHeight - ((value - minValue) / (maxValue - minValue)) * chartHeight;
+  for (const gridValue of [-3, -2, -1, 0, 1]) {
+    chart.appendChild(svgElement('line', { x1: leftPadding, x2: chartWidth, y1: toY(gridValue), y2: toY(gridValue), stroke: 'var(--grid)', 'vector-effect': 'non-scaling-stroke' }));
+    const label = svgElement('text', { x: 0, y: toY(gridValue) + 4, fill: 'var(--muted)', 'font-size': 11 });
+    label.textContent = gridValue;
+    chart.appendChild(label);
+  }
+  chart.appendChild(svgElement('rect', { x: leftPadding, y: toY(0.6), width: chartWidth - leftPadding, height: toY(-0.6) - toY(0.6), fill: 'var(--band)' }));
+  chart.appendChild(svgElement('line', { x1: leftPadding, x2: chartWidth, y1: toY(WATCH_THRESHOLD), y2: toY(WATCH_THRESHOLD), stroke: 'var(--watch)', 'stroke-dasharray': '6 5', 'vector-effect': 'non-scaling-stroke' }));
+  chart.appendChild(svgElement('line', { x1: leftPadding, x2: chartWidth, y1: toY(URGENT_THRESHOLD), y2: toY(URGENT_THRESHOLD), stroke: 'var(--urgent)', 'stroke-dasharray': '6 5', 'vector-effect': 'non-scaling-stroke' }));
+  if (tool.level !== -1) {
+    chart.appendChild(svgElement('path', { d: linePath(tool.deviation, chartWidth, chartHeight, minValue, maxValue, leftPadding), fill: 'none', stroke: '#4fd1ff', 'stroke-width': 1.6, 'vector-effect': 'non-scaling-stroke' }));
+    chart.appendChild(svgElement('circle', { cx: chartWidth - 3, cy: toY(latestDeviation), r: 4, fill: levelInfo.color }));
+  }
+  ['−24h', '−18h', '−12h', '−6h', '지금'].forEach((labelText, labelIndex) => {
+    const label = svgElement('text', { x: leftPadding + labelIndex * (chartWidth - leftPadding - 24) / 4, y: 207, fill: 'var(--muted)', 'font-size': 11 });
+    label.textContent = labelText;
+    chart.appendChild(label);
+  });
+}
+
+// ---------- 시간대별 경보 ----------
+function renderAlarmChart() {
+  const chart = document.getElementById('alarm-chart');
+  const chartWidth = 600, chartHeight = 185, leftPadding = 22, maxCount = 3;
+  const barSlot = (chartWidth - leftPadding) / 24;
+  const toY = count => chartHeight - (count / maxCount) * chartHeight;
+  for (let gridCount = 0; gridCount <= maxCount; gridCount++) {
+    chart.appendChild(svgElement('line', { x1: leftPadding, x2: chartWidth, y1: toY(gridCount), y2: toY(gridCount), stroke: 'var(--grid)', 'vector-effect': 'non-scaling-stroke' }));
+    const label = svgElement('text', { x: 0, y: toY(gridCount) + 4, fill: 'var(--muted)', 'font-size': 11 });
+    label.textContent = gridCount;
+    chart.appendChild(label);
+  }
+  alarmCountsByHour.forEach((hourCounts, hourIndex) => {
+    const barX = leftPadding + hourIndex * barSlot + barSlot * 0.25;
+    const barWidth = barSlot * 0.5;
+    if (hourCounts.watch) chart.appendChild(svgElement('rect', { x: barX, y: toY(hourCounts.watch), width: barWidth, height: chartHeight - toY(hourCounts.watch), fill: 'var(--watch)', rx: 2 }));
+    if (hourCounts.urgent) chart.appendChild(svgElement('rect', { x: barX, y: toY(hourCounts.watch + hourCounts.urgent), width: barWidth, height: chartHeight - toY(hourCounts.urgent), fill: 'var(--urgent)', rx: 2 }));
+    if (hourIndex % 2 === 0) {
+      const label = svgElement('text', { x: barX - 4, y: 205, fill: 'var(--muted)', 'font-size': 11 });
+      label.textContent = String(hourIndex).padStart(2, '0') + '시';
+      chart.appendChild(label);
+    }
+  });
+}
+
+// ---------- 최근 경보 ----------
+function renderEvents() {
+  document.getElementById('event-body').innerHTML = events.map(event => {
+    const tool = tools.find(candidate => candidate.name === event.tool);
+    const levelInfo = LEVEL_INFO[event.level];
+    return `<tr class="clickable" data-tool="${event.tool}">
+      <td>${event.time}</td><td>${event.tool}</td>
+      <td><span class="badge ${levelInfo.badge}">${levelInfo.name.split(' ')[0]}</span></td>
+      <td>${event.fault || tool.fault}</td><td>${event.check || tool.check}</td></tr>`;
+  }).join('');
+  document.querySelectorAll('#event-body tr').forEach(row =>
+    row.addEventListener('click', () => selectTool(row.dataset.tool)));
+}
+
+function selectTool(toolName) {
+  selectedToolName = toolName;
+  renderToolGrid();
+  renderDetail();
+}
+
+document.querySelectorAll('.nav-button').forEach(button => button.addEventListener('click', () => {
+  document.querySelectorAll('.nav-button').forEach(other => other.classList.remove('active'));
+  button.classList.add('active');
+}));
+
+renderKpis();
+renderToolGrid();
+renderDetail();
+renderAlarmChart();
+renderEvents();
+</script>
+</body>
+</html>
