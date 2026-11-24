@@ -1,0 +1,235 @@
+{
+  "source": "https://github.com/ki-seoultech/PHM2018-Ion-Mill-Etch-3Stage-Predictive-Maintenance",
+  "source_commit": "6ba6b026340cd21a95f8846344c1996a02bcc97d",
+  "experiment": "clone_24h_adaptation",
+  "seed": 42,
+  "python": "3.14.6",
+  "sklearn": "1.9.0",
+  "torch": "2.15.0+cu132",
+  "device": "NVIDIA GeForce RTX 2060",
+  "arguments": {
+    "epochs": 20,
+    "folds": "all"
+  },
+  "rows": 526268,
+  "reference_features": [
+    "stage",
+    "recipe",
+    "recipe_step",
+    "IONGAUGEPRESSURE",
+    "ETCHBEAMVOLTAGE",
+    "ETCHBEAMCURRENT",
+    "ETCHSUPPRESSORVOLTAGE",
+    "ETCHSUPPRESSORCURRENT",
+    "FLOWCOOLFLOWRATE",
+    "FLOWCOOLPRESSURE",
+    "ETCHGASCHANNEL1READBACK",
+    "ETCHPBNGASREADBACK",
+    "FIXTURETILTANGLE",
+    "ACTUALROTATIONANGLE",
+    "FLOWCOOLPRESSURE_mean",
+    "FLOWCOOLPRESSURE_std",
+    "FLOWCOOLPRESSURE_max",
+    "FLOWCOOLPRESSURE_rms",
+    "FLOWCOOLPRESSURE_skew",
+    "FLOWCOOLPRESSURE_kurt",
+    "FLOWCOOLPRESSURE_peak_factor",
+    "FLOWCOOLPRESSURE_waveform_factor",
+    "FLOWCOOLPRESSURE_pulse_factor",
+    "FLOWCOOLPRESSURE_margin_factor",
+    "FLOWCOOLPRESSURE_diff",
+    "FLOWCOOLPRESSURE_pct_change",
+    "FLOWCOOLPRESSURE_mean_diff",
+    "FLOWCOOLPRESSURE_ema",
+    "IONGAUGEPRESSURE_mean",
+    "IONGAUGEPRESSURE_std",
+    "IONGAUGEPRESSURE_max",
+    "IONGAUGEPRESSURE_rms",
+    "IONGAUGEPRESSURE_skew",
+    "IONGAUGEPRESSURE_kurt",
+    "IONGAUGEPRESSURE_peak_factor",
+    "IONGAUGEPRESSURE_waveform_factor",
+    "IONGAUGEPRESSURE_pulse_factor",
+    "IONGAUGEPRESSURE_margin_factor",
+    "IONGAUGEPRESSURE_diff",
+    "IONGAUGEPRESSURE_pct_change",
+    "IONGAUGEPRESSURE_mean_diff",
+    "IONGAUGEPRESSURE_ema",
+    "ETCHBEAMCURRENT_mean",
+    "ETCHBEAMCURRENT_std",
+    "ETCHBEAMCURRENT_max",
+    "ETCHBEAMCURRENT_rms",
+    "ETCHBEAMCURRENT_skew",
+    "ETCHBEAMCURRENT_kurt",
+    "ETCHBEAMCURRENT_peak_factor",
+    "ETCHBEAMCURRENT_waveform_factor",
+    "ETCHBEAMCURRENT_pulse_factor",
+    "ETCHBEAMCURRENT_margin_factor",
+    "ETCHBEAMCURRENT_diff",
+    "ETCHBEAMCURRENT_pct_change",
+    "ETCHBEAMCURRENT_mean_diff",
+    "ETCHBEAMCURRENT_ema",
+    "FLOWCOOLFLOWRATE_mean",
+    "FLOWCOOLFLOWRATE_std",
+    "FLOWCOOLFLOWRATE_max",
+    "FLOWCOOLFLOWRATE_rms",
+    "FLOWCOOLFLOWRATE_skew",
+    "FLOWCOOLFLOWRATE_kurt",
+    "FLOWCOOLFLOWRATE_peak_factor",
+    "FLOWCOOLFLOWRATE_waveform_factor",
+    "FLOWCOOLFLOWRATE_pulse_factor",
+    "FLOWCOOLFLOWRATE_margin_factor",
+    "FLOWCOOLFLOWRATE_diff",
+    "FLOWCOOLFLOWRATE_pct_change",
+    "FLOWCOOLFLOWRATE_mean_diff",
+    "FLOWCOOLFLOWRATE_ema",
+    "FLOWCOOLPRESSURE_diff_smooth",
+    "IONGAUGEPRESSURE_diff_smooth",
+    "ETCHBEAMCURRENT_diff_smooth",
+    "FLOWCOOLFLOWRATE_diff_smooth",
+    "log_gap_hours"
+  ],
+  "unseen_tool_folds": [
+    [
+      "M02_06",
+      "M02_03",
+      "M01_04",
+      "M02_02",
+      "M02_08"
+    ],
+    [
+      "M01_10",
+      "M02_01",
+      "M01_01",
+      "M02_09",
+      "M01_02"
+    ],
+    [
+      "M02_05",
+      "M01_07",
+      "M02_07",
+      "M01_03",
+      "M02_04"
+    ],
+    [
+      "M01_08",
+      "M02_10",
+      "M01_06",
+      "M01_05",
+      "M01_09"
+    ]
+  ],
+  "input_files": [
+    {
+      "path": "data\\processed\\step_s1\\M01_01.parquet",
+      "size": 2067574,
+      "sha256": "7879efee7f6fa03c8cad4bc38c6d3104467e8940a50edc486e22cdfc692e1fc2"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M01_02.parquet",
+      "size": 1678986,
+      "sha256": "f039a0cfe65fa0c3991ca5f6dfd703c7e40a0113286702de87750a9e8945ebfd"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M01_03.parquet",
+      "size": 2602525,
+      "sha256": "293cf704ebe8e6011d4f90c5a598141d8f6ce2c015f2d8ff40b148fe9d2c08dc"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M01_04.parquet",
+      "size": 4371845,
+      "sha256": "e8af9c632008619db55fa0e3a4eaa811155d9d03610e78fb998ca9402c5da8a6"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M01_05.parquet",
+      "size": 4696024,
+      "sha256": "12ed67e2f4f4b00a4cca5975e82a76fb733acfdc5be7f84041d76c13eafeb21f"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M01_06.parquet",
+      "size": 3293445,
+      "sha256": "c6484b1d7f508baeb223ce0b1d6d2ba8df5e7a1c23af86c1b216fc5f4a8d8729"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M01_07.parquet",
+      "size": 5449182,
+      "sha256": "866595f09c4f1d1431d2dc049a3713f8b1cbd363a416322c3e2f8c76afceb2f7"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M01_08.parquet",
+      "size": 2539199,
+      "sha256": "28b38f8eddb5284e7d393c8690869c0253028f820c6044c857cf08b4066e4bfc"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M01_09.parquet",
+      "size": 4039148,
+      "sha256": "446f3b4e18c9de66e7cbaa7e6eda4a00614589c94a303730d1a649923aa72626"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M01_10.parquet",
+      "size": 2880096,
+      "sha256": "3accf46032b7986c465a2754aa06f67427e7d90cd3ecd240250f13d43e754d75"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M02_01.parquet",
+      "size": 3630777,
+      "sha256": "b0cbe95f293ba8ad7f208ef2b19cdeceb38c213720eafacead2c2cb99ea16916"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M02_02.parquet",
+      "size": 3711020,
+      "sha256": "e2a1e65bdec62e7023b620ac3a5cafd12ac4b1edb975c5108fed19cc5df3f7a2"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M02_03.parquet",
+      "size": 5010083,
+      "sha256": "fb897ef4304780f383b09a24a57a75cfe504b2e9c40796e4b0ed37d02b8618eb"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M02_04.parquet",
+      "size": 3424039,
+      "sha256": "20e6d18aab11dd5397ef405650e8abc595ec6247ae2acc60d183e6210da2a69e"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M02_05.parquet",
+      "size": 1835920,
+      "sha256": "f395e98495bd204ffdbb90ad7a8f4de7c4918ff29ce4205ce206d47aa79314ef"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M02_06.parquet",
+      "size": 3638435,
+      "sha256": "cbefcc04fe97286c1d723f13f6c387d2fc10124b07c234d8abf63b46b9d55807"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M02_07.parquet",
+      "size": 5103057,
+      "sha256": "6ffa8c5b38f87c30b1f776dddb59c5ca010d3a35206f893f81793424f0b80900"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M02_08.parquet",
+      "size": 4983447,
+      "sha256": "773fea67c1ca8b4f26d72bf930a50a98935b4e4e39c28aa02f23588cd97adc19"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M02_09.parquet",
+      "size": 1821144,
+      "sha256": "683b133c2ca9eac542188a5d478fd3a634d28cd39477e454980aec85f6db85ac"
+    },
+    {
+      "path": "data\\processed\\step_s1\\M02_10.parquet",
+      "size": 3379793,
+      "sha256": "b5f35f901b4c30d66b61683c37ec42ec65bd4bb5b60d6ba9986c91d270ebef18"
+    }
+  ],
+  "assumptions": [
+    "Labels from first fault strictly AFTER segment end, horizon 86400 seconds.",
+    "Day=max row label/max row score, relative to each tool's first observation.",
+    "Fit ends at 60%, calibration 60-75%, test begins 75%+1 day.",
+    "Fit labels purged 1 day before calibration; final unobservable day excluded.",
+    "Unseen-tool preprocessing and thresholds fitted on other tools only.",
+    "Historical faults before prediction time are assumed available.",
+    "GRU early stopping uses 50-60% within fit tools, never calibration/test.",
+    "All models use same eligible test days. No future fill/isotonic/target episode resets.",
+    "13-feature LR is rerun; user-reported historical numbers are not asserted identical."
+  ]
+}

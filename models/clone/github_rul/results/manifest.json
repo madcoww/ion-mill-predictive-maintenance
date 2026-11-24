@@ -1,0 +1,30 @@
+{
+  "source": "https://github.com/ki-seoultech/PHM2018-Ion-Mill-Etch-3Stage-Predictive-Maintenance",
+  "source_commit": "6ba6b026340cd21a95f8846344c1996a02bcc97d",
+  "task": "fault cause + capped RUL",
+  "tools": "01_M01 through 10_M01",
+  "bin_seconds": 140,
+  "environment": {
+    "python": "3.14.6 | packaged by Anaconda, Inc. | (main, Jul  9 2026, 14:29:05) [MSC v.1942 64 bit (AMD64)]",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "sklearn": "1.9.0"
+  },
+  "sequence_length": 15,
+  "seed": 42,
+  "source_files": {
+    "src/03_inference_pipeline/train_save_regressor_f3.py": "740464ec289c0783e6e34eccde109ecb67778aab04f8ecf3ee82d8c41fe77861",
+    "src/03_inference_pipeline/train_save_regressors_f1_f2.py": "f276896321d76e2c127c82f37719caf557a3f84ccb27fecd6aedce0e6e7a0f07",
+    "src/02_fault_classifier/train_save_classifier.py": "77bb8bbe90f6a7af9be751e6368712009b41829dac75a173ab822abbdc59dba1",
+    "src/02_fault_classifier/build_v2_dataset.py": "45e9cded82e9c99db889692d761d71763df8376388f3626317a3ea236739fcc7"
+  },
+  "changes": [
+    "Raw PHM CSV + official aligned TTF used because author's labeled master CSVs are not published.",
+    "Masked missing TTF to infinity before nearest-fault argmin (prevents choosing a missing target).",
+    "Chunk-free per-tool 140s aggregation replaces a single in-memory master CSV.",
+    "Memory-efficient Keras PyDataset replaces materialized overlapping windows; same layers/loss/hyperparameters.",
+    "Seed 42 and six CPU threads fixed; unit scalers also saved for reproducibility.",
+    "No 24h warning label, no unseen-tool score, no operational safety-gate performance claim.",
+    "Source bfill and full-episode isotonic are retained as OFFLINE benchmark only; pre-isotonic scores also reported."
+  ]
+}

@@ -54,20 +54,35 @@
   .kpi-value span { font-size: 15px; font-weight: 600; margin-left: 2px; }
 
   .middle-row { display: grid; grid-template-columns: 1.05fr 1fr; gap: 12px; margin-bottom: 12px; }
-  .tool-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-  .tool-tile {
-    background: #0d1830; border: 1px solid var(--panel-border); border-radius: 8px; padding: 6px 8px 2px;
-    cursor: pointer; text-align: left; color: var(--text); font: inherit;
-  }
-  .tool-tile:hover { border-color: #3a5180; }
-  .tool-tile.selected { outline: 2px solid var(--accent); outline-offset: 1px; }
-  .tool-tile.level-1 { border-color: var(--watch); }
-  .tool-tile.level-2 { border-color: var(--urgent); }
-  .tile-head { display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-weight: 700; }
-  .tile-score { color: var(--muted); font-weight: 400; font-size: 11px; }
   .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
-  .tool-tile svg { width: 100%; height: 30px; display: block; }
   .legend { display: flex; gap: 12px; color: var(--muted); font-size: 12px; margin-top: 10px; flex-wrap: wrap; }
+
+  /* ---------- 팹 베이 탑뷰 (메인 통로 · 베이 통로 · 장비 · 서비스 체이스) ---------- */
+  .floor-body { border-radius: 10px; overflow-x: auto; background: #0a1428; }
+  .fab-map { display: block; width: 100%; min-width: 560px; height: auto; font-family: inherit; }
+  .fab-label { fill: var(--muted); font-size: 9px; letter-spacing: .06em; }
+  .fab-tool-name { fill: var(--text); font-size: 9px; font-weight: 700; }
+  .fab-part { fill: #13213b; stroke: #2a3b5e; stroke-width: 1; }
+  .fab-foup { fill: #1c2c4a; stroke: #3a5180; stroke-width: 1; }
+  .fab-footprint { fill: none; stroke: #22324f; stroke-width: 1; stroke-dasharray: 3 3; }
+  .fab-footprint.level-1 { stroke: var(--watch); stroke-dasharray: none; }
+  .fab-footprint.level-2 { stroke: var(--urgent); stroke-dasharray: none; }
+  /* 공정 모듈(챔버) = 누를 수 있는 단위 */
+  .fab-module { cursor: pointer; }
+  .fab-module rect { fill: #0d1830; stroke: color-mix(in srgb, var(--normal) 55%, #2a3b5e); stroke-width: 1.2; }
+  .fab-module text { font-size: 9px; text-anchor: middle; fill: var(--text); pointer-events: none; }
+  .fab-module .module-score { fill: var(--muted); font-size: 8.5px; }
+  .fab-module.level-1 rect { fill: color-mix(in srgb, var(--watch) 22%, #0d1830); stroke: var(--watch); }
+  .fab-module.level-1 .module-score { fill: var(--watch); }
+  .fab-module.level-2 rect { fill: color-mix(in srgb, var(--urgent) 28%, #0d1830); stroke: var(--urgent); animation: module-pulse 1.6s ease-in-out infinite; }
+  .fab-module.level-2 .module-score { fill: #ffc2c2; }
+  .fab-module.level--1 rect { stroke: var(--hold); stroke-dasharray: 3 2; }
+  .fab-module:hover rect { stroke-width: 2; }
+  .fab-module.selected rect { stroke: var(--accent); stroke-width: 2.6; }
+  .fab-module:focus { outline: none; }
+  .fab-module:focus-visible rect { stroke: #fff; stroke-width: 2.4; }
+  @keyframes module-pulse { 50% { stroke-width: 3.2; } }
+  @media (prefers-reduced-motion: reduce) { .fab-module.level-2 rect { animation: none; } }
 
   .detail-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; flex-wrap: wrap; }
   .detail-value { font-size: 40px; font-weight: 800; line-height: 1; }
@@ -100,7 +115,6 @@
     .sidebar { flex-direction: row; justify-content: center; padding: 8px; position: sticky; top: 0; z-index: 2; }
     main { padding: 14px 16px 20px; }
     .kpi-row { grid-template-columns: repeat(2, 1fr); }
-    .tool-grid { grid-template-columns: repeat(4, 1fr); }
     .kpi-value { font-size: 24px; }
   }
 </style>
@@ -137,14 +151,16 @@
 
     <section class="middle-row">
       <div class="panel">
-        <h2>장비 현황 <small>타일 선 = 최근 24시간 위험 점수 · 클릭하면 오른쪽에 상세</small></h2>
-        <div class="tool-grid" id="tool-grid"></div>
+        <h2>장비 배치도 <small>TOP VIEW · 모듈(M01·M02)을 누르면 오른쪽에 상세</small></h2>
+        <div class="floor-body" id="floor-map"></div>
         <div class="legend">
           <span><i class="dot" style="background:var(--normal)"></i>정상</span>
           <span><i class="dot" style="background:var(--watch)"></i>P3 관찰 강화</span>
           <span><i class="dot" style="background:var(--urgent)"></i>P2 우선 점검</span>
           <span><i class="dot" style="background:var(--hold)"></i>판단 보류</span>
+          <span>모듈 숫자 = 현재 위험 점수 · 체이스 P = 펌프, He = 헬륨 공급</span>
         </div>
+        <div class="note">일반적인 팹 베이 배치를 본뜬 설명용 도식입니다. PHM2018은 장비 모델·공장 배치를 공개하지 않아 실제 배치가 아니며, M01·M02를 한 장비로 묶은 것도 가정입니다.</div>
       </div>
 
       <div class="panel">
@@ -202,29 +218,114 @@ function renderKpis() {
     </div>`).join('');
 }
 
-// ---------- 장비 타일 ----------
+// ---------- 팹 베이 탑뷰 배치도 ----------
+// 실제 팹의 일반적인 배치를 본뜬 가상 도식:
+//   왼쪽 메인 통로(스토커) → 가운데 베이 통로(위에 OHT 레일) → 통로 양쪽에 장비가 정면(로드포트)을 통로로 향해 놓임
+//   장비 안쪽: 로드포트 → EFEM → 이송 챔버 → 공정 모듈 2개(M01·M02), 장비 뒤는 펌프·헬륨 공급이 있는 서비스 체이스
+// 장비 이름 '04M02' = 장비 04의 모듈 M02 (모듈 묶음은 가정)
 let selectedToolName = '04M02';
-function renderToolGrid() {
-  const toolGrid = document.getElementById('tool-grid');
-  toolGrid.innerHTML = '';
-  for (const tool of tools) {
-    const levelInfo = LEVEL_INFO[tool.level];
-    const tile = document.createElement('button');
-    tile.className = `tool-tile level-${tool.level}` + (tool.name === selectedToolName ? ' selected' : '');
-    const latestScore = tool.level === -1 ? '보류' : tool.riskScore[POINT_COUNT - 1].toFixed(2);
-    tile.innerHTML = `<div class="tile-head"><span><i class="dot" style="background:${levelInfo.color}"></i>${tool.name}</span><span class="tile-score">${latestScore}</span></div>`;
-    const sparkline = svgElement('svg', { viewBox: '0 0 100 30', preserveAspectRatio: 'none' });
-    if (tool.level !== -1) {
-      const pathData = linePath(tool.riskScore, 100, 28, 0, 1);
-      sparkline.appendChild(svgElement('path', { d: pathData + ' L100 30 L0 30 Z', fill: levelInfo.color, opacity: 0.15 }));
-      sparkline.appendChild(svgElement('path', { d: pathData, fill: 'none', stroke: levelInfo.color, 'stroke-width': 1.4, 'vector-effect': 'non-scaling-stroke' }));
-    } else {
-      sparkline.appendChild(svgElement('line', { x1: 0, y1: 15, x2: 100, y2: 15, stroke: 'var(--hold)', 'stroke-dasharray': '3 3', 'vector-effect': 'non-scaling-stroke' }));
-    }
-    tile.appendChild(sparkline);
-    tile.addEventListener('click', () => selectTool(tool.name));
-    toolGrid.appendChild(tile);
+const MAP_WIDTH = 640, MAP_HEIGHT = 400;
+const MAIN_AISLE_WIDTH = 58;          // 왼쪽 메인 통로 폭
+const CHASE_HEIGHT = 34;              // 위·아래 서비스 체이스 높이
+const BAY_AISLE_TOP = 178, BAY_AISLE_BOTTOM = 222;   // 베이 통로 위치
+const TOOLS_PER_ROW = 5;
+
+// SVG 조각을 문자열로 만드는 작은 도우미
+function svgRect(x, y, width, height, className, extra = '') {
+  return `<rect x="${x}" y="${y}" width="${width}" height="${height}" class="${className}" ${extra}/>`;
+}
+function svgLabel(x, y, text, className = 'fab-label', extra = '') {
+  return `<text x="${x}" y="${y}" class="${className}" ${extra}>${text}</text>`;
+}
+
+// 공정 모듈 하나 (누르면 상세 전환)
+function moduleSvg(tool, x, y, width, height) {
+  const latestScore = tool.level === -1 ? '보류' : tool.riskScore[POINT_COUNT - 1].toFixed(2);
+  const isSelected = tool.name === selectedToolName;
+  return `<g class="fab-module level-${tool.level}${isSelected ? ' selected' : ''}" data-tool="${tool.name}"
+      role="button" tabindex="0" aria-pressed="${isSelected}" aria-label="${tool.name} ${LEVEL_INFO[tool.level].name}">
+    <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="6"/>
+    <text x="${x + width / 2}" y="${y + height / 2 - 2}">${tool.name.slice(2)}</text>
+    <text class="module-score" x="${x + width / 2}" y="${y + height / 2 + 10}">${latestScore}</text>
+  </g>`;
+}
+
+// 장비 한 대. facesDown=true면 위쪽 줄(정면이 아래 통로를 향함), false면 아래쪽 줄(정면이 위를 향함)
+function toolSvg(machineNumber, slotX, slotWidth, facesDown) {
+  const leftModule = findTool(machineNumber + 'M01');
+  const rightModule = findTool(machineNumber + 'M02');
+  const worstLevel = Math.max(leftModule.level, rightModule.level);
+  const toolWidth = slotWidth - 14, toolX = slotX + 7, centerX = slotX + slotWidth / 2;
+  // 통로에서 먼 쪽부터: 펌프·He(체이스) → 모듈 → 이송 챔버 → EFEM → 로드포트(통로 쪽)
+  const rowTop = facesDown ? CHASE_HEIGHT : BAY_AISLE_BOTTOM;
+  const rowBottom = facesDown ? BAY_AISLE_TOP : MAP_HEIGHT - CHASE_HEIGHT;
+  const place = (offsetFromBack, height) => facesDown ? rowTop + offsetFromBack : rowBottom - offsetFromBack - height;
+  const moduleWidth = 40, moduleHeight = 46;
+  const moduleY = place(8, moduleHeight);
+  const transferY = place(60, 30), efemY = place(98, 20), loadPortY = place(120, 14);
+  const pumpY = facesDown ? 8 : MAP_HEIGHT - CHASE_HEIGHT + 8;
+  let parts = '';
+  parts += svgRect(toolX, rowTop + 3, toolWidth, rowBottom - rowTop - 6, `fab-footprint level-${worstLevel}`, 'rx="8"');
+  // 체이스 안 펌프·헬륨 공급 (모듈마다 하나) + 모듈로 가는 배관
+  for (const [moduleIndex, moduleX] of [centerX - moduleWidth - 3, centerX + 3].entries()) {
+    const pipeX = moduleX + moduleWidth / 2;
+    const pipeStartY = facesDown ? pumpY + 14 : pumpY;
+    const pipeEndY = facesDown ? moduleY : moduleY + moduleHeight;
+    parts += `<line x1="${pipeX}" y1="${pipeStartY}" x2="${pipeX}" y2="${pipeEndY}" stroke="#2f4266" stroke-width="2"/>`;
+    parts += svgRect(pipeX - 9, pumpY, 18, 14, 'fab-part', 'rx="2"');
+    parts += svgLabel(pipeX, pumpY + 10, moduleIndex === 0 ? 'P' : 'He', 'fab-label', 'text-anchor="middle" font-size="7.5"');
   }
+  // 이송 챔버 (가운데 로봇) 와 모듈 연결
+  parts += svgRect(centerX - 26, transferY, 52, 30, 'fab-part', 'rx="9"');
+  parts += `<circle cx="${centerX}" cy="${transferY + 15}" r="8" fill="none" stroke="#3a5180"/>`;
+  parts += moduleSvg(leftModule, centerX - moduleWidth - 3, moduleY, moduleWidth, moduleHeight);
+  parts += moduleSvg(rightModule, centerX + 3, moduleY, moduleWidth, moduleHeight);
+  // EFEM과 로드포트 2개 (FOUP 올려두는 자리)
+  parts += svgRect(centerX - 38, efemY, 76, 20, 'fab-part', 'rx="3"');
+  parts += svgLabel(centerX, efemY + 13.5, `TOOL ${machineNumber}`, 'fab-tool-name', 'text-anchor="middle"');
+  parts += svgRect(centerX - 30, loadPortY, 22, 14, 'fab-foup', 'rx="2"');
+  parts += svgRect(centerX + 8, loadPortY, 22, 14, 'fab-foup', 'rx="2"');
+  return parts;
+}
+
+function renderFloor() {
+  const machineNumbers = [...new Set(tools.map(tool => tool.name.slice(0, 2)))];
+  const bayWidth = MAP_WIDTH - MAIN_AISLE_WIDTH - 6;
+  const slotWidth = bayWidth / TOOLS_PER_ROW;
+  let svg = `<svg class="fab-map" viewBox="0 0 ${MAP_WIDTH} ${MAP_HEIGHT}" role="group" aria-label="이온 밀 베이 탑뷰 배치도">
+    <defs><pattern id="chase-hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#16233c" stroke-width="3"/></pattern></defs>`;
+  // 메인 통로 + 스토커
+  svg += svgRect(0, 0, MAIN_AISLE_WIDTH, MAP_HEIGHT, 'fab-part', 'fill="#0f1b31" stroke="none"');
+  svg += svgLabel(MAIN_AISLE_WIDTH / 2 + 3, 312, 'MAIN AISLE · 메인 통로', 'fab-label',
+    `text-anchor="middle" transform="rotate(-90 ${MAIN_AISLE_WIDTH / 2 + 3} 312)"`);
+  svg += svgRect(8, BAY_AISLE_TOP - 50, MAIN_AISLE_WIDTH - 16, 34, 'fab-part', 'rx="3"');
+  svg += svgLabel(MAIN_AISLE_WIDTH / 2, BAY_AISLE_TOP - 30, '스토커', 'fab-label', 'text-anchor="middle"');
+  // 서비스 체이스 (위·아래)
+  svg += svgRect(MAIN_AISLE_WIDTH + 6, 0, bayWidth, CHASE_HEIGHT, '', 'fill="url(#chase-hatch)"');
+  svg += svgRect(MAIN_AISLE_WIDTH + 6, MAP_HEIGHT - CHASE_HEIGHT, bayWidth, CHASE_HEIGHT, '', 'fill="url(#chase-hatch)"');
+  // 베이 통로 + OHT 레일
+  svg += svgRect(MAIN_AISLE_WIDTH, BAY_AISLE_TOP, MAP_WIDTH - MAIN_AISLE_WIDTH, BAY_AISLE_BOTTOM - BAY_AISLE_TOP, '', 'fill="#0f1b31"');
+  const railY = (BAY_AISLE_TOP + BAY_AISLE_BOTTOM) / 2;
+  svg += `<line x1="${MAIN_AISLE_WIDTH / 2}" y1="${railY}" x2="${MAP_WIDTH - 10}" y2="${railY}" stroke="#3a5180" stroke-width="1.5" stroke-dasharray="8 5"/>`;
+  svg += `<line x1="${MAIN_AISLE_WIDTH / 2}" y1="${BAY_AISLE_TOP - 16}" x2="${MAIN_AISLE_WIDTH / 2}" y2="${railY}" stroke="#3a5180" stroke-width="1.5" stroke-dasharray="8 5"/>`;
+  svg += svgLabel(MAP_WIDTH - 12, railY - 6, 'ETCH BAY · 이온 밀 베이 통로 / OHT 레일', 'fab-label', 'text-anchor="end"');
+  // 장비 10대: 위 줄 01~05, 아래 줄 06~10
+  machineNumbers.forEach((machineNumber, machineIndex) => {
+    const isTopRow = machineIndex < TOOLS_PER_ROW;
+    const slotX = MAIN_AISLE_WIDTH + 6 + (machineIndex % TOOLS_PER_ROW) * slotWidth;
+    svg += toolSvg(machineNumber, slotX, slotWidth, isTopRow);
+  });
+  svg += '</svg>';
+
+  const floorBody = document.getElementById('floor-map');
+  floorBody.innerHTML = svg;
+  floorBody.querySelectorAll('.fab-module').forEach(moduleGroup => {
+    moduleGroup.addEventListener('click', () => selectTool(moduleGroup.dataset.tool));
+    moduleGroup.addEventListener('keydown', keyEvent => {
+      if (keyEvent.key === 'Enter' || keyEvent.key === ' ') { keyEvent.preventDefault(); selectTool(moduleGroup.dataset.tool); }
+    });
+  });
 }
 
 // ---------- 상세 차트 ----------
@@ -305,7 +406,7 @@ function renderEvents() {
 
 function selectTool(toolName) {
   selectedToolName = toolName;
-  renderToolGrid();
+  renderFloor();
   renderDetail();
 }
 
@@ -315,7 +416,7 @@ document.querySelectorAll('.nav-button').forEach(button => button.addEventListen
 }));
 
 renderKpis();
-renderToolGrid();
+renderFloor();
 renderDetail();
 renderAlarmChart();
 renderEvents();

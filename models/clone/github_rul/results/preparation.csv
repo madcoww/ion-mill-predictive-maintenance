@@ -1,0 +1,11 @@
+tool,raw_rows,shutter1_rows,sensor_file,sensor_bytes,target_file,target_bytes,F1_bins,F2_bins,F3_bins,classifier_bins
+01_M01,3124704,1486930,data\raw\phm_data_challenge_2018\train\01_M01_DC_train.csv,1107918027,data\raw\phm_data_challenge_2018\train\train_ttf\01_M01_DC_train.csv,103340393,51936,23657,53530,53530
+02_M01,2865625,1606130,data\raw\phm_data_challenge_2018\train\02_M01_DC_train.csv,1012645089,data\raw\phm_data_challenge_2018\train\train_ttf\02_M01_DC_train.csv,100217241,52958,41654,51106,52963
+03_M01,3432217,2076524,data\raw\phm_data_challenge_2018\train\03_M01_DC_train.csv,1210432632,data\raw\phm_data_challenge_2018\train\train_ttf\03_M01_DC_train.csv,92642912,70947,0,62999,70950
+04_M01,5097901,2880749,data\raw\phm_data_challenge_2018\train\04_M01_DC_train.csv,1799780895,data\raw\phm_data_challenge_2018\train\train_ttf\04_M01_DC_train.csv,98515587,884,12586,73629,73629
+05_M01,4779554,2695559,data\raw\phm_data_challenge_2018\train\05_M01_DC_train.csv,1709211881,data\raw\phm_data_challenge_2018\train\train_ttf\05_M01_DC_train.csv,156993904,86084,89069,63490,89072
+06_M01,3812209,2325744,data\raw\phm_data_challenge_2018\train\06_M01_DC_train.csv,1357815302,data\raw\phm_data_challenge_2018\train\train_ttf\06_M01_DC_train.csv,128541508,83967,34574,83037,83968
+07_M01,5301166,2891669,data\raw\phm_data_challenge_2018\train\07_M01_DC_train.csv,1872457925,data\raw\phm_data_challenge_2018\train\train_ttf\07_M01_DC_train.csv,183148620,77275,106279,101650,106282
+08_M01,3716092,2376819,data\raw\phm_data_challenge_2018\train\08_M01_DC_train.csv,1332300485,data\raw\phm_data_challenge_2018\train\train_ttf\08_M01_DC_train.csv,139530057,81285,82055,81283,82079
+09_M01,4565604,2535459,data\raw\phm_data_challenge_2018\train\09_M01_DC_train.csv,1615745448,data\raw\phm_data_challenge_2018\train\train_ttf\09_M01_DC_train.csv,150798038,94171,54745,81422,94195
+10_M01,3166038,1840167,data\raw\phm_data_challenge_2018\train\10_M01_DC_train.csv,1128599570,data\raw\phm_data_challenge_2018\train\train_ttf\10_M01_DC_train.csv,70499383,9476,9478,57925,57927

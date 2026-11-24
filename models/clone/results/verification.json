@@ -1,0 +1,185 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "fold": "same_tools",
+      "model": "baseline_lr13",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "same_tools",
+      "model": "clone_hgbm",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "same_tools",
+      "model": "clone_xgb_smote",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "same_tools",
+      "model": "clone_gru",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "same_tools",
+      "model": "clone_hgbm_gru",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_1",
+      "model": "baseline_lr13",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_1",
+      "model": "clone_hgbm",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_1",
+      "model": "clone_xgb_smote",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_1",
+      "model": "clone_gru",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_1",
+      "model": "clone_hgbm_gru",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_2",
+      "model": "baseline_lr13",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_2",
+      "model": "clone_hgbm",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_2",
+      "model": "clone_xgb_smote",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_2",
+      "model": "clone_gru",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_2",
+      "model": "clone_hgbm_gru",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_3",
+      "model": "baseline_lr13",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_3",
+      "model": "clone_hgbm",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_3",
+      "model": "clone_xgb_smote",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_3",
+      "model": "clone_gru",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_3",
+      "model": "clone_hgbm_gru",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_4",
+      "model": "baseline_lr13",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_4",
+      "model": "clone_hgbm",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_4",
+      "model": "clone_xgb_smote",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_4",
+      "model": "clone_gru",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    },
+    {
+      "fold": "unseen_4",
+      "model": "clone_hgbm_gru",
+      "reload_predictions_match": true,
+      "calibration_threshold_verified": true,
+      "confusion_matrix_verified": true
+    }
+  ],
+  "input_hashes_verified": true,
+  "split_boundaries_verified": true,
+  "same_evaluation_days_verified": true,
+  "future_perturbation_features_unchanged": true,
+  "note": "Reload comparisons allow CPU/GPU floating point tolerance; no retraining or test tuning."
+}
