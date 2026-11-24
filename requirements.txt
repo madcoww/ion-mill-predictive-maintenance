@@ -1,17 +1,41 @@
-# 확인 환경: Python 3.14.6 (Anaconda)
-pandas>=3.0
-numpy>=2.4
-matplotlib>=3.11
-ipython
-ipykernel
-nbformat>=5.10
-nbclient>=0.11
+# 기준 환경: Python 3.12 (아래 버전은 모두 PyPI에서 Python 3.12 지원 확인)
+# 설치: pip install -r requirements.txt
+# GPU(CUDA)용 PyTorch는 PyTorch 공식 안내의 --index-url 로 따로 설치한다 (기본 설치는 CPU판일 수 있음)
 
-# 모델·대시보드·API (src/make_dashboard_data.py, app/)
-scikit-learn>=1.9
-plotly>=6.7
-streamlit>=1.58
-fastapi>=0.121
-uvicorn>=0.40
-requests>=2.34
-pyarrow
+# 데이터 처리·분석
+numpy==2.4.6
+pandas==3.0.3
+pyarrow==23.0.1
+scipy==1.18.0
+statsmodels==0.14.6
+
+# 시각화
+matplotlib==3.11.0
+seaborn==0.13.2
+plotly==6.7.0
+
+# 머신러닝 (로지스틱 회귀·Isolation Forest·부스팅·불균형 처리·AutoML)
+scikit-learn==1.9.0
+imbalanced-learn==0.14.2
+lightgbm==4.7.0
+xgboost==3.4.1
+flaml==2.8.0
+
+# 딥러닝 (GRU·LSTM 실험: models/rul_gru.ipynb)
+torch==2.15.0
+# TensorFlow·Keras: models/clone/github_rul/ 원본 방식 RUL 실험
+# Windows에서 TensorFlow는 CPU만 지원한다. GPU는 WSL2 환경이 필요하다.
+tensorflow==2.21.0
+keras==3.15.1
+
+# 대시보드·API (src/make_dashboard_data.py, app/)
+streamlit==1.58.0
+fastapi==0.121.3
+uvicorn==0.40.0
+requests==2.34.2
+
+# 노트북 실행
+ipython==9.19.1
+ipykernel==6.31.0
+nbformat==5.10.4
+nbclient==0.11.0

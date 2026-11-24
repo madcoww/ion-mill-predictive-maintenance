@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "task": "classifier",
+      "metrics_verified": true,
+      "cached_labels_verified": true,
+      "split_verified": true
+    },
+    {
+      "task": "F1",
+      "metrics_verified": true,
+      "split_verified": true,
+      "target_cap_verified": true,
+      "sequence_window_counts_verified": true,
+      "ensemble_verified": true,
+      "offline_isotonic_verified": true,
+      "saved_models_reload_verified": true
+    },
+    {
+      "task": "F2",
+      "metrics_verified": true,
+      "split_verified": true,
+      "target_cap_verified": true,
+      "sequence_window_counts_verified": true,
+      "ensemble_verified": true,
+      "offline_isotonic_verified": true,
+      "saved_models_reload_verified": true
+    },
+    {
+      "task": "F3",
+      "metrics_verified": true,
+      "split_verified": true,
+      "target_cap_verified": true,
+      "sequence_window_counts_verified": true,
+      "ensemble_verified": true,
+      "offline_isotonic_verified": true,
+      "saved_models_reload_verified": true
+    }
+  ],
+  "scope": "offline source-style evaluation; does not certify online validity"
+}

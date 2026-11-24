@@ -1,0 +1,27 @@
+{
+  "repository": "https://github.com/ki-seoultech/PHM2018-Ion-Mill-Etch-3Stage-Predictive-Maintenance",
+  "commit": "6ba6b026340cd21a95f8846344c1996a02bcc97d",
+  "modified": false,
+  "files": [
+    {
+      "file": "v8_multi_fault_sweep_f1_f2.py",
+      "upstream_path": "src/01_rul_regression/v8_multi_fault_sweep_f1_f2.py",
+      "sha256": "defc2f52ceacb1d496510edc8a0a2bfdc54a5156f7b5027e4c55f4ea8e6bd14b"
+    },
+    {
+      "file": "train_save_regressor_f3.py",
+      "upstream_path": "src/03_inference_pipeline/train_save_regressor_f3.py",
+      "sha256": "740464ec289c0783e6e34eccde109ecb67778aab04f8ecf3ee82d8c41fe77861"
+    },
+    {
+      "file": "train_save_classifier.py",
+      "upstream_path": "src/02_fault_classifier/train_save_classifier.py",
+      "sha256": "77bb8bbe90f6a7af9be751e6368712009b41829dac75a173ab822abbdc59dba1"
+    },
+    {
+      "file": "LICENSE",
+      "upstream_path": "LICENSE",
+      "sha256": "f113a242eef701e00c0df8715ebf4bfcb972bfd3c6abea427a39a0b261f71922"
+    }
+  ]
+}
