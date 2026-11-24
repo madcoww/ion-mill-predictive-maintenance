@@ -1,0 +1,20 @@
+{
+  "raw_rows": 3124704,
+  "time_reversals_in_input": 0,
+  "sensor_ttf_aligned": true,
+  "exact_duplicates_removed": 878,
+  "conflicting_timestamp_count": 4310,
+  "rows_after_dedup": 3123826,
+  "time_start": 3283106,
+  "time_end": 43037336,
+  "span_days": 460.11840277777776,
+  "gap_count": 11963,
+  "median_positive_interval_seconds": 4.0,
+  "all_state_segments": 71609,
+  "etching_segments": 15010,
+  "etching_rows": 1486846,
+  "etching_row_fraction": 0.4759695322338696,
+  "fault_records_raw": 19,
+  "fault_records_unique": 19,
+  "fault_events": 16
+}

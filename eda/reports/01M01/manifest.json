@@ -1,0 +1,59 @@
+{
+  "status": "complete",
+  "signature": "0d85a408734a83d605cfd26857e68fe2670ade8faacfce3fdf14fef475716d66",
+  "created_utc": "2026-11-23T07:44:12.692669+00:00",
+  "config": {
+    "tool": "01M01",
+    "gap_seconds": 60,
+    "merge_hours": 24,
+    "window_hours": 24,
+    "sampling": "none",
+    "time_unit_assumption": "seconds"
+  },
+  "inputs": [
+    {
+      "path": "C:\\ion-mill-predictive-maintenance\\data\\raw\\phm_data_challenge_2018\\train\\01_M01_DC_train.csv",
+      "bytes": 1107918027,
+      "mtime_ns": 1523229102000000000
+    },
+    {
+      "path": "C:\\ion-mill-predictive-maintenance\\data\\raw\\phm_data_challenge_2018\\train\\train_ttf\\01_M01_DC_train.csv",
+      "bytes": 103340393,
+      "mtime_ns": 1524152291000000000
+    },
+    {
+      "path": "C:\\ion-mill-predictive-maintenance\\data\\raw\\phm_data_challenge_2018\\train\\train_faults\\01_M01_train_fault_data.csv",
+      "bytes": 1044,
+      "mtime_ns": 1524067509000000000
+    }
+  ],
+  "code_sha256": "daf5a3c73b70ce0c1a2c4706206e646ff48b0da74f2be3706193b70c31c89dae",
+  "git_commit": "4aff4cd3d88cb5edb088d61e2361f594b8cd6916",
+  "versions": {
+    "pandas": "3.0.3",
+    "numpy": "2.4.6",
+    "matplotlib": "3.11.0"
+  },
+  "outputs": [
+    "quality.json",
+    "summary.md",
+    "figures/full_period.png",
+    "figures/prefault_trajectories.png",
+    "figures/sensor_distributions.png",
+    "tables/condition_baseline_descriptive.csv",
+    "tables/condition_coverage.csv",
+    "tables/conflicting_timestamps.csv",
+    "tables/event_sensitivity.csv",
+    "tables/fault_events.csv",
+    "tables/hourly_sensors.csv",
+    "tables/missingness.csv",
+    "tables/observation_gaps.csv",
+    "tables/prefault_aggregate.csv",
+    "tables/prefault_by_event.csv",
+    "tables/prefault_coverage.csv",
+    "tables/sensor_summary_all_states.csv",
+    "tables/sensor_summary_etching.csv",
+    "tables/ttf_quality.csv"
+  ],
+  "step_data": "C:\\ion-mill-predictive-maintenance\\data\\interim\\eda\\01M01\\steps_0d85a408734a.parquet"
+}

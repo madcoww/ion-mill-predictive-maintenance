@@ -5,3 +5,7 @@
 *.csv text eol=lf
 *.json text eol=lf
 *.png binary
+
+# Keep copied upstream reference files byte-for-byte for recorded source hashes.
+models/clone/reference/** -text -whitespace
+models/clone/github_rul/reference/** -text -whitespace
