@@ -50,6 +50,8 @@ html[data-theme="light"] .equipment-heatmap {
   --watch: #ffd163;
   --priority: #ff787e;
   --hold: #aab3c3;
+
+  
   /* ── 테마 확장 변수 (다크 = 원본 색 그대로) ── */
   --focus: #bfdbff;            /* 포커스 외곽선 */
   --floor-border: #263957;     /* 배치도 스크롤 영역 테두리 */

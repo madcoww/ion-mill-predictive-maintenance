@@ -97,7 +97,7 @@
     .theme-btn:focus-visible { outline: 2px solid rgb(var(--c-primary)); outline-offset: 1px; }
   </style>
 
-  <title>A - Corporate Dark — Wafers Enterprise Analytics</title>
+  <title>A - Corporate Dark — Wafers Enterprise System</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
 globalThis.tailwind = globalThis.tailwind || {};
@@ -207,9 +207,9 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
   <style id="equipment-heatmap-css">
 /* ───────── 라이트 테마: html[data-theme="light"] 일 때만 값을 덮어씀 ───────── */
 html[data-theme="light"] .equipment-heatmap {
-  --surface: #ffffff;
+  --surface: rgb(var(--c-panel));
   --well: #f1f5fa;
-  --border: #dde3ec;
+  --border: rgb(var(--c-border-subtle));
   --text: #151c28;
   --muted: #566379;
   --blue: #2563eb;
@@ -247,7 +247,7 @@ html[data-theme="light"] .equipment-heatmap {
 }
 
 .equipment-heatmap {
-  --surface: #111d33;
+  --surface: rgb(var(--c-panel));
   --well: #0a1428;
   --border: #253856;
   --text: #f1f6ff;
@@ -537,7 +537,7 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
           </div>
           <div class="min-w-0">
             <div data-design-text-token="title-sm" class="font-title text-title-sm text-on-surface leading-none">Wafers</div>
-            <div data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-muted mt-xs leading-none">Enterprise Analytics</div>
+            <div data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-muted mt-xs leading-none">Enterprise System</div>
           </div>
         </div>
 
@@ -549,12 +549,12 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
 
           <a href="#overview" class="flex items-center gap-sm px-sm py-sm rounded-sm bg-panel-elevated border border-border-subtle text-on-primary-soft transition-colors duration-state-change">
             <span class="material-symbols-outlined text-[18px] text-primary" aria-hidden="true">analytics</span>
-            <span data-design-text-token="label-md" class="font-label text-label-md">Overview</span>
+            <span data-design-text-token="label-md" data-i18n="overview" class="font-label text-label-md">Overview</span>
           </a>
 
           <a href="#equipment" class="flex items-center gap-sm px-sm py-sm rounded-sm text-on-surface-variant hover:bg-panel hover:text-on-surface transition-colors duration-state-change">
             <span class="material-symbols-outlined text-[18px]" aria-hidden="true">precision_manufacturing</span>
-            <span data-design-text-token="label-md" class="font-label text-label-md">Equipment Monitoring</span>
+            <span data-design-text-token="label-md" data-i18n="equipmentMonitoring" class="font-label text-label-md">Equipment Monitoring</span>
           </a>
 
           <a href="#process" class="flex items-center gap-sm px-sm py-sm rounded-sm text-on-surface-variant hover:bg-panel hover:text-on-surface transition-colors duration-state-change">
@@ -598,14 +598,14 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
       <div class="p-md border-t border-border-subtle flex flex-col gap-md">
         <div class="bg-panel border border-border-subtle rounded-sm p-sm flex flex-col gap-xs">
           <div class="flex items-center justify-between">
-            <span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Cluster Health</span>
+            <span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant" data-i18n="health">Cluster Health</span>
             <span class="inline-flex items-center gap-xs text-accent-green">
               <span class="w-1.5 h-1.5 rounded-full bg-accent-green"></span>
-              <span data-design-text-token="label-xs" class="font-label text-label-xs">Nominal</span>
+              <span data-design-text-token="label-xs" class="font-label text-label-xs" data-i18n="nominal">Nominal</span>
             </span>
           </div>
           <div class="flex items-center justify-between">
-            <span data-design-text-token="mono-xs" class="font-mono text-mono-xs text-on-surface-muted">Ingestion Rate</span>
+            <span data-design-text-token="mono-xs" class="font-mono text-mono-xs text-on-surface-muted" data-i18n="ingestion">Ingestion Rate</span>
             <span data-design-text-token="mono-xs" class="font-mono text-mono-xs text-primary tabular-nums">14.2k / s</span>
           </div>
         </div>
@@ -615,8 +615,8 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
             <span data-design-text-token="label-xs" class="font-label text-label-xs text-primary">EV</span>
           </div>
           <div class="min-w-0 flex-1">
-            <div data-design-text-token="label-md" class="font-label text-label-md text-on-surface truncate">Elena Vance</div>
-            <div data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-muted truncate">VP Operations</div>
+            <div data-design-text-token="label-md" class="font-label text-label-md text-on-surface truncate" >Elena Vance</div>
+            <div data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-muted truncate" data-i18n="VP">VP Operations</div>
           </div>
         </div>
       </div>
@@ -628,27 +628,27 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
       <header class="h-14 px-xl border-b border-border-subtle bg-sidebar flex items-center justify-between gap-lg shrink-0">
         <div class="flex items-center gap-md">
           <div class="flex items-center gap-xs text-on-surface-muted">
-            <span data-design-text-token="label-xs" class="font-label text-label-xs">Enterprise</span>
+            <span data-design-text-token="label-xs" class="font-label text-label-xs" data-i18n="enterprise">Enterprise</span>
             <span class="material-symbols-outlined text-[14px]" aria-hidden="true">chevron_right</span>
-            <span data-design-text-token="label-xs" class="font-label text-label-xs text-primary">Operations Overview</span>
+            <span data-design-text-token="label-xs" class="font-label text-label-xs text-primary" data-i18n="operations">Operations Overview</span>
           </div>
           <span class="text-border-strong">|</span>
-          <h1 data-i18n="overview" data-design-text-token="headline-md" class="font-headline text-headline-md text-on-surface">Operations Overview</h1>
+          <h1 data-i18n="overview" data-design-text-token="headline-md" class="font-headline text-headline-md text-on-surface">Overview</h1>
         </div>
 
         <div class="flex items-center gap-md">
-          <div class="flex items-center gap-xs px-sm py-xs rounded-sm bg-panel border border-border-subtle">
+          <!-- <div class="flex items-center gap-xs px-sm py-xs rounded-sm bg-panel border border-border-subtle">
             <span class="material-symbols-outlined text-[14px] text-primary" aria-hidden="true">schedule</span>
             <span data-design-text-token="mono-xs" class="font-mono text-mono-xs text-on-surface-variant tabular-nums">2026-11-24 04:05:49 UTC</span>
-          </div>
+          </div> -->
 
           <div class="relative inline-flex items-center rounded-sm bg-panel border border-border-subtle text-on-surface">
             <span    class="material-symbols-outlined text-[16px] text-primary"    aria-hidden="true"    style="position: absolute; left: 10px; pointer-events: none;"  >date_range</span>
 
             <select    id="time-range"    aria-label="Time range"    class="font-label text-label-md cursor-pointer"    style="appearance: none; background: transparent; border: 0; color: inherit; padding: 6px 32px;"  >
-              <option value="24h" selected>Last 24 Hours</option>
-              <option value="7d">Last 7 Days</option>
-              <option value="30d">Last 30 Days</option>
+              <option value="24h" data-i18n="last24h" selected>Last 24 Hours</option>
+              <option value="7d" data-i18n="last7d">Last 7 Days</option>
+              <option value="30d" data-i18n="last30d">Last 30 Days</option>
             </select>
 
             <span    class="material-symbols-outlined text-[16px] text-on-surface-variant"    aria-hidden="true"    style="position: absolute; right: 10px; pointer-events: none;"  >
@@ -687,7 +687,7 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
         <section aria-label="KPI Summary" class="grid grid-cols-4 gap-md items-stretch">
           <article data-component-id="card-kpi" data-component-type="card" data-component-variant="outlined" class="bg-panel border border-border-subtle rounded-md p-lg flex flex-col justify-between gap-sm">
             <div class="flex items-center justify-between gap-sm">
-              <span data-design-text-token="label-md" class="font-label text-label-md text-on-surface-variant">Total Equipment</span>
+              <span data-design-text-token="label-md" data-i18n="totalEquipment" class="font-label text-label-md text-on-surface-variant">Total Equipment</span>
               <span class="inline-flex items-center gap-xs px-sm py-xs rounded-xs bg-panel-elevated text-on-surface-variant">
                 <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
                 <span data-design-text-token="label-xs" class="font-label text-label-xs">Fleet</span>
@@ -701,7 +701,7 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
 
           <article data-component-id="card-kpi" data-component-type="card" data-component-variant="outlined" class="bg-panel border border-border-subtle rounded-md p-lg flex flex-col justify-between gap-sm">
             <div class="flex items-center justify-between gap-sm">
-              <span data-design-text-token="label-md" class="font-label text-label-md text-on-surface-variant">Active Equipment</span>
+              <span data-design-text-token="label-md" class="font-label text-label-md text-on-surface-variant" data-i18n="activeEquipment">Active Equipment</span>
               <span class="inline-flex items-center gap-xs px-sm py-xs rounded-xs bg-accent-green-soft text-accent-green">
                 <span class="w-1.5 h-1.5 rounded-full bg-accent-green"></span>
                 <span data-design-text-token="label-xs" class="font-label text-label-xs">87.5%</span>
@@ -715,28 +715,28 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
 
           <article data-component-id="card-kpi" data-component-type="card" data-component-variant="outlined" class="bg-panel border border-border-subtle rounded-md p-lg flex flex-col justify-between gap-sm">
             <div class="flex items-center justify-between gap-sm">
-              <span data-design-text-token="label-md" class="font-label text-label-md text-on-surface-variant">Warning Events</span>
+              <span data-design-text-token="label-md" class="font-label text-label-md text-on-surface-variant" data-i18n="warningEvents">Warning Events</span>
               <span class="inline-flex items-center gap-xs px-sm py-xs rounded-xs bg-accent-amber-soft text-accent-amber">
                 <span class="w-1.5 h-1.5 rounded-full bg-accent-amber"></span>
-                <span data-design-text-token="label-xs" class="font-label text-label-xs">3 Critical</span>
+                <span data-design-text-token="label-xs" class="font-label text-label-xs">10 Critical</span>
               </span>
             </div>
             <div class="flex items-baseline justify-between gap-sm">
-              <span data-design-text-token="kpi-value" class="font-kpi text-kpi-value text-accent-amber tabular-nums">12</span>
-              <span data-design-text-token="mono-xs" class="font-mono text-mono-xs text-accent-green tabular-nums">-3 vs 24h</span>
+              <span data-design-text-token="kpi-value" class="font-kpi text-kpi-value text-accent-amber tabular-nums">10</span>
+              <span data-design-text-token="mono-xs" class="font-mono text-mono-xs text-accent-green tabular-nums">-10 vs 24h</span>
             </div>
           </article>
 
           <article data-component-id="card-kpi" data-component-type="card" data-component-variant="outlined" class="bg-panel border border-border-subtle rounded-md p-lg flex flex-col justify-between gap-sm">
             <div class="flex items-center justify-between gap-sm">
-              <span data-design-text-token="label-md" class="font-label text-label-md text-on-surface-variant">System Availability</span>
+              <span data-design-text-token="label-md" class="font-label text-label-md text-on-surface-variant" data-i18n="systemAvailability">System Availability</span>
               <span class="inline-flex items-center gap-xs px-sm py-xs rounded-xs bg-primary-soft text-on-primary-soft">
                 <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
                 <span data-design-text-token="label-xs" class="font-label text-label-xs">SLA Met</span>
               </span>
             </div>
             <div class="flex items-baseline justify-between gap-sm">
-              <span data-design-text-token="kpi-value" class="font-kpi text-kpi-value text-primary tabular-nums">98.7%</span>
+              <span data-design-text-token="kpi-value" class="font-kpi text-kpi-value text-primary tabular-nums">96.9%</span>
               <span data-design-text-token="mono-xs" class="font-mono text-mono-xs text-accent-green tabular-nums">+0.2% vs 7d</span>
             </div>
           </article>
@@ -748,22 +748,22 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
             <section class="ehp-card" aria-labelledby="equipment-heading">
               <header class="ehp-heading">
                 <h2 id="equipment-heading" data-i18n="equipment">장비 배치도</h2>
-                <span>데모 데이터</span>
+                <span data-i18n="demodata">데모 데이터</span>
               </header>
               <div class="ehp-floor-scroll" role="region" aria-label="장비 배치도 스크롤 영역" tabindex="0">
                 <div class="ehp-floor">
                   <div class="ehp-row" id="ehp-row-top"></div>
-                  <div class="ehp-aisle"><span>이온 밀 공정 통로</span></div>
+                  <div class="ehp-aisle"><span data-i18n="ionmillprocessroute">이온 밀 공정 통로</span></div>
                   <div class="ehp-row ehp-row-reversed" id="ehp-row-bottom"></div>
                 </div>
               </div>
               <ul class="ehp-status-key" aria-label="모듈 상태 범례">
-                <li data-status="normal">정상</li>
-                <li data-status="watch">관찰 강화</li>
-                <li data-status="priority">우선 점검</li>
-                <li data-status="hold">판단 보류</li>
+                <li data-status="normal" data-i18n="moduleStatusNormal">정상</li>
+                <li data-status="watch" data-i18n="moduleStatusWatch">관찰 강화</li>
+                <li data-status="priority" data-i18n="moduleStatusPriority">우선 점검</li>
+                <li data-status="hold" data-i18n="moduleStatusHold">판단 보류</li>
               </ul>
-              <p class="ehp-score-key">모듈 숫자 · 데모 위험 점수(0–1)</p>
+              <p class="ehp-score-key" data-i18n="moduleRiskScoreNote">모듈 숫자 · 데모 위험 점수(0–1)</p>
             </section>
 
             <section class="ehp-card ehp-detail" aria-labelledby="ehp-detail-title" data-status="priority">
@@ -772,7 +772,7 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
                   <h2 id="ehp-detail-title">04M02 · 냉각 압력</h2>
                   <span id="ehp-detail-status" class="ehp-badge" data-status="priority">우선 점검</span>
                 </header>
-                <p class="ehp-detail-label">최근 냉각 압력 편차(σ)</p>
+                <p class="ehp-detail-label" data-i18n="moduleDetailDeviation">최근 냉각 압력 편차(σ)</p>
                 <p class="ehp-reading" id="ehp-reading"><strong id="ehp-pressure">−2.42</strong> <span id="ehp-pressure-unit">σ</span></p>
               </div>
               <div id="ehp-chart-area" class="ehp-chart-area">
@@ -786,9 +786,14 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
       <polyline class="ehp-trace" points="25.00,33.00 30.00,41.75 35.00,42.77 40.00,45.04 45.00,33.94 50.00,42.98 55.00,51.02 60.00,38.07 65.00,41.76 70.00,43.37 75.00,49.29 80.00,39.50 85.00,35.32 90.00,49.95 95.00,40.81 100.00,38.23 105.00,38.35 110.00,45.85 115.00,46.07 120.00,33.18 125.00,47.13 130.00,48.28 135.00,43.78 140.00,41.94 145.00,44.97 150.00,54.56 155.00,39.40 160.00,42.54 165.00,49.99 170.00,46.08 175.00,43.51 180.00,39.18 185.00,53.28 190.00,46.79 195.00,40.41 200.00,50.43 205.00,51.12 210.00,52.43 215.00,43.73 220.00,53.60 225.00,58.51 230.00,46.76 235.00,51.63 240.00,53.36 245.00,57.49 250.00,49.13 255.00,48.70 260.00,61.27 265.00,53.16 270.00,53.12 275.00,55.31 280.00,61.95 285.00,61.22 290.00,53.10 295.00,65.49 300.00,65.04 305.00,61.66 310.00,61.47 315.00,64.84 320.00,70.73 325.00,60.22 330.00,65.11 335.00,70.70 340.00,68.26 345.00,67.91 350.00,67.55 355.00,77.49 360.00,73.05 365.00,71.26 370.00,78.74 375.00,79.14 380.00,80.00 385.00,76.46 390.00,83.37 395.00,85.46 400.00,80.28 405.00,84.70 410.00,86.64 415.00,89.26 420.00,86.74 425.00,89.04 430.00,95.31 435.00,92.86 440.00,94.74 445.00,97.18 450.00,100.47 455.00,101.00 460.00,100.47 465.00,105.33 470.00,106.12 475.00,106.92 480.00,108.74 485.00,111.05 490.00,113.26 495.00,114.20 500.00,116.60 505.00,118.58"></polyline>
       <circle cx="505" cy="118.585" r="3.2" fill="var(--status)"></circle></svg>
                 <ul class="ehp-chart-key" aria-label="냉각 압력 그래프 범례">
-                  <li><i class="ehp-range-key" aria-hidden="true"></i>정상 범위</li>
-                  <li><i class="ehp-watch-key" aria-hidden="true"></i>관찰 <span id="ehp-watch-label">−1.20 σ</span></li>
-                  <li><i class="ehp-priority-key" aria-hidden="true"></i>점검 <span id="ehp-priority-label">−2.00 σ</span></li>
+                  <li><i class="ehp-range-key" aria-hidden="true"></i> 
+                    <span data-i18n="moduleChartNormalRange">정상 범위</span></li>
+                  <li><i class="ehp-watch-key" aria-hidden="true"></i> 
+                    <span data-i18n="moduleChartWatch">관찰</span> 
+                    <span id="ehp-watch-label">−1.20 σ</span></li>
+                  <li><i class="ehp-priority-key" aria-hidden="true"></i>
+                    <span data-i18n="moduleChartInspect">점검</span> 
+                    <span id="ehp-priority-label">−2.00 σ</span></li>
                 </ul>
               </div>
               <p class="ehp-detail-note" id="ehp-detail-note">냉각 압력이 하한 점검 임계값 아래로 내려갔습니다.</p>
@@ -908,14 +913,33 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
     select(initial);
   }
 
+  
+  let detailMessages = {};
+
+  const detailStatusKeys = {
+    normal: "moduleStatusNormal",
+    watch: "moduleStatusWatch",
+    priority: "moduleStatusPriority",
+    hold: "moduleStatusHold",
+  };
+
+  document.addEventListener("dashboardlanguagechange", (event) => {
+    detailMessages = event.detail;
+    detail.lang = document.documentElement.lang;
+    if (selected) select(selected);
+  });
+
   function select(record) {
     selected?.button.setAttribute("aria-pressed", "false");
     selected = record;
     record.button.setAttribute("aria-pressed", "true");
     detail.dataset.status = record.status;
-    find("#ehp-detail-title").textContent = `${record.id} · 냉각 압력`;
+    find("#ehp-detail-title").textContent =
+      `${record.id} · ${detailMessages.moduleDetailPressure ?? "냉각 압력"}`;
+
     const badge = find("#ehp-detail-status");
-    badge.textContent = statuses[record.status];
+    badge.textContent =
+      detailMessages[detailStatusKeys[record.status]] ?? statuses[record.status];
     badge.dataset.status = record.status;
     const held = record.pressure === null;
     find("#ehp-pressure").textContent = held ? "—" : format(record.pressure);
@@ -928,7 +952,9 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
       "high-pressure": "냉각 압력이 상한 관찰 임계값을 넘었습니다.",
       "helium-leak": "냉각 압력은 정상 범위입니다. 별도 헬륨 누설 신호에 따른 관찰 예시입니다.",
     };
-    find("#ehp-detail-note").textContent = descriptions[record.fault ?? record.status];
+    const noteKey = record.fault ?? record.status;
+    find("#ehp-detail-note").textContent =
+      detailMessages.moduleDetailNotes?.[noteKey] ?? descriptions[noteKey];
     renderTrend();
   }
 
@@ -959,7 +985,7 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
       find(`#ehp-${name}-label`).textContent = `${format(level)} σ`;
       return `<line x1="${left}" x2="${right}" y1="${y(level)}" y2="${y(level)}" class="ehp-limit ehp-limit-${name}"/>`;
     });
-    const labels = ["−24h", "−18h", "−12h", "−6h", "지금"].map((label, index) => {
+    const labels = ["−24h", "−18h", "−12h", "−6h", detailMessages.moduleChartNow ?? "지금"].map((label, index) => {
       const anchor = index === 0 ? "start" : index === 4 ? "end" : "middle";
       return `<text x="${x(index / 4)}" y="${height - 7}" text-anchor="${anchor}">${label}</text>`;
     });
@@ -1013,16 +1039,19 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
           <article class="col-span-8 bg-panel border border-border-subtle rounded-md p-lg flex flex-col gap-md">
             <header class="flex items-center justify-between border-b border-border-subtle pb-sm">
               <div>
-                <h3 data-design-text-token="title-sm" class="font-title text-title-sm text-on-surface">Multi-Series Telemetry Trend</h3>
-                <p data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">24-hour power load, thermal index, and harmonic vibration</p>
+                <h3 data-design-text-token="title-sm" data-i18n="multiSeriesTelemetryTrend" class="font-title text-title-sm text-on-surface">Multi-Series Telemetry Trend</h3>
+                <p data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant" 	id="telemetry-summary">24-hour power load, thermal index, and harmonic vibration</p>
               </div>
               <div class="flex items-center gap-md">
-                <span class="inline-flex items-center gap-xs"><span class="w-2.5 h-0.5 bg-primary"></span><span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Load (kW)</span></span>
-                <span class="inline-flex items-center gap-xs"><span class="w-2.5 h-0.5 bg-accent-blue"></span><span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Thermal (°C)</span></span>
-                <span class="inline-flex items-center gap-xs"><span class="w-2.5 h-0.5 bg-accent-amber"></span><span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Vibration</span></span>
+                <span class="inline-flex items-center gap-xs"><span class="w-2.5 h-0.5 bg-primary"></span>
+                <span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant" data-i18n="load">Load (kW)</span></span>
+                <span class="inline-flex items-center gap-xs"><span class="w-2.5 h-0.5 bg-accent-blue"></span>
+                <span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant" data-i18n="thermal">Thermal (°C)</span></span>
+                <span class="inline-flex items-center gap-xs"><span class="w-2.5 h-0.5 bg-accent-amber"></span>
+                <span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant" data-i18n="vibration">Vibration</span></span>
               </div>
             </header>
-            <svg viewBox="0 0 680 175" class="w-full h-auto block" role="img" aria-label="Multi-series time-series line chart">
+            <svg viewBox="0 0 680 175" class="w-full h-auto block" role="img" aria-label="Multi-series time-series line chart" id="telemetry-chart">
               <g style="stroke: rgb(var(--c-grid))" stroke-width="1">
                 <line x1="36" y1="20" x2="665" y2="20"></line><line x1="36" y1="58" x2="665" y2="58"></line>
                 <line x1="36" y1="96" x2="665" y2="96"></line><line x1="36" y1="134" x2="665" y2="134"></line>
@@ -1034,7 +1063,7 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
               <polyline fill="none" stroke="#22C5C7" stroke-width="2" points="36,82 99,70 162,74 225,52 288,44 351,58 414,38 477,46 540,34 603,42 665,36"></polyline>
               <polyline fill="none" stroke="#60A5FA" stroke-width="1.75" points="36,96 99,92 162,88 225,78 288,72 351,76 414,68 477,70 540,62 603,65 665,60"></polyline>
               <polyline fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="4 2" points="36,118 99,114 162,120 225,110 288,100 351,112 414,96 477,86 540,102 603,92 665,96"></polyline>
-              <g style="fill: rgb(var(--c-on-surface-muted))" font-family="Source Code Pro, monospace" font-size="9" text-anchor="middle">
+              <g style="fill: rgb(var(--c-on-surface-muted))" font-family="Source Code Pro, monospace" font-size="9" text-anchor="middle" id="telemetry-time-axis">
                 <text x="36" y="156">00:00</text><text x="162" y="156">06:00</text>
                 <text x="288" y="156">12:00</text><text x="414" y="156">18:00</text>
                 <text x="540" y="156">21:00</text><text x="655" y="156">24:00</text>
@@ -1046,37 +1075,82 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
           <article class="col-span-4 bg-panel border border-border-subtle rounded-md p-lg flex flex-col justify-between gap-md">
             <header class="flex items-center justify-between border-b border-border-subtle pb-sm">
               <div>
-                <h3 data-design-text-token="title-sm" class="font-title text-title-sm text-on-surface">Equipment Status</h3>
-                <p data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Live fleet distribution (128 units)</p>
+                <h3 data-design-text-token="title-sm" class="font-title text-title-sm text-on-surface" id="fleet-status-heading" data-i18n="equipmentStatus">Equipment Status</h3>
+                <p data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant" data-i18n="livefleetdistribution">Live fleet distribution (128 units)</p>
               </div>
               <span data-design-text-token="mono-xs" class="font-mono text-mono-xs text-primary">LIVE</span>
             </header>
 
-            <div class="h-3 w-full rounded-xs bg-background overflow-hidden flex gap-xs">
-              <div class="bg-accent-green h-full" style="width: 81%"></div>
-              <div class="bg-accent-blue h-full" style="width: 8%"></div>
-              <div class="bg-accent-amber h-full" style="width: 8%"></div>
-              <div class="bg-accent-red h-full" style="width: 3%"></div>
-            </div>
+            <svg id="fleet-status-chart" viewBox="0 0 330 196" role="img"
+                 aria-labelledby="fleet-status-heading" aria-describedby="fleet-status-description"
+                 style="display: block; width: 100%; max-width: 410px; margin: auto;">
+              <desc id="fleet-status-description"></desc>
+              <g id="fleet-status-series"></g>
+            </svg>
+            <footer class="border-t border-border-subtle pt-sm font-label text-label-xs text-on-surface-variant" style="text-align: right;">
+                <span data-i18n="fleetTotalLabel">총 설비:</span>
+                <strong class="text-on-surface"><span id="fleet-status-total">–</span><span data-i18n="fleetTotalUnit">대</span></strong>
+              </footer>
+            <script id="fleet-status-chart-js">
+              (() => {
+                const chart = document.querySelector("#fleet-status-chart");
+                const series = chart.querySelector("#fleet-status-series");
+                const description = chart.querySelector("#fleet-status-description");
+                const segments = [
+                  { key: "running", label: "Running", count: 104, color: "green", x: 8, y: 169, elbow: 94 },
+                  { key: "standby", label: "Standby", count: 10, color: "blue", x: 8, y: 35, elbow: 112 },
+                  { key: "warning", label: "Warning", count: 10, color: "amber", x: 322, y: 61, elbow: 246 },
+                  { key: "critical", label: "Critical", count: 4, color: "red", x: 322, y: 119, elbow: 262, offset: 7 },
+                ];
+                const total = segments.reduce((sum, segment) => sum + segment.count, 0);
+                document.querySelector("#fleet-status-total").textContent = total;
+                const percent = new Intl.NumberFormat("en", { style: "percent", maximumFractionDigits: 1 });
+                const cx = 163, cy = 102, radius = 62;
+                let startAngle = -12;
 
-            <div class="grid grid-cols-2 gap-sm">
-              <div class="bg-panel-elevated border border-border-subtle rounded-sm p-sm flex items-center justify-between">
-                <span class="flex items-center gap-xs"><span class="w-2 h-2 rounded-full bg-accent-green"></span><span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Running</span></span>
-                <span data-design-text-token="title-sm" class="font-title text-title-sm text-on-surface tabular-nums">104</span>
-              </div>
-              <div class="bg-panel-elevated border border-border-subtle rounded-sm p-sm flex items-center justify-between">
-                <span class="flex items-center gap-xs"><span class="w-2 h-2 rounded-full bg-accent-blue"></span><span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Standby</span></span>
-                <span data-design-text-token="title-sm" class="font-title text-title-sm text-on-surface tabular-nums">10</span>
-              </div>
-              <div class="bg-panel-elevated border border-border-subtle rounded-sm p-sm flex items-center justify-between">
-                <span class="flex items-center gap-xs"><span class="w-2 h-2 rounded-full bg-accent-amber"></span><span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Warning</span></span>
-                <span data-design-text-token="title-sm" class="font-title text-title-sm text-accent-amber tabular-nums">10</span>
-              </div>
-              <div class="bg-panel-elevated border border-border-subtle rounded-sm p-sm flex items-center justify-between">
-                <span class="flex items-center gap-xs"><span class="w-2 h-2 rounded-full bg-accent-red"></span><span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Critical</span></span>
-                <span data-design-text-token="title-sm" class="font-title text-title-sm text-accent-red tabular-nums">4</span>
-              </div>
-            </div>
+                function vector(angle, length) {
+                  const radians = angle * Math.PI / 180;
+                  return [Math.cos(radians) * length, Math.sin(radians) * length];
+                }
+
+                series.innerHTML = segments.map((segment) => {
+                  const { key, label, count, color, x, y, elbow, offset = 0 } = segment;
+                  const share = count / total;
+                  const sweep = share * 360;
+                  const mid = startAngle + sweep / 2;
+                  const [dx, dy] = vector(mid, offset);
+                  const [startX, startY] = vector(startAngle, radius);
+                  startAngle += sweep;
+                  const [endX, endY] = vector(startAngle, radius);
+                  const [edgeX, edgeY] = vector(mid, radius + offset);
+                  const [bendX, bendY] = vector(mid, radius + offset + 13);
+                  const anchor = x < cx ? "start" : "end";
+                  const ink = `rgb(var(--c-accent-${color}))`;
+
+                  return `<g>
+                    <path d="M ${cx + dx} ${cy + dy} l ${startX} ${startY} a ${radius} ${radius} 0 ${sweep > 180 ? 1 : 0} 1 ${endX - startX} ${endY - startY} Z"
+                          fill="${ink}" stroke="rgb(var(--c-panel))" stroke-width="1.5"/>
+                    <polyline points="${cx + edgeX},${cy + edgeY} ${cx + bendX},${cy + bendY} ${elbow},${y} ${x},${y}"
+                              fill="none" stroke="${ink}" stroke-width="1.4" stroke-linejoin="round"/>
+                    <circle cx="${x}" cy="${y}" r="2.5" fill="${ink}"/>
+                    <text x="${x}" y="${y - 8}" text-anchor="${anchor}" fill="rgb(var(--c-on-surface))"
+                          font-size="19" font-weight="700">${percent.format(share)}</text>
+                    <text x="${x}" y="${y + 16}" text-anchor="${anchor}" fill="rgb(var(--c-on-surface-variant))"
+                          font-size="12"><tspan data-i18n="${key}">${label}</tspan> · ${count}</text>
+                  </g>`;
+                }).join("");
+
+                const labels = series.querySelectorAll("[data-i18n]");
+                function describeFleet() {
+                  description.textContent = segments.map(({ count }, index) =>
+                    `${labels[index].textContent} · ${count} (${percent.format(count / total)})`
+                  ).join(", ");
+                }
+
+                document.addEventListener("dashboardlanguagechange", describeFleet);
+                describeFleet();
+              })();
+            </script>
           </article>
         </section>
 
@@ -1118,24 +1192,163 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
   (() => {
     const translations = {
       en: {
-        overview: "Operations Overview",
+        enterprise: "Enterprise",
+        operations: "Operation",
+        overview: "Overview",
         equipment: "Equipment Layout",
         last24h: "Last 24 Hours",
         last7d: "Last 7 Days",
         last30d: "Last 30 Days",
+        totalEquipment: "Total Equipment",
+        equipmentMonitoring: "Equipment Monitoring",
+        moduleStatusNormal: "Normal",
+        moduleStatusWatch: "Increased Monitoring",
+        moduleStatusPriority: "Priority Inspection",
+        moduleStatusHold: "Assessment Pending",
+        moduleRiskScoreNote: "Number on each module · Demo risk score (0–1)",
+        moduleDetailPressure: "Cooling Pressure",
+        moduleDetailDeviation: "Recent cooling pressure deviation (σ)",
+        moduleChartNormalRange: "Normal Range",
+        moduleChartWatch: "Watch",
+        moduleChartInspect: "Inspection",
+        moduleChartNow: "Now",
+        moduleDetailNotes: {
+          hold: "There is not enough data to show the pressure reading or trend.",
+          normal: "Cooling pressure stayed within the demo normal range over the last 24 hours.",
+          "low-pressure": "Cooling pressure fell below the lower inspection threshold.",
+          "high-pressure": "Cooling pressure exceeded the upper watch threshold.",
+          "helium-leak": "Cooling pressure is within the normal range. A separate helium leak signal triggered monitoring.",
+        },
+        demodata: "Demo Data",
+        ionmillprocessroute: "Ion-Mill-Process-Route",
+        multiSeriesTelemetryTrend: "Multi Series Telmetry Trend",
+        telemetrySummary24h: "24-hour power load, thermal index, and harmonic vibration",
+        telemetrySummary7d: "7-day power load, thermal index, and harmonic vibration",
+        telemetrySummary30d: "30-day power load, thermal index, and harmonic vibration",
+        equipmentStatus: "Equipment Status",
+        livefleetdistribution: "Live-Fleet distribution",
+        running: "Running",
+        standby: "Stand-By",
+        warning: "Warning",
+        critical: "Critical",
+        activeEquipment: "Active Equipment",
+        fleetTotalLabel: "Total equipment:",
+        fleetTotalUnit: " units",
+        warningEvents: "Warning Events",
+        systemAvailability: "System Availability",
+        health: "Cluster Health",
+        ingestion: "Ingestion-Rate",
+        nominal: "Nominal",
+        VP: "VP Operations",
+        load: "Load (kW)",
+        thermal: "Thermal (°C)",
+        vibration: "Vibration",
+
       },
       ko: {
+        enterprise: "운영 팀",
+        operations: "운영 관리",
         overview: "운영 현황",
         equipment: "장비 배치도",
         last24h: "최근 24시간",
         last7d: "최근 7일",
         last30d: "최근 30일",
+        totalEquipment: "전체 장비",
+        equipmentMonitoring: "설비 모니터링",
+        moduleStatusNormal: "정상",
+        moduleStatusWatch: "관찰 강화",
+        moduleStatusPriority: "우선 점검",
+        moduleStatusHold: "판단 보류",
+        moduleRiskScoreNote: "모듈 숫자 · 데모 위험 점수(0–1)",
+        moduleDetailPressure: "냉각 압력",
+        moduleDetailDeviation: "최근 냉각 압력 편차(σ)",
+        moduleChartNormalRange: "정상 범위",
+        moduleChartWatch: "관찰",
+        moduleChartInspect: "점검",
+        moduleChartNow: "지금",
+        moduleDetailNotes: {
+          hold: "판단에 필요한 데이터가 부족해 압력 수치와 추이를 표시하지 않습니다.",
+          normal: "최근 24시간 냉각 압력은 데모 정상 범위 안에 있습니다.",
+          "low-pressure": "냉각 압력이 하한 점검 임계값 아래로 내려갔습니다.",
+          "high-pressure": "냉각 압력이 상한 관찰 임계값을 넘었습니다.",
+          "helium-leak": "냉각 압력은 정상 범위입니다. 별도 헬륨 누설 신호에 따른 관찰 예시입니다.",
+        },
+        demodata: "데모 데이터",
+        ionmillprocessroute: "이온 밀 공정 통로",
+        multiSeriesTelemetryTrend: "시간별 설비 계측 데이터",
+        telemetrySummary24h: "최근 24시간 전력 부하, 열 지수 및 고조파 진동",
+        telemetrySummary7d: "최근 7일 전력 부하, 열 지수 및 고조파 진동",
+        telemetrySummary30d: "최근 30일 전력 부하, 열 지수 및 고조파 진동",
+        equipmentStatus: "설비 상태",
+        livefleetdistribution: "실시간 설비 분포",
+        running: "가동 중",
+        standby: "대기 중",
+        warning: "주의 요망",
+        critical: "긴급 조치 필요",
+        activeEquipment: "가동 중인 설비",
+        fleetTotalLabel: "총 설비:",
+        fleetTotalUnit: "대",
+        warningEvents: "주의 발생 이력",
+        systemAvailability: "시스템 가용률",
+        health: "운영체제 상태",
+        ingestion: "데이터 전송 속도",
+        nominal: "정상",
+        VP: "운영 책임자",
+        load: "부하 (kW)",
+        thermal: "온도 (°C)",
+        vibration: "진동",
+
       },
     };
 
     const button = document.querySelector("#language-toggle");
     let language = "en";
+      const telemetryRange = document.querySelector("#time-range");
+const telemetrySummary = document.querySelector("#telemetry-summary");
+const telemetryChart = document.querySelector("#telemetry-chart");
 
+const telemetryPeriods = {
+  "24h": { hours: 24, step: 1, ticks: [24, 18, 12, 6, 0], key: "telemetrySummary24h" },
+  "7d": { hours: 168, step: 6, ticks: [7, 5, 3, 1, 0], key: "telemetrySummary7d" },
+  "30d": { hours: 720, step: 24, ticks: [30, 20, 10, 0], key: "telemetrySummary30d" },
+};
+
+const telemetrySamples = Array.from({ length: 721 }, (_, hour) => [
+  69 + 9 * Math.sin(hour / 6) + 8 * Math.sin(hour / 53),
+  56 + 7 * Math.sin(hour / 9) + 6 * Math.cos(hour / 48),
+  42 + 5 * Math.cos(hour / 4) + 5 * Math.sin(hour / 27),
+]);
+
+function renderTelemetry() {
+  const { hours, step, ticks, key } = telemetryPeriods[telemetryRange.value];
+  const messages = translations[language];
+  const samples = telemetrySamples
+    .slice(-(hours + 1))
+    .filter((_, index) => index % step === 0);
+  const unit = hours === 24
+    ? (language === "ko" ? "시간" : "h")
+    : (language === "ko" ? "일" : "d");
+
+  telemetrySummary.textContent = messages[key];
+  telemetryChart.setAttribute("aria-label", messages[key]);
+
+  telemetryChart.querySelectorAll("polyline").forEach((line, series) => {
+    const points = samples.map((sample, index) => {
+      const x = 36 + 629 * index / (samples.length - 1);
+      const y = 134 - 114 * (sample[series] - 25) / 75;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    });
+    line.setAttribute("points", points.join(" "));
+  });
+
+  telemetryChart.querySelector("#telemetry-time-axis").innerHTML = ticks.map((offset) => {
+    const x = 36 + 629 * (1 - offset / ticks[0]);
+    const text = offset === 0 ? messages.moduleChartNow : `−${offset}${unit}`;
+    return `<text x="${x}" y="156">${text}</text>`;
+  }).join("");
+}
+
+telemetryRange.addEventListener("change", renderTelemetry);
     function applyLanguage() {
       document.documentElement.lang = language;
 
@@ -1145,6 +1358,10 @@ html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
       }
 
       button.textContent = language === "en" ? "한국어" : "English";
+      renderTelemetry();
+      document.dispatchEvent(new CustomEvent("dashboardlanguagechange", {
+        detail: translations[language],
+      }));
     }
 
     button.addEventListener("click", () => {
