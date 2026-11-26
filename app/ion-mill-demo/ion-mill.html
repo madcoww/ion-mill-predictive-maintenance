@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>이온 밀 챔버 절개도</title>
+  <script>
+    if (new URLSearchParams(location.search).has("embed")) document.documentElement.dataset.embedded = "true";
+  </script>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
+      color: #e8edf5;
+      background: #07101f;
+      --muted: #a9bdd8;
+      --border: #2a4061;
+      --panel: #0d1a2e;
+      --focus: #7bb4ff;
+      --marker: #8cbeff;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; }
+    .viewer { max-width: 1160px; margin-inline: auto; padding: clamp(14px, 3vw, 42px); }
+    .heading { margin-bottom: 20px; }
+    .heading h1, .heading p { margin: 0; }
+    .heading h1 { font-size: clamp(1.45rem, 3.6vw, 2.15rem); letter-spacing: -.05em; }
+    .heading p { margin-top: 6px; color: var(--muted); font-size: .9rem; }
+    .drawing { margin: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 9px; background: var(--panel); }
+    .stage {
+      position: relative;
+      isolation: isolate;
+      background: radial-gradient(ellipse at 50% 44%, #172741, #0b1424 73%);
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: clamp(358px, 57vw, 550px);
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #111d33;
+    }
+    .controls p { margin: 0; color: var(--muted); font-size: .77rem; line-height: 1.45; }
+    .fault-control { display: flex; align-items: center; gap: 8px; font-size: .78rem; font-weight: 700; }
+    .fault-control select {
+      min-height: 33px;
+      padding: 4px 8px;
+      border: 1px solid #40546a;
+      border-radius: 5px;
+      color: #e8edf5;
+      background: #0a172a;
+      cursor: pointer;
+      font: inherit;
+    }
+    .fault-control select:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+    .target {
+      position: absolute;
+      inset: auto;
+      transform: translate(-50%,-50%);
+      appearance: none;
+      padding: 0;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      background: transparent;
+      cursor: pointer;
+    }
+    .target:focus-visible { outline: 1px dashed var(--focus); outline-offset: 2px; }
+    .target[data-active="true"] { border-color: color-mix(in srgb, var(--marker) 55%, transparent); }
+    .stage[data-alert="true"] { --marker: #ffb478; }
+    .marker, .leader, .callout { position: absolute; pointer-events: none; }
+    .marker {
+      z-index: 2;
+      width: 7px;
+      height: 7px;
+      margin: -3.5px 0 0 -3.5px;
+      border: 1px solid #eef6ff;
+      border-radius: 50%;
+      background: var(--marker);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--marker) 23%, transparent);
+    }
+    .leader { z-index: 1; height: 1px; background: var(--marker); transform-origin: 0 50%; }
+    .callout {
+      z-index: 3;
+      width: min(192px, calc(100% - 20px));
+      padding: 9px 11px;
+      border: 1px solid var(--marker);
+      border-radius: 7px;
+      color: #ecf4ff;
+      background: #0e1d33;
+      box-shadow: 0 6px 18px #050b16a8;
+      font-size: .77rem;
+      line-height: 1.4;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+    .callout strong { display: block; margin-bottom: 3px; font-size: .86rem; }
+    .callout p { margin: 0; color: #bfd0e4; }
+    html[data-embedded="true"], html[data-embedded="true"] body { background: transparent; }
+    [data-embedded="true"] .viewer { max-width: none; padding: 0; }
+    [data-embedded="true"] .heading { display: none; }
+    [data-locked-fault="true"] .controls { display: none; }
+    [data-locked-fault="true"] .target { cursor: default; }
+    @media (min-width: 631px) {
+      [data-embedded="true"] canvas { height: 340px; }
+    }
+    @media (max-width: 630px) {
+      canvas { height: clamp(342px, 108vw, 454px); }
+      .callout { width: min(159px, calc(100% - 20px)); }
+    }
+    @media (max-width: 345px) {
+      .controls { padding-inline: 8px; gap: 6px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="viewer" id="viewer">
+    <header class="heading">
+      <h1>이온 밀 챔버 절개도</h1>
+      <p>이온 밀과 헬륨 냉각 회로 개념도</p>
+    </header>
+    <section class="drawing" aria-label="이온 밀 챔버 뷰어">
+      <div class="controls">
+        <p id="chamber-instructions">부품을 가리키거나 선택해 설명을 확인하세요.</p>
+        <label class="fault-control">고장 예시
+          <select id="fault">
+            <option value="">정상</option>
+            <option value="low-pressure">압력 저하</option>
+            <option value="high-pressure">압력 과다</option>
+            <option value="helium-leak">헬륨 누설</option>
+          </select>
+        </label>
+      </div>
+      <div class="stage" id="stage" aria-describedby="chamber-instructions">
+        <canvas id="chamber" width="800" height="540" role="img"
+          aria-label="앞이 열린 이온 밀 챔버와 외부 헬륨 냉각 회로">
+          이온 소스와 그리드 아래로 빔이 웨이퍼를 향합니다. 챔버 아래로 냉각 펌프, 압력 센서, 유량 조절기와 헬륨 가스통이 이어집니다.
+        </canvas>
+        <div id="chamber-parts" role="group" aria-label="절개도 구성 요소"></div>
+        <div class="leader" id="leader" aria-hidden="true" hidden></div>
+        <div class="marker" id="marker" aria-hidden="true" hidden></div>
+        <div class="callout" id="callout" role="status" aria-atomic="true" hidden>
+          <strong id="callout-title"></strong>
+          <p id="callout-description"></p>
+        </div>
+        <noscript><p>절개도를 보려면 브라우저에서 자바스크립트를 켜세요.</p></noscript>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const canvas = document.querySelector("#chamber");
+    const context = canvas.getContext("2d");
+    const yaw = .17;
+    const pitch = .34;
+    const angles = { cy: Math.cos(yaw), sy: Math.sin(yaw), cp: Math.cos(pitch), sp: Math.sin(pitch) };
+    const scene = [];
+    const TAU = Math.PI * 2;
+    const up = [0, 1, 0];
+
+    const metal = { side: [62, 91, 115], cap: [117, 151, 179] };
+    const lining = { side: [44, 62, 83], cap: [78, 106, 132] };
+    const steel = { side: [93, 116, 143], cap: [157, 182, 207] };
+    const source = { side: [53, 91, 153], cap: [112, 152, 216] };
+    const blue = { side: [45, 101, 169], cap: [101, 168, 247] };
+    const green = { side: [42, 111, 104], cap: [86, 177, 165] };
+    const purple = { side: [82, 66, 152], cap: [157, 141, 235] };
+    const seal = { side: [171, 99, 59], cap: [236, 166, 109] };
+    const aqua = { side: [56, 102, 163], cap: [114, 175, 242] };
+    const instrument = { side: [31, 55, 89], cap: [69, 107, 157] };
+    const light = unit([-0.46, 0.73, 0.66]);
+
+    function add(a, b) { return a.map((part, i) => part + b[i]); }
+    function subtract(a, b) { return a.map((part, i) => part - b[i]); }
+    function multiply(vector, number) { return vector.map((part) => part * number); }
+    function dot(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }
+    function cross(a, b) {
+      return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+    }
+    function unit(vector) { return multiply(vector, 1 / Math.hypot(...vector)); }
+
+    function face(points, normal, color, edge) {
+      scene.push({ points, normal, color, edge });
+    }
+
+    function line(points, color, width = 1) {
+      scene.push({ points, color, width });
+    }
+
+    function roundBasis(axis) {
+      const reference = Math.abs(axis[2]) > .9 ? [1, 0, 0] : [0, 0, 1];
+      const right = unit(cross(reference, axis));
+      return [right, cross(axis, right)];
+    }
+
+    function circle(center, axis, radius, segments) {
+      const [right, forward] = roundBasis(axis);
+      return Array.from({ length: segments }, (_, i) => {
+        const angle = i / segments * TAU;
+        const radial = add(multiply(right, Math.cos(angle)), multiply(forward, Math.sin(angle)));
+        return { position: add(center, multiply(radial, radius)), radial };
+      });
+    }
+
+    function cylinder(start, end, radius, material, segments = 32, endRadius = radius) {
+      const direction = subtract(end, start);
+      const axis = unit(direction);
+      const first = circle(start, axis, radius, segments);
+      const second = circle(end, axis, endRadius, segments);
+      const slope = (radius - endRadius) / Math.hypot(...direction);
+      for (let i = 0; i < segments; i++) {
+        const next = (i + 1) % segments;
+        const radial = unit(add(first[i].radial, first[next].radial));
+        face([first[i].position, first[next].position, second[next].position, second[i].position],
+          unit(add(radial, multiply(axis, slope))), material.side);
+      }
+      face(first.map(({ position }) => position), multiply(axis, -1), material.side);
+      face(second.map(({ position }) => position), axis, material.cap);
+    }
+
+    function ring(y0, y1, inner, outer, start, end, material, inside = material.side) {
+      const segments = Math.ceil(72 * (end - start) / TAU);
+      const at = (angle, radius, y) => [Math.sin(angle) * radius, y, Math.cos(angle) * radius];
+      for (let i = 0; i < segments; i++) {
+        const a = start + i / segments * (end - start);
+        const b = start + (i + 1) / segments * (end - start);
+        const radial = at((a + b) / 2, 1, 0);
+        const outerBottom = [at(a, outer, y0), at(b, outer, y0)];
+        const outerTop = [at(a, outer, y1), at(b, outer, y1)];
+        const innerBottom = [at(a, inner, y0), at(b, inner, y0)];
+        const innerTop = [at(a, inner, y1), at(b, inner, y1)];
+        face([...outerBottom, ...outerTop.toReversed()], radial, material.side);
+        face([...innerBottom, ...innerTop.toReversed()], multiply(radial, -1), inside);
+        face([...outerTop, ...innerTop.toReversed()], up, material.cap);
+        face([...outerBottom, ...innerBottom.toReversed()], [0, -1, 0], material.side);
+      }
+      if (end - start < TAU) {
+        for (const [angle, sign] of [[start, -1], [end, 1]]) {
+          const normal = [Math.cos(angle) * sign, 0, -Math.sin(angle) * sign];
+          face([at(angle, inner, y0), at(angle, outer, y0), at(angle, outer, y1), at(angle, inner, y1)],
+            normal, material.cap, "rgba(191, 216, 239, .48)");
+        }
+      }
+    }
+
+    function addHousing() {
+      const opening = 1.16;
+      const sectorEnd = TAU - opening;
+      const bands = [-147, -102, -53, 0, 53, 98, 144];
+      for (let i = 0; i < bands.length - 1; i++) {
+        ring(bands[i], bands[i + 1], 132, 141, opening, sectorEnd, metal, lining.side);
+      }
+      ring(143, 155, 128, 148, opening, sectorEnd, metal);
+      ring(-166, -146, 122, 151, 0, TAU, metal);
+      ring(-173, -166, 133, 145, 0, TAU, lining);
+      cylinder([0, -163, 0], [0, -154, 0], 121, lining, 56);
+
+      for (let i = 0; i < 12; i++) {
+        const angle = i / 12 * TAU;
+        const x = Math.sin(angle) * 137;
+        const z = Math.cos(angle) * 137;
+        cylinder([x, -146, z], [x, -143, z], 3.4, steel, 8);
+      }
+    }
+
+    function addSource() {
+      cylinder([0, 119, -7], [0, 130, -7], 62, steel);
+      cylinder([0, 130, -7], [0, 160, -7], 55, source);
+      cylinder([0, 160, -7], [0, 169, -7], 47, source);
+      cylinder([0, 169, -7], [0, 178, -7], 29, lining);
+      cylinder([0, 178, -7], [0, 185, -7], 21, steel);
+      ring(136, 140, 54.9, 56.5, 0, TAU, source);
+
+      for (const y of [110, 97, 84]) {
+        ring(y - 3, y, 49, 61, 0, TAU, steel);
+        for (let offset = -36; offset <= 36; offset += 12) {
+          const half = Math.sqrt(49 ** 2 - offset ** 2);
+          line([[offset, y + .3, -half], [offset, y + .3, half]], "rgba(172, 200, 225, .62)", .75);
+          line([[-half, y + .3, offset], [half, y + .3, offset]], "rgba(172, 200, 225, .62)", .75);
+        }
+      }
+    }
+
+    const waferNormal = unit([-.28, .95, .17]);
+    const waferCenter = [0, -65, 13];
+
+    function addWaferAndShutter() {
+      const alongWafer = (distance) => add(waferCenter, multiply(waferNormal, distance));
+      cylinder(alongWafer(-48), alongWafer(-26), 48, lining);
+      cylinder(alongWafer(-26), alongWafer(-7), 68, metal);
+      cylinder(alongWafer(-7), alongWafer(-3), 64, steel);
+      cylinder(alongWafer(-3), alongWafer(1), 57, purple);
+      const surface = alongWafer(1.4);
+      for (const radius of [50, 53]) {
+        const rim = circle(surface, waferNormal, radius, 40).map(({ position }) => position);
+        line([...rim, rim[0]], "rgba(223, 212, 255, .58)", 1);
+      }
+      const sealRim = circle(alongWafer(-1), waferNormal, 60, 48).map(({ position }) => position);
+      for (let i = 0; i < sealRim.length; i++) {
+        const next = (i + 1) % sealRim.length;
+        line([sealRim[i], sealRim[next]], "rgba(247, 171, 113, .98)", 2.3);
+      }
+
+      cylinder([78, -99, 30], [78, -39, 30], 8.5, green);
+      cylinder([78, -47, 30], [78, -34, 30], 12, green);
+      cylinder([78, -41, 30], [81, -41, 67], 5, green, 16);
+      const bladeAxis = unit([.18, .89, .42]);
+      const bladeCenter = [81, -41, 71];
+      cylinder(bladeCenter, add(bladeCenter, multiply(bladeAxis, 5)), 31, green);
+      const rim = circle(add(bladeCenter, multiply(bladeAxis, 5.4)), bladeAxis, 27, 32).map(({ position }) => position);
+      line([...rim, rim[0]], "rgba(192, 248, 206, .74)");
+    }
+
+    function box(center, dimensions, material) {
+      const corners = [[-1, -1], [1, -1], [1, 1], [-1, 1]];
+      for (let axis = 0; axis < 3; axis++) {
+        for (const side of [-1, 1]) {
+          const normal = [0, 0, 0];
+          normal[axis] = side;
+          const points = corners.map(([u, v]) => {
+            const offsets = [...normal];
+            offsets[(axis + 1) % 3] = u;
+            offsets[(axis + 2) % 3] = v;
+            return center.map((value, index) => value + offsets[index] * dimensions[index] / 2);
+          });
+          face(points, normal, axis === 1 && side === 1 ? material.cap : material.side);
+        }
+      }
+    }
+
+    function pipe(path, radius = 5.5, material = aqua) {
+      for (let index = 1; index < path.length; index++) {
+        const start = path[index - 1];
+        const end = path[index];
+        const overlap = multiply(unit(subtract(end, start)), 1.5);
+        cylinder(subtract(start, overlap), add(end, overlap), radius, material, 12);
+      }
+    }
+
+    function addGauge() {
+      pipe([[121, 53, 19], [165, 53, 19], [176, 53, 34]], 6, steel);
+      cylinder([176, 53, 31], [176, 53, 47], 20, instrument);
+      cylinder([176, 53, 47], [176, 53, 50], 16.7, steel);
+      cylinder([176, 53, 50], [176, 53, 51], 14.3, lining);
+      for (let index = 0; index < 7; index++) {
+        const angle = index * Math.PI / 6;
+        const tick = (radius) => [176 + Math.cos(angle) * radius, 53 + Math.sin(angle) * radius, 51.6];
+        line([tick(9.3), tick(12.3)], "#d3e5fb", .8);
+      }
+      line([[175, 52, 52], [183, 58, 52]], "#ffb269", 1.1);
+    }
+
+    function addCoolingCircuit() {
+      for (const x of [-31, 31]) {
+        pipe([[x, -103, 37], [x, -145, 48], [x, -163, 78]], 5.3);
+      }
+      pipe([[-31, -163, 78], [-107, -163, 78], [-142, -181, 102], [-173, -181, 114]]);
+      pipe([[-172, -195, 135], [-145, -195, 145], [-91, -195, 145], [-55, -195, 145]]);
+      pipe([[-43, -195, 145], [17, -195, 145], [48, -195, 145], [84, -195, 145]]);
+      pipe([[92, -195, 145], [146, -195, 145], [178, -187, 145], [205, -175, 125]]);
+      pipe([[31, -163, 78], [112, -163, 78], [164, -145, 79], [205, -130, 100]], 4.4, steel);
+
+      box([-177, -204, 115], [64, 8, 48], instrument);
+      cylinder([-177, -182, 93], [-177, -182, 134], 21, blue);
+      cylinder([-177, -182, 134], [-177, -182, 139], 15, steel);
+      cylinder([-177, -182, 139], [-177, -182, 141], 10, instrument);
+
+      box([-55, -195, 145], [52, 39, 40], seal);
+      box([-58, -183, 166], [25, 11, 3], instrument);
+      line([[-66, -183, 168], [-51, -183, 168]], "#ffcfad", 1.2);
+
+      box([72, -195, 145], [65, 35, 41], instrument);
+      box([72, -175, 144], [42, 5, 28], blue);
+      line([[57, -189, 166], [85, -189, 166]], "#8bc2ff", 1.2);
+
+      cylinder([205, -206, 123], [205, -139, 123], 21, steel);
+      cylinder([205, -139, 123], [205, -130, 123], 21, steel, 32, 17);
+      cylinder([205, -130, 123], [205, -124, 123], 17, steel, 32, 9);
+      cylinder([205, -124, 123], [205, -115, 123], 7, instrument);
+      cylinder([205, -115, 123], [205, -111, 123], 10, blue);
+      ringBottleBand();
+    }
+
+    function ringBottleBand() {
+      const band = circle([205, -159, 123], up, 21.6, 40).map(({ position }) => position);
+      for (let i = 0; i < band.length; i++) {
+        line([band[i], band[(i + 1) % band.length]], "#7eafe9", 1.5);
+      }
+    }
+
+    function addBeams() {
+      for (let x = -36; x <= 36; x += 18) {
+        for (let z = -36; z <= 36; z += 18) {
+          if (x * x + z * z > 43 ** 2) continue;
+          const waferY = waferCenter[1] - (waferNormal[0] * x + waferNormal[2] * (z - waferCenter[2])) / waferNormal[1];
+          for (let y = 79; y > waferY + 7; y -= 10) {
+            line([[x, y, z], [x, Math.max(y - 7, waferY + 5), z]], "rgba(255, 171, 99, .66)", 1.15);
+          }
+          line([[x - 2.5, waferY + 7, z], [x, waferY + 3, z], [x + 2.5, waferY + 7, z]], "#fabb8b", 1);
+        }
+      }
+    }
+
+    addHousing();
+    addSource();
+    addWaferAndShutter();
+    addGauge();
+    addCoolingCircuit();
+    addBeams();
+
+    function cameraSpace(point) {
+      const [x, y, z] = point;
+      const axisX = angles.cy * x - angles.sy * z;
+      const axisZ = angles.sy * x + angles.cy * z;
+      return [axisX, angles.cp * y - angles.sp * axisZ, angles.sp * y + angles.cp * axisZ];
+    }
+
+    const ranked = [];
+    for (const element of scene) {
+      const normal = element.normal && cameraSpace(element.normal);
+      if (normal && normal[2] < 0) continue;
+      const points = element.points.map(cameraSpace);
+      const depth = points.reduce((sum, point) => sum + point[2], 0) / points.length;
+      ranked.push({ element, points, normal, depth });
+    }
+    ranked.sort((a, b) => a.depth - b.depth);
+    const modelPoints = ranked.flatMap(({ points }) => points);
+    const modelBounds = {
+      left: Math.min(...modelPoints.map(([x]) => x)),
+      right: Math.max(...modelPoints.map(([x]) => x)),
+      top: Math.max(...modelPoints.map(([, y]) => y)),
+      bottom: Math.min(...modelPoints.map(([, y]) => y)),
+    };
+
+    function drawBackground(width, height) {
+      context.strokeStyle = "rgba(129, 158, 192, .12)";
+      context.lineWidth = 1;
+      context.beginPath();
+      for (let x = width / 2 % 26; x < width; x += 26) {
+        context.moveTo(Math.round(x) + .5, 0);
+        context.lineTo(Math.round(x) + .5, height);
+      }
+      for (let y = height / 2 % 26; y < height; y += 26) {
+        context.moveTo(0, Math.round(y) + .5);
+        context.lineTo(width, Math.round(y) + .5);
+      }
+      context.stroke();
+    }
+
+    function draw() {
+      const { width, height } = canvas.getBoundingClientRect();
+      if (width === 0 || height === 0) return;
+      const density = Math.min(window.devicePixelRatio || 1, 2);
+      const pixelWidth = Math.round(width * density);
+      const pixelHeight = Math.round(height * density);
+      if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
+        canvas.width = pixelWidth;
+        canvas.height = pixelHeight;
+      }
+      context.setTransform(density, 0, 0, density, 0, 0);
+      context.clearRect(0, 0, width, height);
+      drawBackground(width, height);
+      const modelWidth = modelBounds.right - modelBounds.left;
+      const modelHeight = modelBounds.top - modelBounds.bottom;
+      const scale = Math.min((width - 24) / modelWidth, (height - 28) / modelHeight);
+      const offsetX = (width - modelWidth * scale) / 2 - modelBounds.left * scale;
+      const offsetY = (height - modelHeight * scale) / 2 + modelBounds.top * scale;
+      context.lineCap = "round";
+      context.lineJoin = "round";
+
+      for (const { element, points, normal } of ranked) {
+        context.beginPath();
+        for (const [index, point] of points.entries()) {
+          const x = offsetX + point[0] * scale;
+          const y = offsetY - point[1] * scale;
+          if (index === 0) context.moveTo(x, y);
+          else context.lineTo(x, y);
+        }
+        if (normal) {
+          const factor = .69 + Math.max(0, dot(normal, light)) * .40;
+          const color = element.color.map((channel) => Math.min(255, Math.round(channel * factor)));
+          context.closePath();
+          context.fillStyle = `rgb(${color.join(",")})`;
+          context.fill();
+          if (element.edge) {
+            context.strokeStyle = element.edge;
+            context.lineWidth = .7;
+            context.stroke();
+          }
+        } else {
+          context.strokeStyle = element.color;
+          context.lineWidth = element.width;
+          context.stroke();
+        }
+      }
+      for (const part of parts) {
+        const [x, y] = cameraSpace(part.point);
+        part.x = offsetX + x * scale;
+        part.y = offsetY - y * scale;
+        part.hitWidth = Math.max(24, part.size[0] * scale);
+        part.hitHeight = Math.max(24, part.size[1] * scale);
+        Object.assign(part.button.style, {
+          left: `${part.x}px`, top: `${part.y}px`,
+          width: `${part.hitWidth}px`, height: `${part.hitHeight}px`,
+        });
+      }
+      placeCallout();
+    }
+
+    const parts = [
+      { key: "source", name: "이온 소스", description: "아르곤 가스에서 이온을 만듭니다.", point: [0, 151, 46], size: [96, 35] },
+      { key: "grids", name: "그리드", description: "세 겹의 그리드가 이온을 가속해 빔을 형성합니다.", point: [4, 99, 51], size: [92, 37] },
+      { key: "beam", name: "이온 빔", description: "아래쪽 웨이퍼 표면에 도달해 재료를 깎습니다.", point: [2, 20, 29], size: [74, 83] },
+      { key: "chamber", name: "진공 챔버", description: "웨이퍼를 가공하는 진공 공간입니다. 앞면을 잘라 내부를 표시했습니다.", point: [-128, 27, 57], size: [22, 156] },
+      { key: "gauge", name: "챔버 압력 게이지", description: "진공 챔버 내부 압력을 읽습니다.", point: [176, 53, 52], size: [39, 39] },
+      { key: "shutter", name: "셔터", description: "빔이 웨이퍼에 닿도록 열어 둔 위치입니다.", point: [83, -35, 75], size: [47, 22] },
+      { key: "wafer", name: "웨이퍼", description: "기울어진 지지대 위에 놓인 식각 대상입니다.", point: [-18, -66, 31], size: [63, 30] },
+      { key: "seal", name: "밀봉 링", description: "웨이퍼 주변의 틈을 막아 냉각용 헬륨이 새는 것을 줄입니다.", point: [54, -60, 43], size: [24, 21] },
+      { key: "pump", name: "냉각 펌프", description: "냉각 회로의 순환을 돕습니다.", point: [-177, -181, 137], size: [58, 44] },
+      { key: "sensor", name: "압력 센서", description: "냉각 회로의 압력을 측정합니다.", point: [-55, -193, 167], size: [49, 39] },
+      { key: "flow", name: "유량 조절기", description: "냉각 회로로 들어가는 헬륨 유량을 조절합니다.", point: [72, -190, 164], size: [60, 36] },
+      { key: "helium", name: "헬륨 가스통", description: "웨이퍼 냉각에 쓰이는 헬륨을 공급합니다.", point: [205, -163, 140], size: [42, 78] },
+    ];
+    const faults = {
+      "low-pressure": { key: "sensor", description: "압력 저하" },
+      "high-pressure": { key: "pump", description: "압력 과다" },
+      "helium-leak": { key: "seal", description: "헬륨 누설" },
+    };
+    const faultKey = new URLSearchParams(location.search).get("fault");
+    const embedded = document.documentElement.dataset.embedded === "true";
+    const lockedFault = embedded && Object.hasOwn(faults, faultKey) ? faults[faultKey] : null;
+    if (lockedFault) document.documentElement.dataset.lockedFault = "true";
+    const stage = document.querySelector("#stage");
+    const targets = document.querySelector("#chamber-parts");
+    const faultSelect = document.querySelector("#fault");
+    const callout = document.querySelector("#callout");
+    const calloutTitle = document.querySelector("#callout-title");
+    const calloutDescription = document.querySelector("#callout-description");
+    const marker = document.querySelector("#marker");
+    const leader = document.querySelector("#leader");
+    let hovered = null;
+    let focused = null;
+    let pinned = null;
+    let active = null;
+
+    function clamp(value, min, max) { return Math.max(min, Math.min(max, value)); }
+
+    function placeCallout() {
+      if (!active?.x) return;
+      const { x, y, hitWidth, hitHeight } = active;
+      const width = stage.clientWidth;
+      const height = stage.clientHeight;
+      const boxWidth = callout.offsetWidth;
+      const boxHeight = callout.offsetHeight;
+      const gap = 15;
+      const margin = 8;
+      const right = x + hitWidth / 2 + gap;
+      const left = x - hitWidth / 2 - gap - boxWidth;
+      const leftFits = left >= margin;
+      const rightFits = right + boxWidth <= width - margin;
+      let boxX;
+      let boxY = y - boxHeight / 2;
+      if (leftFits && (x < width / 2 || !rightFits)) {
+        boxX = left;
+      } else if (rightFits) {
+        boxX = right;
+      } else {
+        boxX = clamp(x - boxWidth / 2, margin, width - margin - boxWidth);
+        const above = y - hitHeight / 2 - gap - boxHeight;
+        boxY = above >= margin ? above : y + hitHeight / 2 + gap;
+      }
+      boxY = clamp(boxY, margin, height - margin - boxHeight);
+      const endX = clamp(x, boxX, boxX + boxWidth);
+      const endY = clamp(y, boxY, boxY + boxHeight);
+      Object.assign(callout.style, { left: `${boxX}px`, top: `${boxY}px` });
+      Object.assign(marker.style, { left: `${x}px`, top: `${y}px` });
+      Object.assign(leader.style, {
+        left: `${x}px`, top: `${y}px`,
+        width: `${Math.hypot(endX - x, endY - y)}px`,
+        transform: `rotate(${Math.atan2(endY - y, endX - x)}rad)`,
+      });
+    }
+
+    function showActive() {
+      const fault = lockedFault ?? faults[faultSelect.value];
+      active = fault ? parts.find((part) => part.key === fault.key) : pinned || hovered || focused;
+      stage.dataset.alert = String(Boolean(fault));
+      for (const part of parts) {
+        part.button.dataset.active = String(active === part);
+        part.button.setAttribute("aria-pressed", String(pinned === part));
+      }
+      callout.hidden = marker.hidden = leader.hidden = !active;
+      if (!active) return;
+      calloutTitle.textContent = active.name;
+      calloutDescription.textContent = fault?.description ?? active.description;
+      placeCallout();
+    }
+
+    function clearSelection() {
+      pinned = hovered = focused = null;
+      showActive();
+    }
+
+    for (const part of parts) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "target";
+      button.disabled = Boolean(lockedFault);
+      button.setAttribute("aria-label", part.name);
+      button.setAttribute("aria-pressed", "false");
+      button.addEventListener("pointerenter", (event) => {
+        if (event.pointerType === "touch") return;
+        hovered = part;
+        showActive();
+      });
+      button.addEventListener("pointerleave", () => {
+        if (hovered === part) hovered = null;
+        showActive();
+      });
+      button.addEventListener("focus", () => {
+        if (!button.matches(":focus-visible")) return;
+        focused = part;
+        showActive();
+      });
+      button.addEventListener("blur", () => {
+        if (focused === part) focused = null;
+        showActive();
+      });
+      button.addEventListener("click", () => {
+        pinned = pinned === part ? null : part;
+        showActive();
+      });
+      part.button = button;
+      targets.append(button);
+    }
+    stage.addEventListener("click", (event) => {
+      if (!event.target.closest(".target")) clearSelection();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      if (lockedFault && window.parent !== window) {
+        window.parent.postMessage({ type: "ion-mill:close" }, "*");
+      } else {
+        clearSelection();
+      }
+    });
+    faultSelect.addEventListener("change", () => {
+      if (!faultSelect.value) clearSelection();
+      else showActive();
+    });
+
+    const observer = new ResizeObserver(draw);
+    observer.observe(canvas);
+    draw();
+    if (lockedFault) showActive();
+
+    if (window.parent !== window && embedded) {
+      const viewer = document.querySelector("#viewer");
+      const measure = new ResizeObserver(() => {
+        window.parent.postMessage({ type: "ion-mill:resize", height: Math.ceil(viewer.getBoundingClientRect().height) }, "*");
+      });
+      measure.observe(viewer);
+    }
+  </script>
+</body>
+</html>

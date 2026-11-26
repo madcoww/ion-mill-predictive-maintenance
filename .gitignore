@@ -39,3 +39,6 @@ desktop.ini
 
 # Office 임시 잠금 파일
 ~$*
+
+# 문정훈 개인 GPT 가이드 파일
+/AGENTS.md

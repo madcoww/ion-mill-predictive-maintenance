@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)#heatmap -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- [테마] 페이지가 그려지기 전에 저장된 테마를 먼저 적용 (밝은 화면 깜빡임 방지) -->
+  <script>
+    (function () {
+      var theme = 'dark'; // 기본값은 다크
+      try { if (localStorage.getItem('asdf-theme') === 'light') theme = 'light'; } catch (e) {} // 저장값 읽기
+      document.documentElement.setAttribute('data-theme', theme); // html 에 테마 속성 부여
+    })();
+  </script>
+  <!-- [테마] 색상 변수 정의: html[data-theme] 값에 따라 전체 색이 한 번에 바뀜 -->
+  <style>
+    :root, html[data-theme="dark"] {
+      color-scheme: dark;
+      --c-background: 17 20 25;
+      --c-on-background: 232 237 245;
+      --c-sidebar: 19 23 32;
+      --c-on-sidebar: 232 237 245;
+      --c-panel: 22 28 38;
+      --c-on-panel: 232 237 245;
+      --c-panel-elevated: 29 37 51;
+      --c-on-panel-elevated: 243 246 250;
+      --c-border-subtle: 42 51 66;
+      --c-border-strong: 58 70 89;
+      --c-primary: 34 197 199;
+      --c-on-primary: 8 20 22;
+      --c-primary-soft: 20 45 53;
+      --c-on-primary-soft: 103 224 226;
+      --c-on-surface: 232 237 245;
+      --c-on-surface-variant: 155 167 184;
+      --c-on-surface-muted: 125 138 156;
+      --c-accent-blue: 96 165 250;
+      --c-accent-blue-soft: 25 40 64;
+      --c-accent-green: 34 197 94;
+      --c-accent-green-soft: 20 45 36;
+      --c-accent-amber: 245 158 11;
+      --c-accent-amber-soft: 45 35 20;
+      --c-accent-red: 248 113 113;
+      --c-accent-red-soft: 51 26 32;
+      --c-grid: 34 43 58;
+    }
+    html[data-theme="light"] {
+      color-scheme: light;
+      --c-background: 244 246 250;
+      --c-on-background: 21 28 40;
+      --c-sidebar: 255 255 255;
+      --c-on-sidebar: 21 28 40;
+      --c-panel: 255 255 255;
+      --c-on-panel: 21 28 40;
+      --c-panel-elevated: 238 242 247;
+      --c-on-panel-elevated: 15 22 32;
+      --c-border-subtle: 221 227 236;
+      --c-border-strong: 195 205 218;
+      --c-primary: 14 154 160;
+      --c-on-primary: 255 255 255;
+      --c-primary-soft: 221 243 244;
+      --c-on-primary-soft: 11 122 128;
+      --c-on-surface: 21 28 40;
+      --c-on-surface-variant: 75 88 107;
+      --c-on-surface-muted: 102 115 138;
+      --c-accent-blue: 37 99 235;
+      --c-accent-blue-soft: 227 237 254;
+      --c-accent-green: 22 163 74;
+      --c-accent-green-soft: 222 245 230;
+      --c-accent-amber: 217 119 6;
+      --c-accent-amber-soft: 252 239 216;
+      --c-accent-red: 220 38 38;
+      --c-accent-red-soft: 251 227 227;
+      --c-grid: 227 232 240;
+    }
+    body { transition: background-color .2s ease, color .2s ease; }
+
+    /* 테마 전환 버튼 래퍼 */
+    .theme-switch {
+      display: inline-flex; align-items: center; gap: 2px; padding: 2px;
+      border-radius: 4px;
+      background: rgb(var(--c-panel));
+      border: 1px solid rgb(var(--c-border-subtle));
+    }
+    /* 테마 전환 버튼 (세그먼트형) */
+    .theme-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      height: 24px; padding: 0 8px; border-radius: 3px;
+      font-size: 11px; font-weight: 500; line-height: 1;
+      color: rgb(var(--c-on-surface-variant));
+      background: transparent; border: 0; cursor: pointer;
+      transition: background-color .12s ease-out, color .12s ease-out;
+    }
+    .theme-btn:hover { color: rgb(var(--c-on-surface)); }
+    .theme-btn[aria-pressed="true"] {
+      background: rgb(var(--c-primary-soft));
+      color: rgb(var(--c-on-primary-soft));
+    }
+    .theme-btn:focus-visible { outline: 2px solid rgb(var(--c-primary)); outline-offset: 1px; }
+  </style>
+
+  <title>A - Corporate Dark — Wafers Enterprise Analytics</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'background': 'rgb(var(--c-background) / <alpha-value>)',
+        'on-background': 'rgb(var(--c-on-background) / <alpha-value>)',
+        'sidebar': 'rgb(var(--c-sidebar) / <alpha-value>)',
+        'on-sidebar': 'rgb(var(--c-on-sidebar) / <alpha-value>)',
+        'panel': 'rgb(var(--c-panel) / <alpha-value>)',
+        'on-panel': 'rgb(var(--c-on-panel) / <alpha-value>)',
+        'panel-elevated': 'rgb(var(--c-panel-elevated) / <alpha-value>)',
+        'on-panel-elevated': 'rgb(var(--c-on-panel-elevated) / <alpha-value>)',
+        'border-subtle': 'rgb(var(--c-border-subtle) / <alpha-value>)',
+        'border-strong': 'rgb(var(--c-border-strong) / <alpha-value>)',
+        'primary': 'rgb(var(--c-primary) / <alpha-value>)',
+        'on-primary': 'rgb(var(--c-on-primary) / <alpha-value>)',
+        'primary-soft': 'rgb(var(--c-primary-soft) / <alpha-value>)',
+        'on-primary-soft': 'rgb(var(--c-on-primary-soft) / <alpha-value>)',
+        'on-surface': 'rgb(var(--c-on-surface) / <alpha-value>)',
+        'on-surface-variant': 'rgb(var(--c-on-surface-variant) / <alpha-value>)',
+        'on-surface-muted': 'rgb(var(--c-on-surface-muted) / <alpha-value>)',
+        'accent-blue': 'rgb(var(--c-accent-blue) / <alpha-value>)',
+        'accent-blue-soft': 'rgb(var(--c-accent-blue-soft) / <alpha-value>)',
+        'accent-green': 'rgb(var(--c-accent-green) / <alpha-value>)',
+        'accent-green-soft': 'rgb(var(--c-accent-green-soft) / <alpha-value>)',
+        'accent-amber': 'rgb(var(--c-accent-amber) / <alpha-value>)',
+        'accent-amber-soft': 'rgb(var(--c-accent-amber-soft) / <alpha-value>)',
+        'accent-red': 'rgb(var(--c-accent-red) / <alpha-value>)',
+        'accent-red-soft': 'rgb(var(--c-accent-red-soft) / <alpha-value>)',
+      },
+      borderRadius: {
+        'none': '0px',
+        'xs': '2px',
+        'sm': '4px',
+        'DEFAULT': '6px',
+        'md': '6px',
+        'lg': '8px',
+        'full': '9999px',
+      },
+      spacing: {
+        'xs': '4px',
+        'sm': '8px',
+        'md': '12px',
+        'lg': '16px',
+        'xl': '20px',
+        '2xl': '24px',
+      },
+      fontFamily: {
+        'display': ['"Albert Sans"', 'sans-serif'],
+        'kpi': ['"Albert Sans"', 'sans-serif'],
+        'headline': ['"Albert Sans"', 'sans-serif'],
+        'title': ['"Albert Sans"', 'sans-serif'],
+        'body': ['"Commissioner"', 'sans-serif'],
+        'label': ['"Commissioner"', 'sans-serif'],
+        'mono': ['"Source Code Pro"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['36px', { lineHeight: '42px', letterSpacing: '-0.5px', fontWeight: '600' }],
+        'display-lg-mobile': ['28px', { lineHeight: '34px', letterSpacing: '-0.25px', fontWeight: '600' }],
+        'kpi-value': ['26px', { lineHeight: '32px', letterSpacing: '-0.4px', fontWeight: '600' }],
+        'headline-md': ['18px', { lineHeight: '24px', letterSpacing: '-0.2px', fontWeight: '600' }],
+        'title-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '600' }],
+        'body-md': ['13px', { lineHeight: '18px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.1px', fontWeight: '500' }],
+        'label-xs': ['11px', { lineHeight: '14px', letterSpacing: '0.2px', fontWeight: '500' }],
+        'mono-xs': ['11px', { lineHeight: '15px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 본문/제목/숫자용 폰트: Albert Sans, Commissioner, Source Code Pro -->
+  <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&family=Commissioner:wght@400;500;600&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- 아이콘 폰트: Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <style>
+    .material-symbols-outlined {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      line-height: 1 !important;
+      box-sizing: content-box;
+      overflow: hidden;
+      white-space: nowrap;
+      direction: ltr;
+      vertical-align: middle;
+    }
+  </style>
+  <!-- 컴파일된 Tailwind CSS: 색상은 var(--c-*) 를 참조 → CDN 없이도 레이아웃/테마 동작 -->
+    <!-- [장비 배치도] equipment-heatmap.css (테마 변수 적용본) -->
+  <style id="equipment-heatmap-css">
+/* ───────── 라이트 테마: html[data-theme="light"] 일 때만 값을 덮어씀 ───────── */
+html[data-theme="light"] .equipment-heatmap {
+  --surface: #ffffff;
+  --well: #f1f5fa;
+  --border: #dde3ec;
+  --text: #151c28;
+  --muted: #566379;
+  --blue: #2563eb;
+  --normal: #16a34a;
+  --watch: #c2610a;
+  --priority: #dc2626;
+  --hold: #6b778b;
+  --focus: #2563eb;
+  --floor-border: #d3dbe6;
+  --scroll-thumb: #b7c3d3;
+  --hatch: #c3cedd80;
+  --tool-bg: #f8fafd;
+  --tool-border: #cbd5e3;
+  --tool-name-text: #1b2535;
+  --tool-name-bg: #eaf0f7;
+  --core-border: #c3cedd;
+  --core-bg: #e8eef6;
+  --core-ring: #9aa9be;
+  --module-border-base: #cbd5e3;
+  --module-bg: #ffffff;
+  --module-mix-base: #ffffff;
+  --small-mix: #000;           /* 라이트에서는 검정과 섞어 글자를 더 진하게 */
+  --aisle-text: #5c6a80;
+  --aisle-line: #b3c0d2;
+  --key-text: #3b475a;
+  --badge-border-base: #d3dbe6;
+  --chart-grid: #e3e8f0;
+  --range-fill: #16a34a24;
+  --range-key: #16a34a40;
+  --trace: #0891b2;
+  --dialog-border: #c3cedd;
+  --dialog-bg: #ffffff;
+  --btn-bg: #eef2f7;
+  --btn-hover: #e1e8f1;
+}
+
+.equipment-heatmap {
+  --surface: #111d33;
+  --well: #0a1428;
+  --border: #253856;
+  --text: #f1f6ff;
+  --muted: #a8bddc;
+  --blue: #4591ff;
+  --normal: #45dda7;
+  --watch: #ffd163;
+  --priority: #ff787e;
+  --hold: #aab3c3;
+  /* ── 테마 확장 변수 (다크 = 원본 색 그대로) ── */
+  --focus: #bfdbff;            /* 포커스 외곽선 */
+  --floor-border: #263957;     /* 배치도 스크롤 영역 테두리 */
+  --scroll-thumb: #425a7e;     /* 스크롤바 */
+  --hatch: #23375366;          /* 배치도 상하 빗금 */
+  --tool-bg: #0d192f;          /* 툴 박스 배경 */
+  --tool-border: #2b405f;      /* 툴 박스/이름표 테두리 */
+  --tool-name-text: #e5f0ff;   /* 툴 이름 글자 */
+  --tool-name-bg: #152540;     /* 툴 이름 배경 */
+  --core-border: #2c4266;      /* 툴 코어 테두리 */
+  --core-bg: #13233d;          /* 툴 코어 배경 */
+  --core-ring: #415d85;        /* 툴 코어 원 */
+  --module-border-base: #294269; /* 모듈 테두리(상태색과 혼합) */
+  --module-bg: #0c1930;        /* 모듈 배경 */
+  --module-mix-base: #0b172c;  /* 모듈 상태 배경 혼합 기준색 */
+  --small-mix: #fff;           /* 모듈 점수 글자 혼합색 */
+  --aisle-text: #a9bfdc;       /* 통로 라벨 */
+  --aisle-line: #476084;       /* 통로 점선 */
+  --key-text: #c2d3ea;         /* 범례 글자 */
+  --badge-border-base: #223752;/* 상태 뱃지 테두리 혼합 기준색 */
+  --chart-grid: #293a55;       /* 차트 격자선 */
+  --range-fill: #43dca42a;     /* 정상 범위 영역 */
+  --range-key: #43dca452;      /* 정상 범위 범례 */
+  --trace: #58d2ff;            /* 압력 추이 선 */
+  --dialog-border: #45628b;    /* 팝업 테두리 */
+  --dialog-bg: #0e1b31;        /* 팝업 배경 */
+  --btn-bg: #182c4b;           /* 팝업 버튼 */
+  --btn-hover: #22426d;        /* 팝업 버튼 hover */
+  container-type: inline-size;
+  min-width: 0;
+  color: var(--text);
+  font-family: "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.equipment-heatmap [hidden] { display: none !important; }
+.equipment-heatmap [data-status="normal"] { --status: var(--normal); }
+.equipment-heatmap [data-status="watch"] { --status: var(--watch); }
+.equipment-heatmap [data-status="priority"] { --status: var(--priority); }
+.equipment-heatmap [data-status="hold"] { --status: var(--hold); }
+.equipment-heatmap :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.ehp-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 12px;
+}
+.ehp-card {
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+.ehp-heading {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 5px 10px;
+  margin-bottom: 10px;
+}
+.ehp-heading h2, .ehp-dialog h2 {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.03rem;
+  font-weight: 750;
+}
+.ehp-heading > span { color: var(--muted); font-size: .74rem; }
+
+.ehp-floor-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--floor-border);
+  border-radius: 6px;
+  background: var(--well);
+  scrollbar-color: var(--scroll-thumb) var(--well);
+}
+.ehp-floor {
+  min-width: 505px;
+  padding: 9px 8px;
+  background:
+    repeating-linear-gradient(135deg, transparent 0 9px, var(--hatch) 9px 11px) top / 100% 17px no-repeat,
+    repeating-linear-gradient(135deg, transparent 0 9px, var(--hatch) 9px 11px) bottom / 100% 17px no-repeat;
+}
+.ehp-row { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; }
+.ehp-tool {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+  padding: 5px;
+  border: 1px dashed var(--tool-border);
+  border-radius: 7px;
+  background: var(--tool-bg);
+}
+.ehp-tool[data-status="watch"], .ehp-tool[data-status="priority"] { border-color: var(--status); border-style: solid; }
+.ehp-tool-name {
+  order: 3;
+  margin: 0;
+  border: 1px solid var(--tool-border);
+  border-radius: 4px;
+  color: var(--tool-name-text);
+  background: var(--tool-name-bg);
+  line-height: 1.45;
+  text-align: center;
+  font-size: .69rem;
+  font-weight: 750;
+  white-space: nowrap;
+}
+.ehp-tool-core {
+  order: 2;
+  display: grid;
+  place-items: center;
+  align-self: center;
+  width: 55%;
+  height: 21px;
+  border: 1px solid var(--core-border);
+  border-radius: 8px;
+  background: var(--core-bg);
+}
+.ehp-tool-core::after {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--core-ring);
+  border-radius: 50%;
+  content: "";
+}
+.ehp-row-reversed .ehp-tool-name { order: 0; }
+.ehp-row-reversed .ehp-modules { order: 3; }
+.ehp-modules { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+.ehp-module {
+  display: grid;
+  align-content: center;
+  gap: 1px;
+  min-height: 44px;
+  padding: 2px 1px;
+  border: 1px solid color-mix(in srgb, var(--status) 58%, var(--module-border-base));
+  border-radius: 6px;
+  color: var(--text);
+  background: var(--module-bg);
+  text-align: center;
+  font: inherit;
+  font-size: .75rem;
+  cursor: pointer;
+}
+.ehp-module small {
+  color: color-mix(in srgb, var(--status) 88%, var(--small-mix));
+  font-size: .7rem;
+  font-weight: 650;
+  line-height: 1.25;
+}
+.ehp-module[data-status="hold"] { border-style: dashed; }
+.ehp-module[data-status="watch"], .ehp-module[data-status="priority"] {
+  background: color-mix(in srgb, var(--status) 18%, var(--module-mix-base));
+}
+.ehp-module:hover { background: color-mix(in srgb, var(--status) 24%, var(--module-mix-base)); }
+.ehp-module[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--blue); }
+.ehp-module:focus-visible { outline-offset: 1px; }
+.ehp-aisle {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 30px;
+  margin: 4px 0;
+  color: var(--aisle-text);
+  font-size: .68rem;
+  letter-spacing: .025em;
+  white-space: nowrap;
+}
+.ehp-aisle::before, .ehp-aisle::after {
+  flex: 1;
+  border-top: 1px dashed var(--aisle-line);
+  content: "";
+}
+.ehp-status-key, .ehp-chart-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  padding: 0;
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: .69rem;
+  line-height: 1.4;
+  list-style: none;
+}
+.ehp-status-key li, .ehp-chart-key li { display: flex; align-items: center; gap: 4px; }
+.ehp-status-key li::before {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--status);
+  content: "";
+}
+.ehp-status-key, .ehp-score-key { color: var(--key-text); font-size: .76rem; }
+.ehp-score-key { margin: 4px 0 0; line-height: 1.4; }
+
+.ehp-detail .ehp-heading { align-items: center; margin-bottom: 10px; }
+.ehp-detail .ehp-badge {
+  padding: 3px 7px;
+  border: 1px solid color-mix(in srgb, var(--status) 60%, var(--badge-border-base));
+  border-radius: 5px;
+  color: var(--status);
+  background: color-mix(in srgb, var(--status) 12%, var(--well));
+  font-weight: 700;
+  white-space: nowrap;
+}
+.ehp-detail-label, .ehp-detail-note { margin: 0; color: var(--muted); font-size: .76rem; line-height: 1.45; word-break: keep-all; }
+.ehp-reading { margin: 0; color: var(--status); line-height: 1; }
+.ehp-reading strong { font-size: 2.66rem; font-weight: 750; letter-spacing: -.045em; }
+.ehp-reading span { color: var(--muted); font-size: .9rem; }
+.ehp-chart-area { margin-top: 8px; }
+.ehp-chart { display: block; width: 100%; height: 161px; overflow: hidden; }
+.ehp-chart .ehp-grid-line { stroke: var(--chart-grid); stroke-width: 1; }
+.ehp-chart .ehp-range { fill: var(--range-fill); }
+.ehp-chart .ehp-limit { stroke-dasharray: 5 4; stroke-width: 1.2; }
+.ehp-chart .ehp-limit-watch { stroke: var(--watch); }
+.ehp-chart .ehp-limit-priority { stroke: var(--priority); }
+.ehp-chart .ehp-trace { fill: none; stroke: var(--trace); stroke-width: 1.65; stroke-linejoin: round; stroke-linecap: round; }
+.ehp-chart text { fill: var(--muted); font-family: inherit; font-size: 10.5px; }
+.ehp-chart-key { margin-top: 2px; }
+.ehp-chart-key i { width: 13px; }
+.ehp-range-key { height: 7px; border-radius: 1px; background: var(--range-key); }
+.ehp-watch-key { border-top: 1px dashed var(--watch); }
+.ehp-priority-key { border-top: 1px dashed var(--priority); }
+.ehp-detail-note { margin-top: 8px; }
+
+.ehp-dialog {
+  position: fixed;
+  inset: 0;
+  width: min(760px, calc(100% - 24px));
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 13px;
+  margin: auto;
+  border: 1px solid var(--dialog-border);
+  border-radius: 11px;
+  color: var(--text);
+  background: var(--dialog-bg);
+}
+.ehp-dialog::backdrop { background: #030912c7; }
+html[data-theme="light"] .ehp-dialog::backdrop { background: #0f172a73; }
+.ehp-dialog-heading { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+.ehp-dialog button {
+  min-width: 45px;
+  min-height: 34px;
+  padding: 4px 8px;
+  border: 1px solid var(--dialog-border);
+  border-radius: 6px;
+  color: var(--text);
+  background: var(--btn-bg);
+  font: inherit;
+  font-size: .8rem;
+  cursor: pointer;
+}
+.ehp-dialog button:hover { background: var(--btn-hover); }
+.ehp-dialog iframe { display: block; width: 100%; height: 342px; border: 0; }
+
+@container (max-width: 820px) {
+  .ehp-layout { grid-template-columns: minmax(0, 1fr); }
+}
+
+  </style>
+  <style id="compiled-tailwind">*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:"Source Code Pro", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}[type='text'],input:where(:not([type])),[type='email'],[type='url'],[type='password'],[type='number'],[type='date'],[type='datetime-local'],[type='month'],[type='search'],[type='tel'],[type='time'],[type='week'],[multiple],textarea,select{-webkit-appearance:none;appearance:none;background-color:#fff;border-color:#6b7280;border-width:1px;border-radius:0px;padding-top:0.5rem;padding-right:0.75rem;padding-bottom:0.5rem;padding-left:0.75rem;font-size:1rem;line-height:1.5rem;--tw-shadow:0 0 #0000;}[type='text']:focus, input:where(:not([type])):focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus{outline:2px solid transparent;outline-offset:2px;--tw-ring-inset:var(--tw-empty,/*!*/ /*!*/);--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:#2563eb;--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);border-color:#2563eb}input::placeholder,textarea::placeholder{color:#6b7280;opacity:1}::-webkit-datetime-edit-fields-wrapper{padding:0}::-webkit-date-and-time-value{min-height:1.5em;text-align:inherit}::-webkit-datetime-edit{display:inline-flex}::-webkit-datetime-edit,::-webkit-datetime-edit-year-field,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute-field,::-webkit-datetime-edit-second-field,::-webkit-datetime-edit-millisecond-field,::-webkit-datetime-edit-meridiem-field{padding-top:0;padding-bottom:0}select{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");background-position:right 0.5rem center;background-repeat:no-repeat;background-size:1.5em 1.5em;padding-right:2.5rem;print-color-adjust:exact}[multiple],[size]:where(select:not([size="1"])){background-image:initial;background-position:initial;background-repeat:unset;background-size:initial;padding-right:0.75rem;print-color-adjust:unset}[type='checkbox'],[type='radio']{-webkit-appearance:none;appearance:none;padding:0;print-color-adjust:exact;display:inline-block;vertical-align:middle;background-origin:border-box;-webkit-user-select:none;user-select:none;flex-shrink:0;height:1rem;width:1rem;color:#2563eb;background-color:#fff;border-color:#6b7280;border-width:1px;--tw-shadow:0 0 #0000}[type='checkbox']{border-radius:0px}[type='radio']{border-radius:100%}[type='checkbox']:focus,[type='radio']:focus{outline:2px solid transparent;outline-offset:2px;--tw-ring-inset:var(--tw-empty,/*!*/ /*!*/);--tw-ring-offset-width:2px;--tw-ring-offset-color:#fff;--tw-ring-color:#2563eb;--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)}[type='checkbox']:checked,[type='radio']:checked{border-color:transparent;background-color:currentColor;background-size:100% 100%;background-position:center;background-repeat:no-repeat}[type='checkbox']:checked{background-image:url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");}@media (forced-colors: active) {[type='checkbox']:checked{-webkit-appearance:auto;appearance:auto}}[type='radio']:checked{background-image:url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");}@media (forced-colors: active) {[type='radio']:checked{-webkit-appearance:auto;appearance:auto}}[type='checkbox']:checked:hover,[type='checkbox']:checked:focus,[type='radio']:checked:hover,[type='radio']:checked:focus{border-color:transparent;background-color:currentColor}[type='checkbox']:indeterminate{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 16'%3e%3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8h8'/%3e%3c/svg%3e");border-color:transparent;background-color:currentColor;background-size:100% 100%;background-position:center;background-repeat:no-repeat;}@media (forced-colors: active) {[type='checkbox']:indeterminate{-webkit-appearance:auto;appearance:auto}}[type='checkbox']:indeterminate:hover,[type='checkbox']:indeterminate:focus{border-color:transparent;background-color:currentColor}[type='file']{background:unset;border-color:inherit;border-width:0;border-radius:0;padding:0;font-size:unset;line-height:inherit}[type='file']:focus{outline:1px solid ButtonText;outline:1px auto -webkit-focus-ring-color}.absolute{position:absolute}.relative{position:relative}.right-1{right:0.25rem}.top-1{top:0.25rem}.col-span-4{grid-column:span 4 / span 4}.col-span-8{grid-column:span 8 / span 8}.my-xs{margin-top:4px;margin-bottom:4px}.mt-xs{margin-top:4px}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.h-1\.5{height:0.375rem}.h-14{height:3.5rem}.h-5{height:1.25rem}.h-7{height:1.75rem}.h-8{height:2rem}.h-0\.5{height:0.125rem}.h-2{height:0.5rem}.h-2\.5{height:0.625rem}.h-3{height:0.75rem}.h-auto{height:auto}.h-full{height:100%}.min-h-\[1024px\]{min-height:1024px}.min-h-\[1000px\]{min-height:1000px}.w-1\.5{width:0.375rem}.w-5{width:1.25rem}.w-60{width:15rem}.w-7{width:1.75rem}.w-8{width:2rem}.w-12{width:3rem}.w-16{width:4rem}.w-2{width:0.5rem}.w-2\.5{width:0.625rem}.w-full{width:100%}.min-w-0{min-width:0px}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.border-collapse{border-collapse:collapse}.cursor-pointer{cursor:pointer}.grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.grid-cols-12{grid-template-columns:repeat(12, minmax(0, 1fr))}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.grid-cols-7{grid-template-columns:repeat(7, minmax(0, 1fr))}.grid-cols-8{grid-template-columns:repeat(8, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-center{align-items:center}.items-baseline{align-items:baseline}.items-stretch{align-items:stretch}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-lg{gap:16px}.gap-md{gap:12px}.gap-sm{gap:8px}.gap-xs{gap:4px}.divide-y > :not([hidden]) ~ :not([hidden]){--tw-divide-y-reverse:0;border-top-width:calc(1px * calc(1 - var(--tw-divide-y-reverse)));border-bottom-width:calc(1px * var(--tw-divide-y-reverse))}.divide-border-subtle > :not([hidden]) ~ :not([hidden]){--tw-divide-opacity:1;border-color:rgb(var(--c-border-subtle) / var(--tw-divide-opacity, 1))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rounded-full{border-radius:9999px}.rounded-md{border-radius:6px}.rounded-sm{border-radius:4px}.rounded-xs{border-radius:2px}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-r{border-right-width:1px}.border-t{border-top-width:1px}.border-border-strong{--tw-border-opacity:1;border-color:rgb(var(--c-border-strong) / var(--tw-border-opacity, 1))}.border-border-subtle{--tw-border-opacity:1;border-color:rgb(var(--c-border-subtle) / var(--tw-border-opacity, 1))}.border-accent-amber{--tw-border-opacity:1;border-color:rgb(var(--c-accent-amber) / var(--tw-border-opacity, 1))}.border-accent-blue{--tw-border-opacity:1;border-color:rgb(var(--c-accent-blue) / var(--tw-border-opacity, 1))}.border-accent-green{--tw-border-opacity:1;border-color:rgb(var(--c-accent-green) / var(--tw-border-opacity, 1))}.border-accent-red{--tw-border-opacity:1;border-color:rgb(var(--c-accent-red) / var(--tw-border-opacity, 1))}.border-primary{--tw-border-opacity:1;border-color:rgb(var(--c-primary) / var(--tw-border-opacity, 1))}.bg-accent-amber{--tw-bg-opacity:1;background-color:rgb(var(--c-accent-amber) / var(--tw-bg-opacity, 1))}.bg-accent-amber-soft{--tw-bg-opacity:1;background-color:rgb(var(--c-accent-amber-soft) / var(--tw-bg-opacity, 1))}.bg-accent-green{--tw-bg-opacity:1;background-color:rgb(var(--c-accent-green) / var(--tw-bg-opacity, 1))}.bg-accent-green-soft{--tw-bg-opacity:1;background-color:rgb(var(--c-accent-green-soft) / var(--tw-bg-opacity, 1))}.bg-background{--tw-bg-opacity:1;background-color:rgb(var(--c-background) / var(--tw-bg-opacity, 1))}.bg-panel{--tw-bg-opacity:1;background-color:rgb(var(--c-panel) / var(--tw-bg-opacity, 1))}.bg-panel-elevated{--tw-bg-opacity:1;background-color:rgb(var(--c-panel-elevated) / var(--tw-bg-opacity, 1))}.bg-primary{--tw-bg-opacity:1;background-color:rgb(var(--c-primary) / var(--tw-bg-opacity, 1))}.bg-primary-soft{--tw-bg-opacity:1;background-color:rgb(var(--c-primary-soft) / var(--tw-bg-opacity, 1))}.bg-sidebar{--tw-bg-opacity:1;background-color:rgb(var(--c-sidebar) / var(--tw-bg-opacity, 1))}.bg-accent-blue{--tw-bg-opacity:1;background-color:rgb(var(--c-accent-blue) / var(--tw-bg-opacity, 1))}.bg-accent-blue-soft{--tw-bg-opacity:1;background-color:rgb(var(--c-accent-blue-soft) / var(--tw-bg-opacity, 1))}.bg-accent-red{--tw-bg-opacity:1;background-color:rgb(var(--c-accent-red) / var(--tw-bg-opacity, 1))}.bg-accent-red-soft{--tw-bg-opacity:1;background-color:rgb(var(--c-accent-red-soft) / var(--tw-bg-opacity, 1))}.p-lg{padding:16px}.p-md{padding:12px}.p-sm{padding:8px}.p-xl{padding:20px}.px-lg{padding-left:16px;padding-right:16px}.px-md{padding-left:12px;padding-right:12px}.px-sm{padding-left:8px;padding-right:8px}.px-xl{padding-left:20px;padding-right:20px}.px-xs{padding-left:4px;padding-right:4px}.py-sm{padding-top:8px;padding-bottom:8px}.py-xs{padding-top:4px;padding-bottom:4px}.py-md{padding-top:12px;padding-bottom:12px}.pb-xs{padding-bottom:4px}.pt-xs{padding-top:4px}.pb-sm{padding-bottom:8px}.text-left{text-align:left}.text-center{text-align:center}.text-right{text-align:right}.font-body{font-family:"Commissioner", sans-serif}.font-headline{font-family:"Albert Sans", sans-serif}.font-kpi{font-family:"Albert Sans", sans-serif}.font-label{font-family:"Commissioner", sans-serif}.font-mono{font-family:"Source Code Pro", monospace}.font-title{font-family:"Albert Sans", sans-serif}.text-\[14px\]{font-size:14px}.text-\[16px\]{font-size:16px}.text-\[18px\]{font-size:18px}.text-headline-md{font-size:18px;line-height:24px;letter-spacing:-0.2px;font-weight:600}.text-kpi-value{font-size:26px;line-height:32px;letter-spacing:-0.4px;font-weight:600}.text-label-md{font-size:12px;line-height:16px;letter-spacing:0.1px;font-weight:500}.text-label-xs{font-size:11px;line-height:14px;letter-spacing:0.2px;font-weight:500}.text-mono-xs{font-size:11px;line-height:15px;letter-spacing:0px;font-weight:500}.text-title-sm{font-size:14px;line-height:20px;letter-spacing:0px;font-weight:600}.text-body-md{font-size:13px;line-height:18px;letter-spacing:0px;font-weight:400}.uppercase{text-transform:uppercase}.tabular-nums{--tw-numeric-spacing:tabular-nums;font-variant-numeric:var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction)}.leading-none{line-height:1}.tracking-wider{letter-spacing:0.05em}.text-accent-amber{--tw-text-opacity:1;color:rgb(var(--c-accent-amber) / var(--tw-text-opacity, 1))}.text-accent-green{--tw-text-opacity:1;color:rgb(var(--c-accent-green) / var(--tw-text-opacity, 1))}.text-border-strong{--tw-text-opacity:1;color:rgb(var(--c-border-strong) / var(--tw-text-opacity, 1))}.text-on-primary-soft{--tw-text-opacity:1;color:rgb(var(--c-on-primary-soft) / var(--tw-text-opacity, 1))}.text-on-surface{--tw-text-opacity:1;color:rgb(var(--c-on-background) / var(--tw-text-opacity, 1))}.text-on-surface-muted{--tw-text-opacity:1;color:rgb(var(--c-on-surface-muted) / var(--tw-text-opacity, 1))}.text-on-surface-variant{--tw-text-opacity:1;color:rgb(var(--c-on-surface-variant) / var(--tw-text-opacity, 1))}.text-primary{--tw-text-opacity:1;color:rgb(var(--c-primary) / var(--tw-text-opacity, 1))}.text-accent-blue{--tw-text-opacity:1;color:rgb(var(--c-accent-blue) / var(--tw-text-opacity, 1))}.text-accent-red{--tw-text-opacity:1;color:rgb(var(--c-accent-red) / var(--tw-text-opacity, 1))}.text-on-primary{--tw-text-opacity:1;color:rgb(var(--c-on-primary) / var(--tw-text-opacity, 1))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-state-change{transition-duration:120ms}.hover\:border-border-strong:hover{--tw-border-opacity:1;border-color:rgb(var(--c-border-strong) / var(--tw-border-opacity, 1))}.hover\:bg-panel:hover{--tw-bg-opacity:1;background-color:rgb(var(--c-panel) / var(--tw-bg-opacity, 1))}.hover\:bg-panel-elevated:hover{--tw-bg-opacity:1;background-color:rgb(var(--c-panel-elevated) / var(--tw-bg-opacity, 1))}.hover\:text-on-surface:hover{--tw-text-opacity:1;color:rgb(var(--c-on-background) / var(--tw-text-opacity, 1))}</style>
+</head>
+<body class="bg-background text-on-surface font-body antialiased">
+  <div class="flex bg-background text-on-surface" style="min-height: 100vh;">
+    <!-- Fixed Left Sidebar -->
+    <aside class="w-60 shrink-0 bg-sidebar border-r border-border-subtle flex flex-col justify-between" style="height: 100vh; position: sticky; top: 0; overflow-y: auto;">
+      <div>
+        <!-- Brand Header -->
+        <div class="h-14 px-lg border-b border-border-subtle flex items-center gap-sm">
+          <div class="w-7 h-7 rounded-sm bg-primary-soft border border-border-strong flex items-center justify-center shrink-0">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <rect x="2" y="2" width="12" height="12" rx="2" stroke="#22C5C7" stroke-width="1.5"></rect>
+              <path d="M5 10.5L7.5 6.5L9.5 9L11.5 5.5" stroke="#22C5C7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+          <div class="min-w-0">
+            <div data-design-text-token="title-sm" class="font-title text-title-sm text-on-surface leading-none">Wafers</div>
+            <div data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-muted mt-xs leading-none">Enterprise Analytics</div>
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav aria-label="Primary Navigation" class="p-md flex flex-col gap-xs">
+          <div class="px-sm pt-xs pb-xs">
+            <span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-muted uppercase tracking-wider">Dashboard</span>
+          </div>
+
+          <a href="#overview" class="flex items-center gap-sm px-sm py-sm rounded-sm bg-panel-elevated border border-border-subtle text-on-primary-soft transition-colors duration-state-change">
+            <span class="material-symbols-outlined text-[18px] text-primary" aria-hidden="true">analytics</span>
+            <span data-design-text-token="label-md" class="font-label text-label-md">Overview</span>
+          </a>
+
+          <a href="#equipment" class="flex items-center gap-sm px-sm py-sm rounded-sm text-on-surface-variant hover:bg-panel hover:text-on-surface transition-colors duration-state-change">
+            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">precision_manufacturing</span>
+            <span data-design-text-token="label-md" class="font-label text-label-md">Equipment Monitoring</span>
+          </a>
+
+          <a href="#process" class="flex items-center gap-sm px-sm py-sm rounded-sm text-on-surface-variant hover:bg-panel hover:text-on-surface transition-colors duration-state-change">
+            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">hub</span>
+            <span data-design-text-token="label-md" class="font-label text-label-md">Process Analytics</span>
+          </a>
+
+          <a href="#performance" class="flex items-center gap-sm px-sm py-sm rounded-sm text-on-surface-variant hover:bg-panel hover:text-on-surface transition-colors duration-state-change">
+            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">monitoring</span>
+            <span data-design-text-token="label-md" class="font-label text-label-md">Performance Analysis</span>
+          </a>
+
+          <a href="#heatmap" class="flex items-center gap-sm px-sm py-sm rounded-sm text-on-surface-variant hover:bg-panel hover:text-on-surface transition-colors duration-state-change">
+            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">view_comfy_alt</span>
+            <span data-design-text-token="label-md" class="font-label text-label-md">Heatmap Analysis</span>
+          </a>
+
+          <a href="#events" class="flex items-center justify-between px-sm py-sm rounded-sm text-on-surface-variant hover:bg-panel hover:text-on-surface transition-colors duration-state-change">
+            <span class="flex items-center gap-sm">
+              <span class="material-symbols-outlined text-[18px]" aria-hidden="true">notifications_active</span>
+              <span data-design-text-token="label-md" class="font-label text-label-md">Event &amp; Alarm History</span>
+            </span>
+            <span data-component-id="badge-numeric" data-component-type="badge" data-component-variant="numeric" class="px-xs py-xs rounded-xs bg-accent-amber-soft text-accent-amber font-mono text-mono-xs tabular-nums">12</span>
+          </a>
+
+          <div class="my-xs border-t border-border-subtle"></div>
+
+          <a href="#reports" class="flex items-center gap-sm px-sm py-sm rounded-sm text-on-surface-variant hover:bg-panel hover:text-on-surface transition-colors duration-state-change">
+            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">summarize</span>
+            <span data-design-text-token="label-md" class="font-label text-label-md">Reports</span>
+          </a>
+
+          <a href="#settings" class="flex items-center gap-sm px-sm py-sm rounded-sm text-on-surface-variant hover:bg-panel hover:text-on-surface transition-colors duration-state-change">
+            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">tune</span>
+            <span data-design-text-token="label-md" class="font-label text-label-md">Settings</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Bottom System Status & User Profile -->
+      <div class="p-md border-t border-border-subtle flex flex-col gap-md">
+        <div class="bg-panel border border-border-subtle rounded-sm p-sm flex flex-col gap-xs">
+          <div class="flex items-center justify-between">
+            <span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Cluster Health</span>
+            <span class="inline-flex items-center gap-xs text-accent-green">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent-green"></span>
+              <span data-design-text-token="label-xs" class="font-label text-label-xs">Nominal</span>
+            </span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span data-design-text-token="mono-xs" class="font-mono text-mono-xs text-on-surface-muted">Ingestion Rate</span>
+            <span data-design-text-token="mono-xs" class="font-mono text-mono-xs text-primary tabular-nums">14.2k / s</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-sm px-xs">
+          <div class="w-8 h-8 rounded-full bg-panel-elevated border border-border-strong flex items-center justify-center shrink-0">
+            <span data-design-text-token="label-xs" class="font-label text-label-xs text-primary">EV</span>
+          </div>
+          <div class="min-w-0 flex-1">
+            <div data-design-text-token="label-md" class="font-label text-label-md text-on-surface truncate">Elena Vance</div>
+            <div data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-muted truncate">VP Operations</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Scrollable Dashboard Area -->
+    <div class="flex-1 min-w-0 flex flex-col bg-background">
+      <!-- Compact Top Header -->
+      <header class="h-14 px-xl border-b border-border-subtle bg-sidebar flex items-center justify-between gap-lg shrink-0">
+        <div class="flex items-center gap-md">
+          <div class="flex items-center gap-xs text-on-surface-muted">
+            <span data-design-text-token="label-xs" class="font-label text-label-xs">Enterprise</span>
+            <span class="material-symbols-outlined text-[14px]" aria-hidden="true">chevron_right</span>
+            <span data-design-text-token="label-xs" class="font-label text-label-xs text-primary">Operations Overview</span>
+          </div>
+          <span class="text-border-strong">|</span>
+          <h1 data-i18n="overview" data-design-text-token="headline-md" class="font-headline text-headline-md text-on-surface">Operations Overview</h1>
+        </div>
+
+        <div class="flex items-center gap-md">
+          <div class="flex items-center gap-xs px-sm py-xs rounded-sm bg-panel border border-border-subtle">
+            <span class="material-symbols-outlined text-[14px] text-primary" aria-hidden="true">schedule</span>
+            <span data-design-text-token="mono-xs" class="font-mono text-mono-xs text-on-surface-variant tabular-nums">2026-11-24 04:05:49 UTC</span>
+          </div>
+
+          <div class="relative inline-flex items-center rounded-sm bg-panel border border-border-subtle text-on-surface">
+            <span    class="material-symbols-outlined text-[16px] text-primary"    aria-hidden="true"    style="position: absolute; left: 10px; pointer-events: none;"  >date_range</span>
+
+            <select    id="time-range"    aria-label="Time range"    class="font-label text-label-md cursor-pointer"    style="appearance: none; background: transparent; border: 0; color: inherit; padding: 6px 32px;"  >
+              <option value="24h" selected>Last 24 Hours</option>
+              <option value="7d">Last 7 Days</option>
+              <option value="30d">Last 30 Days</option>
+            </select>
+
+            <span    class="material-symbols-outlined text-[16px] text-on-surface-variant"    aria-hidden="true"    style="position: absolute; right: 10px; pointer-events: none;"  >
+              expand_more</span>
+          </div>
+          <button
+            id="language-toggle"
+            type="button"
+            class="rounded-sm bg-panel border border-border-subtle px-md py-xs font-label text-label-md text-on-surface cursor-pointer"          >
+            한국어
+          </button>
+
+          <button data-component-id="button-icon" data-component-type="button" data-component-variant="icon" type="button" aria-label="Notifications" class="relative inline-flex items-center justify-center w-8 h-8 rounded-sm bg-panel border border-border-subtle text-on-surface-variant hover:text-on-surface hover:bg-panel-elevated transition-colors duration-state-change cursor-pointer">
+            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">notifications</span>
+            <span class="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-primary"></span>
+          </button>
+
+          <!-- 테마 선택: 밝은 화면 / 어두운 화면 -->
+          <div role="group" aria-label="화면 테마 선택" class="theme-switch">
+            <button type="button" class="theme-btn" data-theme-btn="light" aria-pressed="false" title="밝은 화면">
+              <span class="material-symbols-outlined text-[14px]" aria-hidden="true">light_mode</span>
+              <span>Light</span>
+            </button>
+            <button type="button" class="theme-btn" data-theme-btn="dark" aria-pressed="true" title="어두운 화면">
+              <span class="material-symbols-outlined text-[14px]" aria-hidden="true">dark_mode</span>
+              <span>Dark</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Dashboard Content -->
+      <main class="p-xl flex flex-col gap-lg">
+        <!-- Section B (Top Executive KPI Strip) + Section A (Main Visualization) -->
+        <!-- Four KPI Summary Cards -->
+        <section aria-label="KPI Summary" class="grid grid-cols-4 gap-md items-stretch">
+          <article data-component-id="card-kpi" data-component-type="card" data-component-variant="outlined" class="bg-panel border border-border-subtle rounded-md p-lg flex flex-col justify-between gap-sm">
+            <div class="flex items-center justify-between gap-sm">
+              <span data-design-text-token="label-md" class="font-label text-label-md text-on-surface-variant">Total Equipment</span>
+              <span class="inline-flex items-center gap-xs px-sm py-xs rounded-xs bg-panel-elevated text-on-surface-variant">
+                <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                <span data-design-text-token="label-xs" class="font-label text-label-xs">Fleet</span>
+              </span>
+            </div>
+            <div class="flex items-baseline justify-between gap-sm">
+              <span data-design-text-token="kpi-value" class="font-kpi text-kpi-value text-on-surface tabular-nums">128</span>
+              <span data-design-text-token="mono-xs" class="font-mono text-mono-xs text-accent-green tabular-nums">+4 units / 30d</span>
+            </div>
+          </article>
+
+          <article data-component-id="card-kpi" data-component-type="card" data-component-variant="outlined" class="bg-panel border border-border-subtle rounded-md p-lg flex flex-col justify-between gap-sm">
+            <div class="flex items-center justify-between gap-sm">
+              <span data-design-text-token="label-md" class="font-label text-label-md text-on-surface-variant">Active Equipment</span>
+              <span class="inline-flex items-center gap-xs px-sm py-xs rounded-xs bg-accent-green-soft text-accent-green">
+                <span class="w-1.5 h-1.5 rounded-full bg-accent-green"></span>
+                <span data-design-text-token="label-xs" class="font-label text-label-xs">87.5%</span>
+              </span>
+            </div>
+            <div class="flex items-baseline justify-between gap-sm">
+              <span data-design-text-token="kpi-value" class="font-kpi text-kpi-value text-on-surface tabular-nums">112</span>
+              <span data-design-text-token="mono-xs" class="font-mono text-mono-xs text-accent-green tabular-nums">+1.8% vs 24h</span>
+            </div>
+          </article>
+
+          <article data-component-id="card-kpi" data-component-type="card" data-component-variant="outlined" class="bg-panel border border-border-subtle rounded-md p-lg flex flex-col justify-between gap-sm">
+            <div class="flex items-center justify-between gap-sm">
+              <span data-design-text-token="label-md" class="font-label text-label-md text-on-surface-variant">Warning Events</span>
+              <span class="inline-flex items-center gap-xs px-sm py-xs rounded-xs bg-accent-amber-soft text-accent-amber">
+                <span class="w-1.5 h-1.5 rounded-full bg-accent-amber"></span>
+                <span data-design-text-token="label-xs" class="font-label text-label-xs">3 Critical</span>
+              </span>
+            </div>
+            <div class="flex items-baseline justify-between gap-sm">
+              <span data-design-text-token="kpi-value" class="font-kpi text-kpi-value text-accent-amber tabular-nums">12</span>
+              <span data-design-text-token="mono-xs" class="font-mono text-mono-xs text-accent-green tabular-nums">-3 vs 24h</span>
+            </div>
+          </article>
+
+          <article data-component-id="card-kpi" data-component-type="card" data-component-variant="outlined" class="bg-panel border border-border-subtle rounded-md p-lg flex flex-col justify-between gap-sm">
+            <div class="flex items-center justify-between gap-sm">
+              <span data-design-text-token="label-md" class="font-label text-label-md text-on-surface-variant">System Availability</span>
+              <span class="inline-flex items-center gap-xs px-sm py-xs rounded-xs bg-primary-soft text-on-primary-soft">
+                <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                <span data-design-text-token="label-xs" class="font-label text-label-xs">SLA Met</span>
+              </span>
+            </div>
+            <div class="flex items-baseline justify-between gap-sm">
+              <span data-design-text-token="kpi-value" class="font-kpi text-kpi-value text-primary tabular-nums">98.7%</span>
+              <span data-design-text-token="mono-xs" class="font-mono text-mono-xs text-accent-green tabular-nums">+0.2% vs 7d</span>
+            </div>
+          </article>
+        </section>
+
+        <!-- Equipment Heatmap and Selected Module -->
+        <section class="equipment-heatmap" id="equipment-heatmap" lang="ko" aria-labelledby="equipment-heading">
+          <div class="ehp-layout">
+            <section class="ehp-card" aria-labelledby="equipment-heading">
+              <header class="ehp-heading">
+                <h2 id="equipment-heading" data-i18n="equipment">장비 배치도</h2>
+                <span>데모 데이터</span>
+              </header>
+              <div class="ehp-floor-scroll" role="region" aria-label="장비 배치도 스크롤 영역" tabindex="0">
+                <div class="ehp-floor">
+                  <div class="ehp-row" id="ehp-row-top"></div>
+                  <div class="ehp-aisle"><span>이온 밀 공정 통로</span></div>
+                  <div class="ehp-row ehp-row-reversed" id="ehp-row-bottom"></div>
+                </div>
+              </div>
+              <ul class="ehp-status-key" aria-label="모듈 상태 범례">
+                <li data-status="normal">정상</li>
+                <li data-status="watch">관찰 강화</li>
+                <li data-status="priority">우선 점검</li>
+                <li data-status="hold">판단 보류</li>
+              </ul>
+              <p class="ehp-score-key">모듈 숫자 · 데모 위험 점수(0–1)</p>
+            </section>
+
+            <section class="ehp-card ehp-detail" aria-labelledby="ehp-detail-title" data-status="priority">
+              <div aria-live="polite" aria-atomic="true">
+                <header class="ehp-heading">
+                  <h2 id="ehp-detail-title">04M02 · 냉각 압력</h2>
+                  <span id="ehp-detail-status" class="ehp-badge" data-status="priority">우선 점검</span>
+                </header>
+                <p class="ehp-detail-label">최근 냉각 압력 편차(σ)</p>
+                <p class="ehp-reading" id="ehp-reading"><strong id="ehp-pressure">−2.42</strong> <span id="ehp-pressure-unit">σ</span></p>
+              </div>
+              <div id="ehp-chart-area" class="ehp-chart-area">
+                <svg class="ehp-chart" id="ehp-trend" role="img" viewBox="0 0 516 161" aria-label="04M02 최근 24시간 표준화 냉각 압력. 마지막 값 −2.42 시그마. 정상 범위 ±0.60 시그마."><rect class="ehp-range" x="25" y="22.700000000000003" width="480" height="38.1"></rect>
+      <line x1="25" x2="505" y1="137" y2="137" class="ehp-grid-line"></line>
+        <text x="20" y="140.5" text-anchor="end">−3</text><line x1="25" x2="505" y1="105.25" y2="105.25" class="ehp-grid-line"></line>
+        <text x="20" y="108.75" text-anchor="end">−2</text><line x1="25" x2="505" y1="73.5" y2="73.5" class="ehp-grid-line"></line>
+        <text x="20" y="77" text-anchor="end">−1</text><line x1="25" x2="505" y1="41.75" y2="41.75" class="ehp-grid-line"></line>
+        <text x="20" y="45.25" text-anchor="end">0</text><line x1="25" x2="505" y1="10" y2="10" class="ehp-grid-line"></line>
+        <text x="20" y="13.5" text-anchor="end">1</text><line x1="25" x2="505" y1="79.85000000000001" y2="79.85000000000001" class="ehp-limit ehp-limit-watch"></line><line x1="25" x2="505" y1="105.25" y2="105.25" class="ehp-limit ehp-limit-priority"></line><text x="25" y="154" text-anchor="start">−24h</text><text x="145" y="154" text-anchor="middle">−18h</text><text x="265" y="154" text-anchor="middle">−12h</text><text x="385" y="154" text-anchor="middle">−6h</text><text x="505" y="154" text-anchor="end">지금</text>
+      <polyline class="ehp-trace" points="25.00,33.00 30.00,41.75 35.00,42.77 40.00,45.04 45.00,33.94 50.00,42.98 55.00,51.02 60.00,38.07 65.00,41.76 70.00,43.37 75.00,49.29 80.00,39.50 85.00,35.32 90.00,49.95 95.00,40.81 100.00,38.23 105.00,38.35 110.00,45.85 115.00,46.07 120.00,33.18 125.00,47.13 130.00,48.28 135.00,43.78 140.00,41.94 145.00,44.97 150.00,54.56 155.00,39.40 160.00,42.54 165.00,49.99 170.00,46.08 175.00,43.51 180.00,39.18 185.00,53.28 190.00,46.79 195.00,40.41 200.00,50.43 205.00,51.12 210.00,52.43 215.00,43.73 220.00,53.60 225.00,58.51 230.00,46.76 235.00,51.63 240.00,53.36 245.00,57.49 250.00,49.13 255.00,48.70 260.00,61.27 265.00,53.16 270.00,53.12 275.00,55.31 280.00,61.95 285.00,61.22 290.00,53.10 295.00,65.49 300.00,65.04 305.00,61.66 310.00,61.47 315.00,64.84 320.00,70.73 325.00,60.22 330.00,65.11 335.00,70.70 340.00,68.26 345.00,67.91 350.00,67.55 355.00,77.49 360.00,73.05 365.00,71.26 370.00,78.74 375.00,79.14 380.00,80.00 385.00,76.46 390.00,83.37 395.00,85.46 400.00,80.28 405.00,84.70 410.00,86.64 415.00,89.26 420.00,86.74 425.00,89.04 430.00,95.31 435.00,92.86 440.00,94.74 445.00,97.18 450.00,100.47 455.00,101.00 460.00,100.47 465.00,105.33 470.00,106.12 475.00,106.92 480.00,108.74 485.00,111.05 490.00,113.26 495.00,114.20 500.00,116.60 505.00,118.58"></polyline>
+      <circle cx="505" cy="118.585" r="3.2" fill="var(--status)"></circle></svg>
+                <ul class="ehp-chart-key" aria-label="냉각 압력 그래프 범례">
+                  <li><i class="ehp-range-key" aria-hidden="true"></i>정상 범위</li>
+                  <li><i class="ehp-watch-key" aria-hidden="true"></i>관찰 <span id="ehp-watch-label">−1.20 σ</span></li>
+                  <li><i class="ehp-priority-key" aria-hidden="true"></i>점검 <span id="ehp-priority-label">−2.00 σ</span></li>
+                </ul>
+              </div>
+              <p class="ehp-detail-note" id="ehp-detail-note">냉각 압력이 하한 점검 임계값 아래로 내려갔습니다.</p>
+            </section>
+          </div>
+
+          <dialog class="ehp-dialog" id="ehp-dialog" aria-labelledby="ehp-dialog-title">
+            <header class="ehp-dialog-heading">
+              <h2 id="ehp-dialog-title">04M02 · 압력 저하</h2>
+              <form method="dialog"><button type="submit" autofocus="">닫기</button></form>
+            </header>
+            <div id="ehp-model"></div>
+          </dialog>
+          <!-- [장비 배치도] equipment-heatmap.js (원본 그대로) -->
+          <script id="equipment-heatmap-js">
+(() => {
+  const root = document.querySelector("#equipment-heatmap");
+  const find = (selector) => root.querySelector(selector);
+  const statuses = { normal: "정상", watch: "관찰 강화", priority: "우선 점검", hold: "판단 보류" };
+  const faultNames = { "low-pressure": "압력 저하", "high-pressure": "압력 과다", "helium-leak": "헬륨 누설" };
+  const cases = {
+    "02M01": { status: "hold", pressure: null },
+    "03M01": { score: 0.07, pressure: -0.06 },
+    "04M02": { status: "priority", fault: "low-pressure", score: 0.94, pressure: -2.42 },
+    "07M01": { status: "watch", fault: "high-pressure", score: 0.57, pressure: 1.61 },
+    "09M02": { status: "watch", fault: "helium-leak", score: 0.59, pressure: -0.28 },
+  };
+  const normalLimit = .60;
+  const watchLimit = 1.20;
+  const priorityLimit = 2;
+  const chart = find("#ehp-trend");
+  const detail = find(".ehp-detail");
+  const dialog = find("#ehp-dialog");
+  const model = find("#ehp-model");
+  let selected = null;
+  let frame = null;
+  let opener = null;
+
+  function format(value, decimals = 2) {
+    return value.toFixed(decimals).replace("-", "−");
+  }
+
+  function readings(record, seed) {
+    return Array.from({ length: 97 }, (_, index) => {
+      const fraction = index / 96;
+      if (index === 96) return record.pressure;
+      const noise = Math.sin(index * 1.67 + seed * .83) * .19
+        + Math.sin(index * 2.59 + seed) * .12 + Math.cos(index * .40) * .05;
+      const drift = record.fault === "high-pressure" || record.fault === "low-pressure"
+        ? fraction ** 2.45 : fraction ** 3;
+      return noise * (1 - drift) + record.pressure * drift;
+    });
+  }
+
+  function makeRecord(tool, module, index) {
+    const id = tool + module;
+    const record = {
+      id, tool, module, status: "normal",
+      score: (.06 + (index * 7 % 13) / 100),
+      pressure: Number((Math.sin(index * 2.39) * .26).toFixed(2)),
+      ...cases[id],
+    };
+    record.series = record.pressure === null ? [] : readings(record, index);
+    return record;
+  }
+
+  function makeModule(record) {
+    const button = document.createElement("button");
+    const score = record.status === "hold" ? "보류" : record.score.toFixed(2);
+    button.type = "button";
+    button.className = "ehp-module";
+    button.dataset.module = record.id;
+    button.dataset.status = record.status;
+    button.setAttribute("aria-pressed", "false");
+    button.setAttribute("aria-label", `${record.id}, ${statuses[record.status]}${record.status === "hold" ? "" : `, 위험 점수 ${score}`}`);
+    if (record.fault) button.setAttribute("aria-haspopup", "dialog");
+    const name = document.createElement("span");
+    name.textContent = record.module;
+    const value = document.createElement("small");
+    value.textContent = score;
+    button.append(name, value);
+    record.button = button;
+    button.addEventListener("click", () => {
+      select(record);
+      if (record.fault) openModel(record);
+    });
+    return button;
+  }
+
+  function renderFloor() {
+    let initial;
+    for (let number = 1; number <= 10; number++) {
+      const toolId = String(number).padStart(2, "0");
+      const modules = ["M01", "M02"].map((module, column) => makeRecord(toolId, module, 2 * number + column));
+      const tool = document.createElement("div");
+      tool.className = "ehp-tool";
+      const highlighted = modules.find((record) => record.fault);
+      if (highlighted) tool.dataset.status = highlighted.status;
+
+      const label = document.createElement("h3");
+      label.className = "ehp-tool-name";
+      label.textContent = `TOOL ${toolId}`;
+      const core = document.createElement("div");
+      core.className = "ehp-tool-core";
+      core.setAttribute("aria-hidden", "true");
+      const group = document.createElement("div");
+      group.className = "ehp-modules";
+      group.setAttribute("role", "group");
+      group.setAttribute("aria-label", `TOOL ${toolId}`);
+      for (const record of modules) {
+        group.append(makeModule(record));
+        if (record.id === "03M01") initial = record;
+      }
+      tool.append(label, core, group);
+      find(number <= 5 ? "#ehp-row-top" : "#ehp-row-bottom").append(tool);
+    }
+    select(initial);
+  }
+
+  function select(record) {
+    selected?.button.setAttribute("aria-pressed", "false");
+    selected = record;
+    record.button.setAttribute("aria-pressed", "true");
+    detail.dataset.status = record.status;
+    find("#ehp-detail-title").textContent = `${record.id} · 냉각 압력`;
+    const badge = find("#ehp-detail-status");
+    badge.textContent = statuses[record.status];
+    badge.dataset.status = record.status;
+    const held = record.pressure === null;
+    find("#ehp-pressure").textContent = held ? "—" : format(record.pressure);
+    find("#ehp-pressure-unit").hidden = held;
+    find("#ehp-chart-area").hidden = held;
+    const descriptions = {
+      hold: "판단에 필요한 데이터가 부족해 압력 수치와 추이를 표시하지 않습니다.",
+      normal: "최근 24시간 냉각 압력은 데모 정상 범위 안에 있습니다.",
+      "low-pressure": "냉각 압력이 하한 점검 임계값 아래로 내려갔습니다.",
+      "high-pressure": "냉각 압력이 상한 관찰 임계값을 넘었습니다.",
+      "helium-leak": "냉각 압력은 정상 범위입니다. 별도 헬륨 누설 신호에 따른 관찰 예시입니다.",
+    };
+    find("#ehp-detail-note").textContent = descriptions[record.fault ?? record.status];
+    renderTrend();
+  }
+
+  function renderTrend() {
+    if (!selected?.series.length) return;
+    const width = chart.clientWidth;
+    const height = chart.clientHeight;
+    if (width < 130 || height < 90) return;
+
+    const high = selected.fault === "high-pressure";
+    const direction = high ? 1 : -1;
+    const [min, max] = high ? [-1, 3] : [-3, 1];
+    const left = 25, right = width - 11, top = 10, bottom = height - 24;
+    const y = (value) => top + (max - value) / (max - min) * (bottom - top);
+    const x = (fraction) => left + (right - left) * fraction;
+
+    chart.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    chart.setAttribute("aria-label", `${selected.id} 최근 24시간 표준화 냉각 압력. 마지막 값 ${format(selected.pressure)} 시그마. 정상 범위 ±0.60 시그마.`);
+    const grid = [];
+    for (let value = min; value <= max; value++) {
+      grid.push(`<line x1="${left}" x2="${right}" y1="${y(value)}" y2="${y(value)}" class="ehp-grid-line"/>
+        <text x="${left - 5}" y="${y(value) + 3.5}" text-anchor="end">${format(value, 0)}</text>`);
+    }
+
+    const limits = [[watchLimit, "watch"], [priorityLimit, "priority"]];
+    const markers = limits.map(([limit, name]) => {
+      const level = direction * limit;
+      find(`#ehp-${name}-label`).textContent = `${format(level)} σ`;
+      return `<line x1="${left}" x2="${right}" y1="${y(level)}" y2="${y(level)}" class="ehp-limit ehp-limit-${name}"/>`;
+    });
+    const labels = ["−24h", "−18h", "−12h", "−6h", "지금"].map((label, index) => {
+      const anchor = index === 0 ? "start" : index === 4 ? "end" : "middle";
+      return `<text x="${x(index / 4)}" y="${height - 7}" text-anchor="${anchor}">${label}</text>`;
+    });
+    const points = selected.series.map((value, index) =>
+      `${x(index / (selected.series.length - 1)).toFixed(2)},${y(value).toFixed(2)}`).join(" ");
+    chart.innerHTML = `<rect class="ehp-range" x="${left}" y="${y(normalLimit)}" width="${right - left}" height="${y(-normalLimit) - y(normalLimit)}"/>
+      ${grid.join("")}${markers.join("")}${labels.join("")}
+      <polyline class="ehp-trace" points="${points}"/>
+      <circle cx="${right}" cy="${y(selected.pressure)}" r="3.2" fill="var(--status)"/>`;
+  }
+
+  function openModel(record) {
+    if (!Object.hasOwn(faultNames, record.fault)) return;
+    opener = record.button;
+    find("#ehp-dialog-title").textContent = `${record.id} · ${faultNames[record.fault]}`;
+    frame = document.createElement("iframe");
+    frame.title = `${record.id} 이온 밀 챔버 절개도`;
+    frame.src = `./ion-mill.html?embed=1&fault=${record.fault}`;
+    model.replaceChildren(frame);
+    dialog.showModal();
+  }
+
+  dialog.addEventListener("close", () => {
+    if (dialog.open) return;
+    model.replaceChildren();
+    frame = null;
+    opener?.focus({ preventScroll: true });
+    opener = null;
+  });
+
+  window.addEventListener("message", (event) => {
+    if (!dialog.open || !frame || event.source !== frame.contentWindow) return;
+    if (event.data?.type === "ion-mill:close") {
+      dialog.close();
+    } else if (event.data?.type === "ion-mill:resize") {
+      const { height } = event.data;
+      if (Number.isInteger(height) && height >= 300 && height <= 600) frame.style.height = `${height}px`;
+    }
+  });
+
+  renderFloor();
+  new ResizeObserver(renderTrend).observe(chart);
+})();
+
+          </script>
+        </section>
+
+        <!-- Primary Analytics Row: Multi-Series Time-Series + Equipment Status Indicators -->
+        <section aria-label="Telemetry &amp; Fleet Status" class="grid grid-cols-12 gap-lg items-stretch">
+          <!-- Multi-Series Time-Series Chart -->
+          <article class="col-span-8 bg-panel border border-border-subtle rounded-md p-lg flex flex-col gap-md">
+            <header class="flex items-center justify-between border-b border-border-subtle pb-sm">
+              <div>
+                <h3 data-design-text-token="title-sm" class="font-title text-title-sm text-on-surface">Multi-Series Telemetry Trend</h3>
+                <p data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">24-hour power load, thermal index, and harmonic vibration</p>
+              </div>
+              <div class="flex items-center gap-md">
+                <span class="inline-flex items-center gap-xs"><span class="w-2.5 h-0.5 bg-primary"></span><span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Load (kW)</span></span>
+                <span class="inline-flex items-center gap-xs"><span class="w-2.5 h-0.5 bg-accent-blue"></span><span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Thermal (°C)</span></span>
+                <span class="inline-flex items-center gap-xs"><span class="w-2.5 h-0.5 bg-accent-amber"></span><span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Vibration</span></span>
+              </div>
+            </header>
+            <svg viewBox="0 0 680 175" class="w-full h-auto block" role="img" aria-label="Multi-series time-series line chart">
+              <g style="stroke: rgb(var(--c-grid))" stroke-width="1">
+                <line x1="36" y1="20" x2="665" y2="20"></line><line x1="36" y1="58" x2="665" y2="58"></line>
+                <line x1="36" y1="96" x2="665" y2="96"></line><line x1="36" y1="134" x2="665" y2="134"></line>
+              </g>
+              <g style="fill: rgb(var(--c-on-surface-muted))" font-family="Source Code Pro, monospace" font-size="9" text-anchor="end">
+                <text x="30" y="23">100</text><text x="30" y="61">75</text>
+                <text x="30" y="99">50</text><text x="30" y="137">25</text>
+              </g>
+              <polyline fill="none" stroke="#22C5C7" stroke-width="2" points="36,82 99,70 162,74 225,52 288,44 351,58 414,38 477,46 540,34 603,42 665,36"></polyline>
+              <polyline fill="none" stroke="#60A5FA" stroke-width="1.75" points="36,96 99,92 162,88 225,78 288,72 351,76 414,68 477,70 540,62 603,65 665,60"></polyline>
+              <polyline fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="4 2" points="36,118 99,114 162,120 225,110 288,100 351,112 414,96 477,86 540,102 603,92 665,96"></polyline>
+              <g style="fill: rgb(var(--c-on-surface-muted))" font-family="Source Code Pro, monospace" font-size="9" text-anchor="middle">
+                <text x="36" y="156">00:00</text><text x="162" y="156">06:00</text>
+                <text x="288" y="156">12:00</text><text x="414" y="156">18:00</text>
+                <text x="540" y="156">21:00</text><text x="655" y="156">24:00</text>
+              </g>
+            </svg>
+          </article>
+
+          <!-- Equipment Status Indicators & Fleet Distribution -->
+          <article class="col-span-4 bg-panel border border-border-subtle rounded-md p-lg flex flex-col justify-between gap-md">
+            <header class="flex items-center justify-between border-b border-border-subtle pb-sm">
+              <div>
+                <h3 data-design-text-token="title-sm" class="font-title text-title-sm text-on-surface">Equipment Status</h3>
+                <p data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Live fleet distribution (128 units)</p>
+              </div>
+              <span data-design-text-token="mono-xs" class="font-mono text-mono-xs text-primary">LIVE</span>
+            </header>
+
+            <div class="h-3 w-full rounded-xs bg-background overflow-hidden flex gap-xs">
+              <div class="bg-accent-green h-full" style="width: 81%"></div>
+              <div class="bg-accent-blue h-full" style="width: 8%"></div>
+              <div class="bg-accent-amber h-full" style="width: 8%"></div>
+              <div class="bg-accent-red h-full" style="width: 3%"></div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-sm">
+              <div class="bg-panel-elevated border border-border-subtle rounded-sm p-sm flex items-center justify-between">
+                <span class="flex items-center gap-xs"><span class="w-2 h-2 rounded-full bg-accent-green"></span><span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Running</span></span>
+                <span data-design-text-token="title-sm" class="font-title text-title-sm text-on-surface tabular-nums">104</span>
+              </div>
+              <div class="bg-panel-elevated border border-border-subtle rounded-sm p-sm flex items-center justify-between">
+                <span class="flex items-center gap-xs"><span class="w-2 h-2 rounded-full bg-accent-blue"></span><span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Standby</span></span>
+                <span data-design-text-token="title-sm" class="font-title text-title-sm text-on-surface tabular-nums">10</span>
+              </div>
+              <div class="bg-panel-elevated border border-border-subtle rounded-sm p-sm flex items-center justify-between">
+                <span class="flex items-center gap-xs"><span class="w-2 h-2 rounded-full bg-accent-amber"></span><span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Warning</span></span>
+                <span data-design-text-token="title-sm" class="font-title text-title-sm text-accent-amber tabular-nums">10</span>
+              </div>
+              <div class="bg-panel-elevated border border-border-subtle rounded-sm p-sm flex items-center justify-between">
+                <span class="flex items-center gap-xs"><span class="w-2 h-2 rounded-full bg-accent-red"></span><span data-design-text-token="label-xs" class="font-label text-label-xs text-on-surface-variant">Critical</span></span>
+                <span data-design-text-token="title-sm" class="font-title text-title-sm text-accent-red tabular-nums">4</span>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- Secondary Grid: Calendar Heatmap + Equipment Performance Matrix + Horizontal Ranking Charts -->
+        
+
+        <!-- Alarm & Event History Table -->
+        
+      </main>
+    </div>
+  </div>
+
+
+
+  <!-- [테마] 버튼 클릭 시 테마 전환 + 저장 -->
+  <script>
+    (function () {
+      var KEY = 'Wafers-theme';                    // localStorage 저장 키
+      var root = document.documentElement;           // <html> 요소
+      var buttons = document.querySelectorAll('[data-theme-btn]'); // 테마 버튼들
+
+      function applyTheme(theme) {
+        root.setAttribute('data-theme', theme);      // CSS 변수 세트 교체 → 전체 색 변경
+        try { localStorage.setItem(KEY, theme); } catch (e) {} // 선택 저장 (저장 불가 환경은 무시)
+        buttons.forEach(function (btn) {
+          btn.setAttribute('aria-pressed', String(btn.dataset.themeBtn === theme)); // 현재 테마 버튼만 활성 표시
+        });
+        document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: theme } })); // 다른 스크립트(히트맵 등)용 알림
+      }
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () { applyTheme(btn.dataset.themeBtn); }); // 클릭 시 해당 테마 적용
+      });
+
+      applyTheme(root.getAttribute('data-theme') || 'dark'); // 초기 상태를 버튼 표시에 동기화
+    })();
+  </script>
+  <script>
+  (() => {
+    const translations = {
+      en: {
+        overview: "Operations Overview",
+        equipment: "Equipment Layout",
+        last24h: "Last 24 Hours",
+        last7d: "Last 7 Days",
+        last30d: "Last 30 Days",
+      },
+      ko: {
+        overview: "운영 현황",
+        equipment: "장비 배치도",
+        last24h: "최근 24시간",
+        last7d: "최근 7일",
+        last30d: "최근 30일",
+      },
+    };
+
+    const button = document.querySelector("#language-toggle");
+    let language = "en";
+
+    function applyLanguage() {
+      document.documentElement.lang = language;
+
+      for (const element of document.querySelectorAll("[data-i18n]")) {
+        const text = translations[language][element.dataset.i18n];
+        if (text !== undefined) element.textContent = text;
+      }
+
+      button.textContent = language === "en" ? "한국어" : "English";
+    }
+
+    button.addEventListener("click", () => {
+      language = language === "en" ? "ko" : "en";
+      applyLanguage();
+    });
+
+    applyLanguage();
+  })();
+</script>
+</body></html>
