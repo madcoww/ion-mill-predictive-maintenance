@@ -1,0 +1,83 @@
+.material-symbols-outlined {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    line-height: 1 !important;
+    box-sizing: content-box;
+    overflow: hidden;
+    white-space: nowrap;
+    direction: ltr;
+    vertical-align: middle;
+}
+
+.login-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+.login-layout {
+    display: grid;
+    flex: 1 0 auto;
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.login-auth,
+.login-brand {
+    padding: clamp(1rem, 4vh, 2rem) clamp(0.75rem, 3vw, 2rem);
+}
+
+.login-brand {
+    gap: clamp(1.5rem, 4vh, 2rem);
+    border-top-width: 1px;
+}
+
+.login-card {
+    padding: clamp(0.75rem, calc(4vw - 1rem), 2rem);
+}
+
+.login-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    min-height: 3rem;
+    padding: 0.5rem clamp(0.75rem, 3vw, 1.5rem);
+}
+
+.login-footer-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.75rem;
+}
+
+@media (min-width: 52rem) {
+    .login-layout {
+        grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+        grid-template-areas: "brand auth";
+    }
+
+    .login-auth {
+        grid-area: auth;
+    }
+
+    .login-brand {
+        grid-area: brand;
+        border-top-width: 0;
+        border-right-width: 1px;
+    }
+}
+
+@media (max-width: 36rem) {
+    .login-footer-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .login-footer-divider {
+        display: none;
+    }
+}
